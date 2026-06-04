@@ -1,0 +1,1999 @@
+detection_engineering:
+  
+    metadata:
+      chapter: "2.4"
+      title: "Detection Engineering"
+      subtitle: "Alert Management & SIEM Strategies at Scale"
+      author: "Raghav Dinesh"
+      github: "github.com/ruwgxo"
+      version: "1.0"
+      last_updated: "2024-11-29"
+      license: "MIT"
+      classification: "Security Operating Manual"
+    
+    sections_in_this_document:
+      - overview
+      - core_principles
+      - maturity_model
+      - building_from_zero
+      - detection_strategy
+      - siem_architecture_patterns
+      - log_collection_normalization
+      - rule_development_methodology
+      - behavioral_analytics
+      - false_positive_reduction
+      - coverage_assessment
+      - threat_intelligence_integration
+    
+    core_principles_covered:
+      - id: "DE-P001"
+        name: "Signal over noise"
+        applies_to: "All maturity levels"
+      - id: "DE-P002"
+        name: "Assume breach"
+        applies_to: "All maturity levels"
+      - id: "DE-P003"
+        name: "Coverage over complexity"
+        applies_to: "All maturity levels"
+      - id: "DE-P004"
+        name: "Detection as code"
+        applies_to: "Maturity Level 2+"
+      - id: "DE-P005"
+        name: "Context drives priority"
+        applies_to: "Maturity Level 2+"
+    
+    how_to_use_this_chapter:
+      step_1: "Read overview and core principles"
+      step_2: "Complete maturity self-assessment"
+      step_3: "Jump to section matching your maturity level"
+      step_4: "Return to advanced sections as program matures"
+  
+  overview: |
+    Detection engineering is the systematic practice of designing, developing, 
+    and operating security detection capabilities at scale. This framework 
+    addresses detection strategy, implementation patterns, and operational 
+    excellence for enterprise environments processing millions of security 
+    events daily.
+    
+    This chapter serves organizations at all maturity levels, from greenfield 
+    deployments with zero detection capability to advanced programs deploying 
+    custom machine learning models and automated response. Use the maturity 
+    model to identify your current state and follow the appropriate path.
+    
+  core_principles:
+    
+    signal_over_noise:
+      id: "DE-P001"
+      maturity_level: "All levels"
+      principle: "Optimize for detection accuracy, not alert volume"
+      rationale: |
+        Alert fatigue destroys detection programs. A detection team drowning 
+        in 10,000 daily alerts misses the 3 that matter. Precision beats recall 
+        when human analysts are the constraint.
+      implementation:
+        - "Design detection logic with false positive rate as primary metric"
+        - "Implement alert suppression and deduplication before analyst queues"
+        - "Measure success by true positive rate, not total detections"
+        - "Kill low-fidelity detections ruthlessly"
+      metrics:
+        - "True positive rate: Target >60% for production detections"
+        - "Mean time to triage: <15 minutes for high-severity alerts"
+        - "Alert volume per analyst: <50 actionable alerts per day"
+        - "Detection retirement rate: Remove 10-20% of low-value rules quarterly"
+      anti_patterns:
+        - "Creating detections for every threat intelligence indicator without context"
+        - "Keeping noisy detections active because they might catch something"
+        - "Measuring detection program success by total alert count"
+        - "Ignoring alert suppression until SOC team burns out"
+      example: |
+        Enterprise with 8,000 daily alerts reduced volume by 75% through 
+        systematic rule tuning and suppression. Result: analysts identified 
+        3 critical incidents previously buried in noise, including privilege 
+        escalation that had been active for 6 weeks.
+        
+    assume_breach:
+      id: "DE-P002"
+      maturity_level: "All levels"
+      principle: "Design detection assuming perimeter is already compromised"
+      rationale: |
+        Prevention eventually fails. Detection engineering assumes attackers 
+        are already inside the environment and focuses on identifying malicious 
+        behavior post-compromise.
+      implementation:
+        - "Focus on behavioral analytics over signature-based detection"
+        - "Monitor east-west traffic, not just north-south"
+        - "Detect lateral movement, privilege escalation, data exfiltration"
+        - "Assume credentials are compromised, detect misuse patterns"
+      metrics:
+        - "Internal threat detection coverage: >80% of MITRE ATT&CK techniques"
+        - "Mean time to detect lateral movement: <4 hours"
+        - "Percentage of detections focused on post-exploitation: >50%"
+      anti_patterns:
+        - "Focusing detection budget on perimeter defenses only"
+        - "Assuming internal network traffic is trusted"
+        - "Building detection strategy around preventing initial access"
+        - "Ignoring user and entity behavior analytics"
+      example: |
+        Detection system identified compromised service account performing 
+        unusual database queries 72 hours after initial access. Perimeter 
+        controls detected nothing. Behavioral analytics flagged query patterns 
+        inconsistent with service function, preventing data exfiltration 
+        of 2.3M customer records.
+        
+    coverage_over_complexity:
+      id: "DE-P003"
+      maturity_level: "All levels"
+      principle: "Broad detection coverage beats sophisticated single-purpose detections"
+      rationale: |
+        Detection programs fail when they build 100 complex detections for rare 
+        scenarios while missing basic attacker techniques. Cover common attack 
+        patterns with simple, reliable detections before building sophisticated 
+        edge-case rules. Attackers exploit gaps in coverage, not sophistication.
+      implementation:
+        - "Map detection capability to MITRE ATT&CK framework"
+        - "Prioritize detections for techniques observed in recent incidents"
+        - "Build simple detections for 80% of attack surface before complex rules"
+        - "Measure coverage gaps quarterly, address top 10 missing techniques"
+      metrics:
+        - "MITRE ATT&CK technique coverage: >80% of tactics"
+        - "Detection gap assessment frequency: Quarterly minimum"
+        - "Percentage of detections addressing common vs rare techniques: 80/20 split"
+        - "Time to deploy detection for new critical technique: <2 weeks"
+      anti_patterns:
+        - "Building complex ML models before covering basic attack techniques"
+        - "Focusing detection budget on advanced persistent threats while missing commodity malware"
+        - "Creating detections for theoretical attacks never observed in wild"
+        - "Measuring success by detection sophistication rather than coverage"
+      example: |
+        Organization invested 6 months building sophisticated behavioral model 
+        for insider threat detection. Meanwhile, 40% of MITRE ATT&CK techniques 
+        had zero detection coverage. Attackers used basic credential dumping 
+        undetected for 3 months. Lesson: cover the fundamentals first.
+        
+    detection_as_code:
+      id: "DE-P004"
+      maturity_level: "Level 2+"
+      principle: "Treat detection rules as code: versioned, tested, reviewed"
+      rationale: |
+        Detection rules are logic that determines security outcomes. They require 
+        the same engineering discipline as production code: version control, peer 
+        review, testing, and controlled deployment. Ad-hoc rule creation leads to 
+        brittle detection programs that break during system changes.
+      implementation:
+        - "Store all detection rules in version control (Git)"
+        - "Require peer review for rule changes before production deployment"
+        - "Implement CI/CD pipeline for detection rule testing and deployment"
+        - "Document rule logic, data sources, and expected behavior"
+        - "Test rules against historical data before production deployment"
+      metrics:
+        - "Percentage of detections in version control: 100%"
+        - "Detection deployment frequency: Weekly or on-demand"
+        - "Rule review completion time: <48 hours"
+        - "Test coverage: All rules validated against known true/false positives"
+      anti_patterns:
+        - "Creating detection rules directly in SIEM without version control"
+        - "Deploying rules to production without testing against historical data"
+        - "Skipping peer review for urgent detection additions"
+        - "Losing institutional knowledge when detection engineer leaves"
+      example: |
+        Detection team moved from ad-hoc SIEM rule creation to Git-based workflow. 
+        Result: rule deployment time reduced from 2 weeks to 2 days, false positive 
+        rate decreased 40% through automated testing, zero detection rules lost 
+        during platform migration because all rules documented and versioned.
+        
+    context_drives_priority:
+      id: "DE-P005"
+      maturity_level: "Level 2+"
+      principle: "Detection priority depends on asset criticality and threat context"
+      rationale: |
+        Not all alerts deserve equal attention. Failed login on developer laptop 
+        differs from failed login on production database. Detection engineering 
+        must encode business context and threat intelligence to enable intelligent 
+        prioritization. Flat alert queues waste analyst time on low-impact events.
+      implementation:
+        - "Tag assets by criticality (production, development, test environments)"
+        - "Integrate threat intelligence feeds for known adversary campaigns"
+        - "Implement alert scoring based on asset value and threat severity"
+        - "Route high-priority alerts to senior analysts, low-priority to automation"
+        - "Correlate detections with vulnerability data for risk-based prioritization"
+      metrics:
+        - "Alert prioritization accuracy: >90% of P1 alerts are true positives"
+        - "Mean time to respond to critical asset alerts: <30 minutes"
+        - "Percentage of alerts with automated severity scoring: >95%"
+        - "Analyst satisfaction with alert quality: >80% report actionable alerts"
+      anti_patterns:
+        - "Treating all alerts equally regardless of target system criticality"
+        - "Ignoring threat intelligence when prioritizing detection response"
+        - "Alert fatigue from undifferentiated high-severity alerts"
+        - "Manual alert triage without context or automation"
+      example: |
+        Failed authentication detection generated 500 daily alerts across all systems. 
+        Added context: production database failed logins = P1, developer workstation = P3. 
+        Result: analysts focused on 20 critical alerts daily instead of 500 undifferentiated 
+        alerts. Detected compromised production service account within 2 hours that 
+        would have been buried in noise under previous approach.
+  
+  maturity_model:
+    
+    purpose: |
+      Detection program maturity determines appropriate strategy, tooling, and 
+      investment priorities. This model enables organizations to assess current 
+      capability, identify gaps, and chart development path. Use self-assessment 
+      to determine which sections of this chapter apply to your program.
+    
+    maturity_levels:
+      
+      level_0_no_detection:
+        name: "No Detection Capability"
+        characteristics:
+          logging: "No centralized log collection"
+          monitoring: "No security event monitoring"
+          response: "Reactive investigation only after incident discovery"
+          visibility: "Limited to individual system logs"
+          team: "No dedicated detection engineering capability"
+        indicators:
+          - "Security incidents discovered by users or external parties"
+          - "No ability to investigate historical activity"
+          - "Mean time to detect measured in weeks or months"
+          - "Compliance audits identify lack of monitoring"
+        next_steps: "Follow building_from_zero implementation path"
+        estimated_timeline: "6-12 months to reach Level 1"
+        
+      level_1_basic_logging:
+        name: "Basic Logging"
+        characteristics:
+          logging: "Centralized log collection deployed"
+          monitoring: "Manual log review only"
+          response: "Incident investigation capability exists"
+          visibility: "Can query historical events"
+          team: "Security analysts performing manual analysis"
+        indicators:
+          - "Logs collected from critical systems"
+          - "Investigations require manual log searching"
+          - "No automated alerting on suspicious activity"
+          - "Mean time to detect measured in days"
+        next_steps: "Deploy SIEM platform and basic detection rules"
+        estimated_timeline: "6-12 months to reach Level 2"
+        
+      level_2_reactive_detection:
+        name: "Reactive Detection"
+        characteristics:
+          logging: "Comprehensive log collection across environment"
+          monitoring: "SIEM deployed with signature-based detection"
+          response: "Automated alerting on known-bad indicators"
+          visibility: "Real-time and historical event correlation"
+          team: "SOC analysts triaging automated alerts"
+        indicators:
+          - "Detection rules deployed for common attack patterns"
+          - "Alert fatigue common due to high false positive rates"
+          - "Detection focused on known threats (IOCs, signatures)"
+          - "Mean time to detect measured in hours to days"
+        next_steps: "Implement detection_strategy for coverage optimization"
+        estimated_timeline: "12-18 months to reach Level 3"
+        
+      level_3_proactive_detection:
+        name: "Proactive Detection"
+        characteristics:
+          logging: "Comprehensive logging with data enrichment"
+          monitoring: "Behavioral analytics and anomaly detection"
+          response: "Threat hunting and proactive investigation"
+          visibility: "MITRE ATT&CK coverage mapping"
+          team: "Detection engineers developing custom analytics"
+        indicators:
+          - "Detection-as-code workflow with version control"
+          - "MITRE ATT&CK coverage >60%"
+          - "Behavioral analytics deployed (UEBA)"
+          - "Mean time to detect measured in minutes to hours"
+          - "Regular threat hunting activities"
+        next_steps: "Advanced analytics, custom ML models, automation"
+        estimated_timeline: "12-24 months to reach Level 4"
+        
+      level_4_advanced_detection:
+        name: "Advanced Detection"
+        characteristics:
+          logging: "Advanced data lake with ML-ready datasets"
+          monitoring: "Custom ML models for anomaly detection"
+          response: "Automated response orchestration"
+          visibility: "Comprehensive attack surface monitoring"
+          team: "Detection engineering, data science, automation specialists"
+        indicators:
+          - "Custom machine learning models in production"
+          - "Automated response playbooks reducing manual work"
+          - "Threat intelligence integration with automated enrichment"
+          - "Mean time to detect measured in seconds to minutes"
+          - "Detection program contributing to community (open source rules)"
+          - "Continuous detection optimization through feedback loops"
+        next_steps: "Innovation, research, industry leadership"
+        
+    self_assessment:
+      
+      instructions: |
+        Answer the following questions honestly about your current detection capability. 
+        Score: 1 point for each YES answer. Total score determines maturity level.
+        
+      questions:
+        q1:
+          question: "Do you have centralized log collection from critical systems?"
+          level_indicator: "Level 0 → Level 1"
+          
+        q2:
+          question: "Do you have a SIEM or log analytics platform deployed?"
+          level_indicator: "Level 1 → Level 2"
+          
+        q3:
+          question: "Do you have automated detection rules generating alerts?"
+          level_indicator: "Level 1 → Level 2"
+          
+        q4:
+          question: "Do you measure detection coverage systematically (e.g., MITRE ATT&CK)?"
+          level_indicator: "Level 2 → Level 3"
+          
+        q5:
+          question: "Do you have detection-as-code workflow with version control?"
+          level_indicator: "Level 2 → Level 3"
+          
+        q6:
+          question: "Do you deploy behavioral analytics or UEBA?"
+          level_indicator: "Level 2 → Level 3"
+          
+        q7:
+          question: "Do you have dedicated detection engineering team?"
+          level_indicator: "Level 2 → Level 3"
+          
+        q8:
+          question: "Do you perform regular threat hunting activities?"
+          level_indicator: "Level 2 → Level 3"
+          
+        q9:
+          question: "Do you have custom ML models in production for detection?"
+          level_indicator: "Level 3 → Level 4"
+          
+        q10:
+          question: "Do you have automated response orchestration?"
+          level_indicator: "Level 3 → Level 4"
+          
+      scoring:
+        score_0_1:
+          level: "Level 0: No Detection"
+          next_section: "building_from_zero"
+          priority: "Deploy centralized logging and basic monitoring"
+          
+        score_2_3:
+          level: "Level 1: Basic Logging"
+          next_section: "building_from_zero (Phase 3: SIEM deployment)"
+          priority: "Deploy SIEM and initial detection rules"
+          
+        score_4_6:
+          level: "Level 2: Reactive Detection"
+          next_section: "detection_strategy"
+          priority: "Optimize coverage and reduce false positives"
+          
+        score_7_8:
+          level: "Level 3: Proactive Detection"
+          next_section: "behavioral_analytics, advanced sections"
+          priority: "Advanced analytics and automation"
+          
+        score_9_10:
+          level: "Level 4: Advanced Detection"
+          next_section: "All sections for continuous optimization"
+          priority: "Innovation and community contribution"
+  
+  building_from_zero:
+    
+    audience: "Maturity Level 0-1 organizations"
+    
+    scenario: |
+      Greenfield detection deployment: new CISO, startup security program, 
+      post-incident rebuilding, or organization recognizing detection gap 
+      during audit or breach. This section provides 12-month roadmap from 
+      zero detection capability to mature reactive detection program.
+    
+    prerequisites:
+      budget: "Estimated $100K-$500K first year (SIEM, tools, staff)"
+      team: "Minimum 1 detection engineer or security analyst with scripting skills"
+      executive_support: "CISO or security leadership sponsorship for program"
+      technical_access: "Ability to collect logs from critical systems"
+      
+    phase_1_foundation:
+      
+      timeline: "Months 1-3"
+      objective: "Establish visibility and quick wins"
+      maturity_progression: "Level 0 → Level 1"
+      
+      month_1_assessment:
+        goal: "Understand current state and identify quick wins"
+        activities:
+          inventory_logging:
+            task: "Document all existing log sources"
+            method:
+              - "Survey IT teams about system logging capabilities"
+              - "Identify critical assets requiring monitoring"
+              - "Assess log retention periods and storage capacity"
+            output: "Logging inventory spreadsheet with gaps identified"
+            
+          identify_crown_jewels:
+            task: "Prioritize assets by business criticality"
+            method:
+              - "Interview business owners about critical systems"
+              - "Map data flows for sensitive information"
+              - "Identify single points of failure"
+            output: "Asset criticality matrix (P0, P1, P2 classification)"
+            
+          review_incidents:
+            task: "Analyze recent security incidents"
+            method:
+              - "Review past 12 months of security events"
+              - "Identify attack techniques that succeeded"
+              - "Document detection gaps that enabled attacks"
+            output: "Incident lessons learned and detection priorities"
+            
+          assess_team:
+            task: "Evaluate detection engineering capability"
+            method:
+              - "Survey team skills (SIEM, scripting, detection logic)"
+              - "Identify training needs"
+              - "Determine hiring requirements"
+            output: "Team capability assessment and hiring plan"
+            
+          estimate_budget:
+            task: "Calculate detection program costs"
+            components:
+              siem_platform: "$50K-$300K annually (depending on scale)"
+              endpoint_agents: "$20-$50 per endpoint annually"
+              network_monitoring: "$25K-$100K annually"
+              threat_intelligence: "$10K-$50K annually"
+              staff: "$100K-$150K per detection engineer"
+            output: "Budget proposal for 12-month detection program"
+            
+      month_2_quick_wins:
+        goal: "Deploy high-ROI detections requiring minimal infrastructure"
+        
+        authentication_monitoring:
+          rationale: "Compromised credentials = most common initial access"
+          implementation:
+            - "Centralize authentication logs (AD, SSO, VPN, cloud services)"
+            - "Deploy failed login detection (>10 failures in 5 minutes)"
+            - "Implement impossible travel detection (logins from 2 countries <4 hours)"
+            - "Alert on after-hours administrative access"
+          estimated_effort: "2-3 weeks"
+          estimated_cost: "$5K-$10K (log aggregation tool if needed)"
+          expected_detections: "Brute force attacks, credential stuffing, compromised accounts"
+          
+        critical_system_changes:
+          rationale: "Unauthorized changes to critical systems indicate compromise"
+          implementation:
+            - "Monitor configuration changes on critical servers"
+            - "Alert on new scheduled tasks or cron jobs"
+            - "Detect new user account creation on production systems"
+            - "Monitor privileged group membership changes"
+          estimated_effort: "1-2 weeks"
+          estimated_cost: "Minimal (uses existing system logs)"
+          expected_detections: "Persistence mechanisms, privilege escalation"
+          
+        external_threat_intel:
+          rationale: "Known-bad IPs and domains provide immediate detection value"
+          implementation:
+            - "Subscribe to threat intelligence feeds (free: abuse.ch, paid: vendor feeds)"
+            - "Block/alert on connections to known malicious IPs"
+            - "Monitor DNS queries to recently registered domains"
+            - "Alert on file hashes matching known malware"
+          estimated_effort: "1 week"
+          estimated_cost: "$0-$10K (free feeds available, paid feeds optional)"
+          expected_detections: "Command and control, malware beaconing"
+          
+      month_3_visibility:
+        goal: "Deploy endpoint and network monitoring for comprehensive visibility"
+        
+        endpoint_agent_deployment:
+          rationale: "Cannot detect what you cannot see on endpoints"
+          tool_options:
+            commercial: ["CrowdStrike Falcon", "Carbon Black", "Microsoft Defender for Endpoint"]
+            open_source: ["Wazuh", "OSQuery"]
+          implementation:
+            - "Deploy endpoint agent to 100% of workstations and servers"
+            - "Enable process execution logging"
+            - "Configure file integrity monitoring for critical directories"
+            - "Set up command-line logging for suspicious activity"
+          estimated_effort: "3-4 weeks"
+          estimated_cost: "$20-$50 per endpoint annually"
+          expected_detections: "Malware execution, suspicious processes, persistence"
+          
+        network_visibility:
+          rationale: "Network traffic analysis reveals lateral movement and data exfiltration"
+          tool_options:
+            flow_logs: ["VPC Flow Logs", "NetFlow", "sFlow"]
+            ids_ips: ["Suricata", "Zeek", "Snort"]
+          implementation:
+            - "Enable VPC/network flow logs for all networks"
+            - "Deploy network IDS at key egress points"
+            - "Configure DNS query logging"
+            - "Set up TLS certificate monitoring"
+          estimated_effort: "2-3 weeks"
+          estimated_cost: "$25K-$75K annually (depending on traffic volume)"
+          expected_detections: "Network scanning, data exfiltration, lateral movement"
+          
+    phase_2_siem_deployment:
+      
+      timeline: "Months 4-6"
+      objective: "Centralize logs and enable correlation"
+      maturity_progression: "Level 1 → Level 2"
+      
+      month_4_siem_selection:
+        goal: "Choose SIEM platform aligned with requirements and budget"
+        
+        requirements_gathering:
+          log_volume: "Estimate daily log ingestion (GB/day or events/day)"
+          retention: "Define log retention requirements (compliance, investigation needs)"
+          users: "Identify analysts requiring SIEM access"
+          integrations: "List systems requiring SIEM integration"
+          budget: "Determine available budget for SIEM platform"
+          
+        vendor_evaluation:
+          commercial_siem:
+            splunk:
+              pros: "Market leader, extensive integrations, powerful search"
+              cons: "Expensive at scale, complex licensing"
+              cost: "$150-$300 per GB ingested daily"
+              best_for: "Large enterprises with budget, complex use cases"
+              
+            elastic_security:
+              pros: "Good value, scalable, open source core"
+              cons: "Requires more configuration than Splunk"
+              cost: "$50-$100 per GB ingested daily"
+              best_for: "Mid-size organizations, cost-conscious deployments"
+              
+            microsoft_sentinel:
+              pros: "Cloud-native, Azure integration, pay-per-use"
+              cons: "Limited on-premise support, newer platform"
+              cost: "$2-$3 per GB ingested"
+              best_for: "Microsoft-centric environments, cloud-first"
+              
+            chronicle:
+              pros: "Google-scale architecture, unlimited retention"
+              cons: "Limited ecosystem compared to Splunk"
+              cost: "Flat annual fee based on data sources"
+              best_for: "Large-scale deployments, predictable budget"
+              
+          open_source_siem:
+            elk_stack:
+              pros: "Free core, highly customizable, large community"
+              cons: "Requires expertise to deploy and maintain"
+              cost: "Infrastructure only (~$20K-$50K annually)"
+              best_for: "Strong technical team, budget constraints"
+              
+            wazuh:
+              pros: "Free, endpoint focus, good for compliance"
+              cons: "Limited enterprise features"
+              cost: "Free (infrastructure costs only)"
+              best_for: "Small organizations, compliance-driven"
+              
+        decision_framework:
+          budget_driven:
+            high_budget: "Splunk (comprehensive features, vendor support)"
+            medium_budget: "Elastic or Sentinel (good balance)"
+            low_budget: "Open source ELK or Wazuh"
+            
+          skill_driven:
+            strong_team: "Open source (customization, lower cost)"
+            moderate_team: "Commercial with training"
+            limited_team: "Managed SIEM service"
+            
+          timeline_driven:
+            urgent: "Cloud SIEM (fast deployment)"
+            moderate: "Commercial on-premise or cloud"
+            patient: "Open source (build from scratch)"
+            
+      month_5_siem_implementation:
+        goal: "Deploy SIEM and ingest critical log sources"
+        
+        deployment_priorities:
+          phase_1_critical_logs:
+            priority: "P0 - Deploy first"
+            log_sources:
+              - "Authentication systems (AD, SSO, VPN)"
+              - "Endpoint agents (process execution, file events)"
+              - "Network flow logs"
+              - "Critical server logs (database, web, application)"
+            rationale: "Highest detection value, most attack visibility"
+            timeline: "Week 1-2"
+            
+          phase_2_infrastructure_logs:
+            priority: "P1 - Deploy second"
+            log_sources:
+              - "Firewall and proxy logs"
+              - "DNS query logs"
+              - "Cloud platform logs (AWS CloudTrail, Azure Activity)"
+              - "Load balancer and API gateway logs"
+            rationale: "Enables network-based detection, cloud visibility"
+            timeline: "Week 3"
+            
+          phase_3_application_logs:
+            priority: "P2 - Deploy last"
+            log_sources:
+              - "Application logs (business logic, errors)"
+              - "Development tools (CI/CD, code repositories)"
+              - "Productivity tools (email, collaboration)"
+            rationale: "Lower detection priority, higher noise potential"
+            timeline: "Week 4"
+            
+        configuration:
+          log_parsing:
+            - "Configure parsers for each log source type"
+            - "Normalize fields (source_ip, dest_ip, user, action)"
+            - "Extract relevant fields for detection logic"
+            
+          data_enrichment:
+            - "Add asset criticality tags from inventory"
+            - "Enrich with user context (department, role)"
+            - "Integrate threat intelligence feeds"
+            
+          retention_policy:
+            hot_storage: "90 days (fast search, high cost)"
+            warm_storage: "365 days (slower search, lower cost)"
+            cold_storage: "7 years (compliance, archive)"
+            
+      month_6_initial_detections:
+        goal: "Deploy 10-15 high-fidelity detection rules"
+        
+        rule_selection_criteria:
+          - "High true positive rate (>70%)"
+          - "Addresses common attack techniques"
+          - "Aligns with MITRE ATT&CK framework"
+          - "Actionable by SOC analysts"
+          - "Minimal configuration required"
+          
+        initial_rule_set:
+          authentication_attacks:
+            - "Brute force authentication (>10 failures in 5 minutes)"
+            - "Impossible travel (login from 2 locations <4 hours)"
+            - "Successful login after multiple failures"
+            - "Authentication to rarely accessed system"
+            
+          lateral_movement:
+            - "RDP or SSH from workstation to server"
+            - "Multiple failed authentication attempts across systems"
+            - "Unusual network connections between servers"
+            
+          privilege_escalation:
+            - "New local administrator account creation"
+            - "Privileged group membership change"
+            - "Suspicious scheduled task creation"
+            
+          persistence:
+            - "Startup item modification"
+            - "New Windows service installation"
+            - "Registry run key modification"
+            
+          data_exfiltration:
+            - "Large outbound data transfer to uncommon destination"
+            - "Unusual database query volume"
+            - "File downloads exceeding normal baseline"
+            
+        testing_before_production:
+          - "Test rules against 30-90 days historical data"
+          - "Measure false positive rate"
+          - "Adjust thresholds to reduce noise"
+          - "Document expected alert volume"
+          
+    phase_3_optimization:
+      
+      timeline: "Months 7-9"
+      objective: "Reduce false positives and improve coverage"
+      maturity_progression: "Level 2 optimization"
+      
+      false_positive_reduction:
+        measurement:
+          - "Track true positive rate per detection rule"
+          - "Identify highest-noise rules (>50 alerts/day, <10% true positive)"
+          - "Measure analyst time spent on false positives"
+          
+        tuning_strategies:
+          whitelisting:
+            - "Exclude known-good activity (automated scripts, admin tools)"
+            - "Suppress alerts for maintenance windows"
+            - "Filter benign user behavior patterns"
+            
+          threshold_adjustment:
+            - "Increase failure count for brute force detection"
+            - "Extend time windows for rate-based rules"
+            - "Adjust anomaly detection sensitivity"
+            
+          context_addition:
+            - "Add asset criticality to reduce noise on dev systems"
+            - "Include time-of-day awareness (business hours vs after-hours)"
+            - "Factor in user role (admin vs regular user)"
+            
+        rule_retirement:
+          criteria_for_removal:
+            - "True positive rate <10% after tuning attempts"
+            - "No true positives in 90 days"
+            - "Duplicate coverage with better-performing rule"
+          process:
+            - "Disable rule for 30 days (monitor for missed detections)"
+            - "Document reason for retirement"
+            - "Remove from production if no value demonstrated"
+            
+      coverage_expansion:
+        mitre_attack_mapping:
+          - "Map existing detections to ATT&CK techniques"
+          - "Identify top 10 coverage gaps"
+          - "Prioritize gaps by adversary usage and impact"
+          
+        detection_development:
+          - "Deploy 1-2 new high-quality detections weekly"
+          - "Focus on gaps in current coverage"
+          - "Use Sigma rules from community when available"
+          
+        behavioral_analytics_introduction:
+          - "Implement basic user behavior baselining"
+          - "Deploy anomaly detection for privileged accounts"
+          - "Create watchlists for high-value assets"
+          
+    phase_4_maturation:
+      
+      timeline: "Months 10-12"
+      objective: "Establish detection-as-code and continuous improvement"
+      maturity_progression: "Level 2 → Level 3"
+      
+      detection_as_code_workflow:
+        version_control:
+          - "Migrate all detection rules to Git repository"
+          - "Document rule logic, data sources, expected behavior"
+          - "Establish branching strategy (main, develop, feature)"
+          
+        peer_review:
+          - "Require pull request approval for rule changes"
+          - "Establish review checklist (logic, false positive risk, testing)"
+          - "Document decision-making in PR discussions"
+          
+        ci_cd_pipeline:
+          - "Automate rule testing against historical data"
+          - "Deploy rules to staging SIEM before production"
+          - "Monitor new rules for 48 hours before full rollout"
+          
+      metrics_and_reporting:
+        detection_program_kpis:
+          - "MITRE ATT&CK coverage percentage"
+          - "Mean time to detect (MTTD) by severity"
+          - "True positive rate per detection rule"
+          - "Alert volume per analyst"
+          - "Detection rule count (with trend)"
+          
+        executive_reporting:
+          - "Monthly detection program dashboard"
+          - "Quarterly coverage assessment"
+          - "Incident detection success stories"
+          - "Budget and resource utilization"
+          
+      team_development:
+        training:
+          - "SIEM platform deep dive (vendor training)"
+          - "Detection engineering fundamentals"
+          - "MITRE ATT&CK framework"
+          - "Threat intelligence analysis"
+          
+        hiring:
+          - "Hire additional detection engineers as budget permits"
+          - "Balance junior analysts with senior expertise"
+          - "Consider threat hunting specialist"
+          
+    success_criteria:
+      
+      end_of_year_1_targets:
+        visibility:
+          - "90%+ of critical assets logging to SIEM"
+          - "Comprehensive endpoint and network visibility"
+          
+        detection_capability:
+          - "20-30 production detection rules deployed"
+          - "MITRE ATT&CK coverage >40%"
+          - "True positive rate >50%"
+          
+        operational_metrics:
+          - "Mean time to detect <24 hours for critical incidents"
+          - "Alert volume <100/day for SOC team"
+          - "Monthly detection program reports to leadership"
+          
+        program_maturity:
+          - "Detection-as-code workflow established"
+          - "Quarterly coverage gap assessments"
+          - "Documented detection engineering processes"
+          
+      transition_to_next_phase:
+        - "Program ready to follow detection_strategy section"
+        - "Foundation established for behavioral analytics"
+        - "Team capable of advanced detection development"
+        
+    lessons_from_greenfield_deployments:
+      
+      start_small_scale_fast:
+        lesson: "Deploy 10 high-quality detections before 50 noisy ones"
+        rationale: |
+          Organizations often deploy hundreds of vendor-provided rules immediately, 
+          creating alert fatigue before program matures. Start with handful of 
+          high-fidelity rules, prove value, then expand systematically.
+        
+      buy_time_with_quick_wins:
+        lesson: "Show executive results within 90 days"
+        rationale: |
+          Detection programs require sustained investment. Quick wins (authentication 
+          monitoring, threat intel integration) prove value and secure continued funding 
+          while building mature capability.
+        
+      steal_shamelessly:
+        lesson: "Use community detection content before building custom"
+        rationale: |
+          Sigma rules, vendor content packs, and open source detections provide 
+          immediate value. Customize community content for your environment rather 
+          than building from scratch.
+        resources:
+          - "Sigma HQ: github.com/SigmaHQ/sigma"
+          - "Elastic Detection Rules: github.com/elastic/detection-rules"
+          - "Splunk Security Content: github.com/splunk/security_content"
+          
+      hire_for_gaps_early:
+        lesson: "Identify skill gaps in month 1, hire by month 6"
+        rationale: |
+          Detection engineering requires specific skills (SIEM, scripting, threat analysis). 
+          Hiring delays extend timeline. Identify gaps early, recruit aggressively.
+        
+      avoid_analysis_paralysis:
+        lesson: "Good enough now beats perfect later"
+        rationale: |
+          Organizations delay detection deployment seeking perfect SIEM selection or 
+          perfect rule logic. Deploy functional capability quickly, iterate based on 
+          operational experience.
+
+siem_architecture_patterns:
+    
+    audience: "Level 1-4 organizations deploying or optimizing SIEM"
+    
+    overview: |
+      SIEM architecture determines detection program scalability, cost efficiency, 
+      and operational effectiveness. This section addresses platform selection, 
+      deployment patterns, scaling strategies, and architectural trade-offs for 
+      enterprise security information and event management.
+      
+    platform_selection:
+      
+      requirements_definition:
+        
+        log_volume_planning:
+          calculation_method:
+            - "Inventory all log sources (servers, endpoints, network devices, applications)"
+            - "Estimate events per second per source type"
+            - "Calculate daily log volume (GB or events/day)"
+            - "Plan for 30-50% growth annually"
+          sizing_example:
+            endpoints: "10,000 × 50 events/second = 500K EPS"
+            servers: "1,000 × 100 events/second = 100K EPS"
+            network_devices: "100 × 500 events/second = 50K EPS"
+            applications: "Varies widely by application"
+            total_sustained: "650K events/second minimum capacity required"
+            peak_capacity: "1.3M EPS (2x sustained for burst handling)"
+            
+        retention_requirements:
+          hot_storage: "90 days fast search"
+          warm_storage: "1 year moderate speed search"
+          cold_storage: "7 years compliance archive"
+          cost_impact: "Hot storage 10x more expensive than cold"
+          
+        user_and_use_case_planning:
+          soc_analysts: "Real-time alerting and investigation"
+          threat_hunters: "Ad-hoc queries and data exploration"
+          compliance_team: "Report generation and audit evidence"
+          incident_responders: "Deep forensic analysis"
+          concurrent_users: "Plan for 20-50 depending on org size"
+          
+        integration_requirements:
+          - "SOAR platform for automated response"
+          - "Threat intelligence feeds"
+          - "Case management system"
+          - "Identity and asset management"
+          - "Visualization and dashboard tools"
+          
+      vendor_comparison_framework:
+        
+        splunk:
+          strengths:
+            - "Market leader with extensive feature set"
+            - "Mature ecosystem with thousands of integrations"
+            - "Powerful search processing language (SPL)"
+            - "Strong vendor support and training"
+          weaknesses:
+            - "Expensive at scale (licensing per GB ingested)"
+            - "Complex pricing models"
+            - "Performance can degrade with poor query practices"
+          cost_model: "$150-$300 per GB ingested daily (list price, discounts available)"
+          best_for: "Large enterprises with budget, complex use cases, mature programs"
+          
+        elastic_security:
+          strengths:
+            - "Open source core with commercial features"
+            - "Good performance at scale"
+            - "Predictable pricing"
+            - "Strong community and ecosystem"
+          weaknesses:
+            - "Requires more hands-on configuration than Splunk"
+            - "Less mature detection content than Splunk"
+            - "Smaller partner ecosystem"
+          cost_model: "$50-$100 per GB ingested daily"
+          best_for: "Mid-size to large orgs, cost-conscious, strong technical team"
+          
+        microsoft_sentinel:
+          strengths:
+            - "Cloud-native architecture scales automatically"
+            - "Tight integration with Microsoft ecosystem"
+            - "Pay-per-use model (no upfront commitment)"
+            - "Growing detection content library"
+          weaknesses:
+            - "Limited on-premise log collection"
+            - "Newer platform with evolving features"
+            - "Performance variability in cloud"
+          cost_model: "$2-$3 per GB ingested"
+          best_for: "Microsoft-centric environments, cloud-first strategy"
+          
+        chronicle:
+          strengths:
+            - "Google-scale architecture"
+            - "Unlimited retention included in pricing"
+            - "Fast search across petabytes"
+            - "Predictable annual pricing"
+          weaknesses:
+            - "Smaller ecosystem than Splunk/Elastic"
+            - "Fewer integrations"
+            - "Newer to market"
+          cost_model: "Flat annual fee based on data sources (not volume)"
+          best_for: "Very large scale, long retention requirements, predictable budget"
+          
+      decision_framework:
+        
+        budget_driven_selection:
+          high_budget: "Splunk (comprehensive capabilities, vendor support)"
+          medium_budget: "Elastic or Sentinel (good balance of cost and capability)"
+          low_budget: "Open source ELK or managed service provider"
+          
+        skill_driven_selection:
+          strong_technical_team: "Open source (customization, lower licensing cost)"
+          moderate_team: "Commercial with training investment"
+          limited_team: "Managed SIEM service or cloud-native (less operational burden)"
+          
+        timeline_driven_selection:
+          urgent_deployment: "Cloud SIEM (fastest time to value)"
+          moderate_timeline: "Commercial on-premise or cloud"
+          patient_approach: "Open source (build from scratch)"
+          
+        scale_driven_selection:
+          small_scale: "<100 GB/day: Any platform suitable"
+          medium_scale: "100-500 GB/day: Elastic, Sentinel, or Splunk"
+          large_scale: ">500 GB/day: Splunk, Elastic, or Chronicle"
+          massive_scale: ">5 TB/day: Chronicle or heavily optimized Elastic cluster"
+
+deployment_architecture:
+      
+      single_instance_deployment:
+        use_case: "Small organizations (<50 GB/day)"
+        architecture:
+          components:
+            - "Single SIEM server handling all functions"
+            - "Integrated search, indexing, and web interface"
+            - "Local storage for logs"
+          diagram_description: "All-in-one SIEM appliance or VM"
+        advantages:
+          - "Simple deployment and management"
+          - "Low operational overhead"
+          - "Minimal infrastructure required"
+        disadvantages:
+          - "Single point of failure"
+          - "Limited scalability"
+          - "Performance bottleneck at higher volumes"
+        cost: "$10K-$50K annually (hardware + licensing)"
+        
+      distributed_deployment:
+        use_case: "Medium organizations (50-500 GB/day)"
+        architecture:
+          components:
+            search_heads: "User-facing search and dashboard interface"
+            indexers: "Data storage and search processing (2-5 nodes)"
+            forwarders: "Lightweight agents collecting and forwarding logs"
+            management_layer: "Deployment and configuration management"
+          diagram_description: "Separate search and indexing tiers with load balancing"
+        advantages:
+          - "Horizontal scalability (add indexers for capacity)"
+          - "High availability possible"
+          - "Performance isolation between search and indexing"
+        disadvantages:
+          - "More complex to deploy and manage"
+          - "Requires load balancing and clustering"
+          - "Higher infrastructure cost"
+        cost: "$100K-$500K annually"
+        
+      cloud_native_deployment:
+        use_case: "Any size, cloud-first strategy"
+        architecture:
+          components:
+            - "Managed SIEM service (Sentinel, Chronicle, Splunk Cloud)"
+            - "Cloud-native log collection and forwarding"
+            - "Auto-scaling based on load"
+            - "Multi-region deployment for resilience"
+          diagram_description: "Fully managed cloud service with API-driven integration"
+        advantages:
+          - "No infrastructure management required"
+          - "Automatic scaling and updates"
+          - "Pay-per-use pricing (variable cost)"
+          - "Fast deployment (days vs months)"
+        disadvantages:
+          - "Less customization than on-premise"
+          - "Data sovereignty concerns for regulated industries"
+          - "Vendor lock-in risk"
+          - "Variable monthly costs based on usage"
+        cost: "Variable: $50K-$1M+ annually depending on volume"
+        
+      hybrid_deployment:
+        use_case: "Large organizations with on-premise and cloud workloads"
+        architecture:
+          components:
+            on_premise_indexers: "Handle sensitive data that cannot leave datacenter"
+            cloud_indexers: "Handle cloud workload logs"
+            federated_search: "Query across on-premise and cloud data"
+            centralized_management: "Single pane of glass for administration"
+          diagram_description: "Distributed SIEM with on-premise and cloud components federated"
+        advantages:
+          - "Data locality compliance (keep sensitive data on-premise)"
+          - "Scalability for cloud workloads"
+          - "Best of both worlds (control + cloud agility)"
+        disadvantages:
+          - "Most complex architecture"
+          - "Highest operational burden"
+          - "Network connectivity critical for federated search"
+        cost: "$500K-$5M+ annually (enterprise scale)"
+        
+    scaling_strategies:
+      
+      vertical_scaling:
+        approach: "Add more resources to existing SIEM nodes"
+        methods:
+          - "Increase CPU cores and RAM"
+          - "Add faster storage (SSD, NVMe)"
+          - "Optimize queries and indexing"
+        limitations:
+          - "Hardware limits eventually reached"
+          - "Diminishing returns at high resource levels"
+          - "Single node still potential bottleneck"
+        when_to_use: "Initial growth from small to medium scale"
+        
+      horizontal_scaling:
+        approach: "Add more SIEM nodes to distribute load"
+        methods:
+          - "Add indexer nodes for increased indexing capacity"
+          - "Add search heads for more concurrent users"
+          - "Partition data across indexers (time-based or source-based)"
+        advantages:
+          - "Nearly limitless scalability"
+          - "High availability through redundancy"
+          - "Load distribution improves performance"
+        complexity:
+          - "Requires clustering and load balancing"
+          - "Data replication overhead"
+          - "More complex management"
+        when_to_use: "Growth beyond single-node capacity"
+        
+      data_tier_optimization:
+        hot_tier:
+          characteristics: "Recent data, fast storage, frequent access"
+          retention: "7-90 days"
+          storage: "SSD or NVMe"
+          cost: "Highest per GB"
+        warm_tier:
+          characteristics: "Older data, moderate speed, occasional access"
+          retention: "90 days - 2 years"
+          storage: "HDD or lower-tier SSD"
+          cost: "Medium per GB"
+        cold_tier:
+          characteristics: "Archive data, slow retrieval, rare access"
+          retention: "2-7+ years"
+          storage: "Object storage (S3, Azure Blob)"
+          cost: "Lowest per GB"
+        automated_tiering:
+          - "Automatically move data between tiers based on age"
+          - "Optimize cost while maintaining search capability"
+          - "Compliance-driven retention in cold tier"
+          
+      query_optimization:
+        techniques:
+          indexed_fields: "Index frequently searched fields for fast retrieval"
+          time_based_filtering: "Always specify time range to limit search scope"
+          field_extraction: "Extract fields at search time only when necessary"
+          summary_indexing: "Pre-compute common queries and store results"
+          parallel_processing: "Distribute queries across multiple indexers"
+        impact: "10-100x performance improvement possible with optimization"
+        
+    cost_optimization:
+      
+      log_filtering:
+        strategy: "Filter non-security logs before SIEM ingestion"
+        methods:
+          - "Drop verbose application debugging logs"
+          - "Sample high-volume low-value logs"
+          - "Filter duplicate events"
+          - "Remove fields not used for detection"
+        savings: "30-50% reduction in ingestion volume typical"
+        
+      compression:
+        strategy: "Compress logs before transmission and storage"
+        methods:
+          - "Enable log forwarder compression"
+          - "Use column-based compression for structured logs"
+          - "Compress cold tier aggressively"
+        savings: "60-80% storage reduction"
+        
+      tiered_retention:
+        strategy: "Aggressive tiering based on data value and access patterns"
+        implementation:
+          - "Move to warm tier after 30 days (not 90)"
+          - "Move to cold tier after 6 months (not 1 year)"
+          - "Delete non-compliance logs after 2 years"
+        savings: "40-60% storage cost reduction"
+        
+      reserved_capacity:
+        strategy: "Commit to annual usage for discounted rates"
+        applies_to: "Cloud SIEM with pay-per-use pricing"
+        savings: "30-50% discount vs on-demand pricing"
+        risk: "Must accurately forecast usage to avoid over-commitment"
+        
+  log_collection_normalization:
+    
+    audience: "Level 1+ organizations implementing comprehensive logging"
+    
+    overview: |
+      Log collection and normalization determines detection visibility and 
+      fidelity. This section addresses systematic log source identification, 
+      collection architecture, and normalization strategies for consistent 
+      detection logic across heterogeneous environments.
+      
+    log_source_prioritization:
+      
+      critical_log_sources:
+        authentication_systems:
+          sources:
+            - "Active Directory domain controllers"
+            - "LDAP authentication servers"
+            - "SSO platforms (Okta, Azure AD, Google Workspace)"
+            - "VPN concentrators and remote access"
+          detection_value: "Highest - credential abuse most common initial access"
+          collection_priority: "P0 - collect before any other source"
+          
+        endpoint_systems:
+          sources:
+            - "Windows Event Logs (Security, System, Application)"
+            - "Linux auditd and syslog"
+            - "macOS Unified Logging"
+            - "EDR agent telemetry (process execution, network, file events)"
+          detection_value: "Critical - visibility into malware execution, persistence"
+          collection_priority: "P0 - required for comprehensive detection"
+          
+        network_infrastructure:
+          sources:
+            - "Firewall allow/deny logs"
+            - "IDS/IPS alerts and network traffic logs"
+            - "DNS query logs"
+            - "Proxy and web gateway logs"
+            - "VPC Flow Logs or NetFlow"
+          detection_value: "High - lateral movement and C2 detection"
+          collection_priority: "P1 - collect within first 90 days"
+          
+        critical_servers:
+          sources:
+            - "Database server logs (authentication, queries)"
+            - "Web server access and error logs"
+            - "Application server logs"
+            - "File server access logs"
+          detection_value: "High - target of data exfiltration"
+          collection_priority: "P1 - prioritize based on data sensitivity"
+          
+        cloud_platforms:
+          sources:
+            - "AWS CloudTrail, VPC Flow Logs, GuardDuty"
+            - "Azure Activity Log, NSG Flow Logs, Security Center"
+            - "GCP Cloud Audit Logs, VPC Flow Logs"
+          detection_value: "Critical for cloud workloads"
+          collection_priority: "P0 for cloud-native organizations"
+          
+      log_source_inventory:
+        methodology:
+          - "Asset discovery to identify all systems"
+          - "Classify by criticality (crown jewels)"
+          - "Assess logging capability (native vs agent required)"
+          - "Estimate log volume per source"
+          - "Prioritize by detection value and criticality"
+        output: "Phased collection plan with priorities and timelines"
+        
+    log_collection_architecture:
+      
+      agent_based_collection:
+        description: "Install agent on endpoint/server to collect and forward logs"
+        use_cases:
+          - "Endpoints and servers under direct control"
+          - "Requires deep visibility (process execution, file events)"
+          - "Agent provides local processing and buffering"
+        agents:
+          commercial: "Splunk UF, Elastic Agent, Datadog Agent"
+          open_source: "Filebeat, Fluentd, Logstash"
+        advantages:
+          - "Rich telemetry (beyond basic system logs)"
+          - "Local buffering during network outages"
+          - "Pre-processing and filtering at source"
+        disadvantages:
+          - "Agent deployment and maintenance overhead"
+          - "Compatibility with all operating systems"
+          - "Resource consumption on endpoints"
+          
+      agentless_collection:
+        description: "Collect logs remotely without installing agent"
+        methods:
+          - "Syslog forwarding (native)"
+          - "Windows Event Forwarding (WEF)"
+          - "API-based collection (cloud services)"
+          - "Network tap or SPAN port (network traffic)"
+        use_cases:
+          - "Network devices (routers, firewalls)"
+          - "Cloud services (AWS, Azure, GCP)"
+          - "Systems where agents cannot be installed"
+        advantages:
+          - "No agent deployment required"
+          - "Works with any log source supporting syslog or API"
+          - "Lower operational overhead"
+        disadvantages:
+          - "Limited to logs system natively produces"
+          - "No local buffering (lose logs if network down)"
+          - "Potential network bottleneck at high volumes"
+          
+      hybrid_collection:
+        description: "Combine agent-based and agentless based on source type"
+        architecture:
+          endpoints_servers: "Agent-based for rich telemetry"
+          network_devices: "Agentless syslog"
+          cloud_services: "API-based collection"
+        advantages: "Optimize collection method per source type"
+        
+    log_normalization:
+      
+      purpose: "Transform diverse log formats into consistent schema for detection"
+      
+      normalization_challenges:
+        format_diversity:
+          - "Windows Event Logs (XML)"
+          - "Linux syslog (plain text)"
+          - "JSON (APIs, cloud services)"
+          - "CEF, LEEF (security product formats)"
+          - "CSV, KV (custom applications)"
+        field_naming_inconsistency:
+          - "source_ip vs src_ip vs sourceAddress"
+          - "username vs user vs user_name"
+          - "timestamp formats vary (Unix epoch, ISO8601, custom)"
+        semantic_differences:
+          - "Success vs Succeeded vs OK"
+          - "Severity levels (Critical, High, 1-5, etc)"
+          
+      normalization_strategies:
+        
+        elastic_common_schema:
+          description: "Standard field naming across all log sources"
+          core_fields:
+            - "source.ip, destination.ip (network)"
+            - "user.name, user.id (identity)"
+            - "event.action, event.outcome (what happened)"
+            - "process.name, process.command_line (execution)"
+          adoption: "Use ECS even if not using Elastic (vendor-neutral)"
+          
+        splunk_common_information_model:
+          description: "Splunk's normalization framework"
+          data_models:
+            - "Authentication (login events)"
+            - "Network Traffic (connections)"
+            - "Endpoint (process, file, registry)"
+          field_naming: "Consistent across all sources feeding data model"
+          
+        custom_normalization:
+          when_to_use: "Existing schema insufficient or vendor lock-in concerns"
+          requirements:
+            - "Document schema clearly"
+            - "Version control schema definitions"
+            - "Provide examples for each source type"
+          maintenance_burden: "High - must maintain parsers for every log source"
+          
+      field_extraction:
+        
+        parsing_methods:
+          regex_based: "Pattern matching to extract fields from unstructured logs"
+          xml_json_parsing: "Native parsers for structured formats"
+          grok_patterns: "Pre-defined regex patterns for common log formats"
+          delimiter_based: "CSV, TSV parsing"
+          
+        extraction_performance:
+          parse_at_ingestion: "Fast search, higher storage cost (extracted fields indexed)"
+          parse_at_search: "Lower storage cost, slower search (extract on-demand)"
+          hybrid_approach: "Index frequently searched fields, extract others at search time"
+          
+        data_enrichment:
+          asset_context:
+            - "Add asset criticality (production, development, test)"
+            - "Add asset owner and business unit"
+            - "Add geographic location"
+          user_context:
+            - "Add department, role, manager"
+            - "Flag privileged accounts"
+          threat_intelligence:
+            - "Enrich IP addresses with reputation scores"
+            - "Flag known malicious domains"
+            - "Add geolocation data"
+            
+  rule_development_methodology:
+    
+    audience: "Level 2+ organizations developing custom detection rules"
+    
+    overview: |
+      Detection rule development determines program effectiveness and operational 
+      efficiency. This section provides systematic methodology for designing, 
+      testing, and deploying high-fidelity detection rules that balance coverage 
+      and false positive rates.
+      
+    detection_rule_design:
+      
+      hypothesis_driven_approach:
+        
+        step_1_hypothesis:
+          definition: "Specific adversary behavior to detect"
+          example: "Adversary will use Mimikatz to dump LSASS memory for credential theft"
+          
+        step_2_data_source:
+          question: "What logs capture this behavior?"
+          example: "Windows Security Event ID 4656 (LSASS process access) or Sysmon Event ID 10 (Process Access)"
+          
+        step_3_detection_logic:
+          question: "What pattern indicates malicious behavior?"
+          example: "Process accessing LSASS.exe with requested access rights including PROCESS_VM_READ"
+          
+        step_4_false_positive_prediction:
+          question: "What legitimate activity triggers this logic?"
+          example: "Legitimate security tools, backup software, Windows processes"
+          
+        step_5_tuning_approach:
+          question: "How to reduce false positives without missing attacks?"
+          example: "Whitelist known-good processes, add context (privileged user performing action)"
+          
+      detection_logic_patterns:
+        
+        signature_based_detection:
+          definition: "Match known-bad indicators"
+          examples:
+            - "File hash matches known malware"
+            - "Network connection to known C2 IP address"
+            - "Process name matches malicious tool (mimikatz.exe)"
+          advantages: "High fidelity when indicators are accurate"
+          disadvantages: "Trivially bypassed (rename file, change IP)"
+          use_case: "Commodity threats with stable indicators"
+          
+        threshold_based_detection:
+          definition: "Trigger on volume or frequency exceeding baseline"
+          examples:
+            - "More than 10 failed login attempts in 5 minutes"
+            - "More than 100 DNS queries from single host in 1 minute"
+            - "More than 1 GB outbound data transfer to uncommon destination"
+          advantages: "Simple to implement, low false positives with good thresholds"
+          disadvantages: "Slow attacks below threshold evade detection"
+          use_case: "Brute force, DDoS, bulk data exfiltration"
+          
+        anomaly_based_detection:
+          definition: "Identify deviation from normal baseline"
+          examples:
+            - "User accesses system never accessed before"
+            - "Process executes from unusual path"
+            - "Network traffic to country never contacted before"
+          advantages: "Detects novel attacks, no prior knowledge needed"
+          disadvantages: "High false positive rate, requires baselining period"
+          use_case: "Insider threats, zero-day exploitation, advanced attacks"
+          
+        correlation_based_detection:
+          definition: "Multiple events combined indicate attack"
+          examples:
+            - "Failed login followed by successful login from different IP"
+            - "Port scan followed by exploitation attempt"
+            - "Privilege escalation followed by lateral movement"
+          advantages: "Higher fidelity than single-event detection"
+          disadvantages: "Complex to build, performance intensive"
+          use_case: "Multi-stage attacks, kill chain detection"
+          
+    rule_testing_framework:
+      
+      unit_testing:
+        purpose: "Validate rule logic produces expected results"
+        method:
+          - "Create test event matching detection criteria"
+          - "Verify rule triggers alert"
+          - "Create test event not matching criteria"
+          - "Verify rule does not trigger"
+        automation: "Include unit tests in CI/CD pipeline"
+        
+      historical_data_testing:
+        purpose: "Measure false positive rate against real logs"
+        method:
+          - "Run rule against 30-90 days historical data"
+          - "Review all alerts generated"
+          - "Calculate true positive rate"
+          - "Tune rule if FP rate >30%"
+        dataset_size: "Minimum 10,000 events to get meaningful FP estimate"
+        
+      red_team_validation:
+        purpose: "Verify rule detects actual attack"
+        method:
+          - "Red team performs technique rule designed to detect"
+          - "Validate alert fires within expected timeframe"
+          - "Confirm alert contains sufficient context for response"
+        frequency: "Quarterly validation of critical detections"
+        
+    rule_documentation:
+      
+      required_elements:
+        rule_metadata:
+          - "Unique rule ID"
+          - "Rule name (descriptive)"
+          - "MITRE ATT&CK technique mapping"
+          - "Severity level"
+          - "Author and creation date"
+        detection_logic:
+          - "Plain language description of what rule detects"
+          - "SIEM query or Sigma rule"
+          - "Data sources required"
+          - "Expected alert frequency"
+        investigation_guidance:
+          - "What to check when alert fires"
+          - "True positive indicators"
+          - "False positive indicators"
+          - "Escalation criteria"
+        tuning_history:
+          - "Changes made to rule over time"
+          - "Rationale for each change"
+          - "Performance metrics (TP rate, FP rate)"
+          
+      sigma_rule_format:
+        description: "Vendor-agnostic detection rule format"
+        benefits:
+          - "Portable across SIEM platforms"
+          - "Community sharing and collaboration"
+          - "Version control friendly (YAML)"
+        example_structure:
+          title: "Mimikatz LSASS Memory Access"
+          id: "unique-uuid"
+          status: "stable"
+          description: "Detects process accessing LSASS memory"
+          references: ["https://attack.mitre.org/techniques/T1003/001/"]
+          author: "Detection Engineering Team"
+          date: "2025-01-15"
+          logsource:
+            product: "windows"
+            service: "security"
+          detection:
+            selection:
+              EventID: 4656
+              ObjectName: "\\Device\\HarddiskVolume*\\Windows\\System32\\lsass.exe"
+              AccessMask: "0x1010"
+            condition: "selection"
+          falsepositives:
+            - "Security software"
+            - "Backup solutions"
+          level: "high"
+          
+  behavioral_analytics:
+    
+    audience: "Level 3+ organizations with mature detection programs"
+    
+    overview: |
+      Behavioral analytics detect anomalous activity based on deviations from 
+      established baselines. This section addresses user and entity behavior 
+      analytics (UEBA), statistical anomaly detection, and machine learning 
+      applications in detection engineering.
+      
+    ueba_fundamentals:
+      
+      purpose: "Detect threats that evade signature-based detection"
+      
+      what_ueba_detects:
+        insider_threats: "Legitimate user acting maliciously"
+        compromised_accounts: "Valid credentials used by attacker"
+        privilege_abuse: "Authorized user exceeding normal behavior"
+        novel_attacks: "Zero-day exploits with no known signatures"
+        
+      ueba_data_sources:
+        authentication: "Login patterns, locations, times"
+        data_access: "Files, databases, applications accessed"
+        network_activity: "Internal and external connections"
+        privileged_actions: "Administrative commands, configuration changes"
+        
+      baseline_establishment:
+        
+        baselining_period:
+          duration: "Minimum 30 days, ideally 90 days"
+          considerations:
+            - "Exclude holiday periods (atypical behavior)"
+            - "Exclude incident response periods"
+            - "Include seasonal variations if relevant"
+            
+        baseline_metrics:
+          per_user:
+            - "Typical login times (business hours vs after-hours)"
+            - "Typical login locations (office vs home vs travel)"
+            - "Systems typically accessed"
+            - "Volume of data accessed"
+            - "Peers and groups user interacts with"
+          per_asset:
+            - "Typical inbound/outbound connections"
+            - "Typical process executions"
+            - "Typical network traffic volume"
+            - "Typical administrative actions"
+            
+        baseline_storage:
+          - "Store statistical summary (mean, standard deviation, percentiles)"
+          - "Not raw events (storage cost prohibitive)"
+          - "Update baselines continuously (rolling window)"
+          
+      anomaly_detection_methods:
+        
+        statistical_thresholds:
+          method: "Flag activity exceeding normal distribution"
+          formula: "Anomaly if value > mean + (3 × standard deviation)"
+          example: "User normally accesses 10 files/day, today accessed 500 files"
+          tuning: "Adjust multiplier (2σ, 3σ, 4σ) based on acceptable false positive rate"
+          
+        peer_group_comparison:
+          method: "Compare user behavior to similar users"
+          example: "Sales representative accessing engineering systems (peers do not)"
+          implementation:
+            - "Group users by role, department, access patterns"
+            - "Flag behavior atypical for peer group even if within user's historical range"
+          
+        time_series_analysis:
+          method: "Detect changes in behavior over time"
+          techniques:
+            - "Sudden spikes in activity volume"
+            - "Gradual drift from baseline (slow insider threat)"
+            - "Change in access patterns (new systems accessed)"
+          
+        impossible_scenarios:
+          method: "Logic-based detection of physically impossible activity"
+          examples:
+            - "Login from two countries <4 hours apart (impossible travel)"
+            - "Account active while user on vacation"
+            - "Service account login from user workstation (incorrect usage)"
+            
+    machine_learning_in_detection:
+      
+      when_to_use_ml:
+        appropriate_use_cases:
+          - "High-volume data requiring pattern analysis beyond human capability"
+          - "Behaviors too complex for rule-based detection"
+          - "Need to detect novel attacks with no prior examples"
+        inappropriate_use_cases:
+          - "Known attack patterns (use rules instead - simpler and more reliable)"
+          - "Low-volume data (insufficient training examples)"
+          - "Compliance requirements demanding explainability (ML is black box)"
+          
+      ml_model_types:
+        
+        supervised_learning:
+          definition: "Train model on labeled examples (malicious vs benign)"
+          use_case: "Classify known malware, phishing emails"
+          requirements:
+            - "Large labeled dataset (thousands of examples)"
+            - "Balance of positive and negative examples"
+          algorithms: "Random Forest, Gradient Boosting, Neural Networks"
+          challenge: "Labeling data is time-intensive"
+          
+        unsupervised_learning:
+          definition: "Model identifies patterns without labeled examples"
+          use_case: "Anomaly detection, clustering similar behaviors"
+          algorithms:
+            isolation_forest: "Identifies outliers in high-dimensional data"
+            k_means_clustering: "Groups similar entities, flags outliers"
+            autoencoders: "Neural networks detecting reconstruction errors"
+          advantage: "No labeling required"
+          challenge: "High false positive rate, requires tuning"
+          
+        semi_supervised_learning:
+          definition: "Small labeled dataset + large unlabeled dataset"
+          use_case: "Limited labeled examples available"
+          advantage: "Balance between supervised accuracy and unsupervised scalability"
+          
+      ml_deployment_considerations:
+        
+        model_training_pipeline:
+          - "Feature engineering (transform raw logs to ML features)"
+          - "Training dataset preparation (labeled examples)"
+          - "Model training and hyperparameter tuning"
+          - "Validation on hold-out dataset"
+          - "A/B testing (compare to baseline detection)"
+          
+        model_drift:
+          problem: "Model accuracy degrades as environment changes"
+          causes:
+            - "New applications deployed (new normal behavior)"
+            - "Organizational changes (new business processes)"
+            - "Attacker adaptation (evasion techniques)"
+          mitigation:
+            - "Monitor model performance metrics over time"
+            - "Retrain periodically (quarterly recommended)"
+            - "Human review of model predictions for quality assurance"
+            
+        explainability:
+          challenge: "ML models are black boxes - difficult to explain why alert fired"
+          importance: "Analysts need to understand alert to investigate effectively"
+          techniques:
+            shap_values: "Explain feature contribution to prediction"
+            lime: "Local interpretable model-agnostic explanations"
+            decision_trees: "Inherently explainable (follow branches)"
+          recommendation: "Prefer interpretable models over complex neural networks for security"
+          
+  false_positive_reduction:
+    
+    audience: "Level 2+ organizations optimizing detection quality"
+    
+    overview: |
+      False positives erode detection program effectiveness and analyst morale. 
+      Systematic false positive reduction improves signal-to-noise ratio and 
+      enables sustainable security operations. This section addresses measurement, 
+      analysis, and reduction strategies.
+      
+    measuring_false_positives:
+      
+      key_metrics:
+        
+        true_positive_rate:
+          formula: "TP Rate = True Positives / (True Positives + False Negatives)"
+          target: ">60% for mature detection programs"
+          meaning: "Percentage of real threats detected"
+          
+        false_positive_rate:
+          formula: "FP Rate = False Positives / (False Positives + True Negatives)"
+          target: "<10% for mature detection programs"
+          meaning: "Percentage of benign activity incorrectly flagged"
+          
+        precision:
+          formula: "Precision = True Positives / (True Positives + False Positives)"
+          target: ">70% for production rules"
+          meaning: "When alert fires, probability it's real threat"
+          
+        alert_volume_per_analyst:
+          formula: "Alerts Per Analyst Per Day"
+          target: "<50 actionable alerts per analyst per day"
+          meaning: "Sustainable workload for investigation"
+          
+      data_collection:
+        alert_disposition_tracking:
+          - "Analysts mark each alert: True Positive, False Positive, Not Investigated"
+          - "Capture disposition reason and investigation notes"
+          - "Aggregate by detection rule for tuning priorities"
+        automation: "Build disposition tracking into SIEM or SOAR platform"
+        
+    false_positive_analysis:
+      
+      root_cause_categories:
+        
+        overly_broad_logic:
+          symptom: "Rule triggers on legitimate activity similar to malicious"
+          example: "Failed login rule triggers on user typos, not just brute force"
+          solution: "Increase threshold, add context (multiple failures from same source)"
+          
+        insufficient_context:
+          symptom: "Rule cannot distinguish malicious from legitimate without additional information"
+          example: "Process execution flagged without considering user role or system type"
+          solution: "Enrich with asset criticality, user role, time of day"
+          
+        environmental_noise:
+          symptom: "Specific systems or applications generate expected noisy activity"
+          example: "Automated scripts trigger authentication alerts"
+          solution: "Whitelist known-good activity, suppress alerts for specific sources"
+          
+        outdated_baseline:
+          symptom: "Behavior now normal but was unusual when rule created"
+          example: "Remote work adoption changed login location patterns"
+          solution: "Update baseline, retrain behavioral models"
+          
+    tuning_strategies:
+      
+      whitelist_refinement:
+        approach: "Exclude known-good activity from detection"
+        methods:
+          process_whitelisting: "Suppress alerts for trusted executables (code-signed)"
+          user_whitelisting: "Exclude service accounts, automation users"
+          source_whitelisting: "Suppress alerts from test environments"
+        risk: "Whitelist too aggressive = miss attacks, too conservative = false positives persist"
+        
+      threshold_adjustment:
+        approach: "Increase detection thresholds to reduce noise"
+        examples:
+          - "Failed logins: 5 → 10 attempts"
+          - "Time window: 5 minutes → 10 minutes"
+          - "Data transfer: 100 MB → 500 MB"
+        method:
+          - "Analyze distribution of alert volumes (legitimate vs malicious)"
+          - "Identify threshold that separates populations"
+          - "Validate with historical incident data"
+        
+      context_addition:
+        approach: "Add situational context to detection logic"
+        context_types:
+          asset_criticality: "Alert on dev system = P3, production database = P1"
+          time_of_day: "After-hours activity warrants higher severity"
+          user_role: "Admin performing action = expected, regular user = suspicious"
+          geographic_location: "Login from employee home country = normal, hostile nation = alert"
+          
+      correlation_enhancement:
+        approach: "Require multiple indicators before alerting"
+        example:
+          single_event: "Failed login (noisy)"
+          correlated_event: "Failed login + successful login from different IP within 1 hour (higher fidelity)"
+        benefit: "Dramatically reduces false positives by requiring evidence of attack progression"
+        
+    rule_retirement:
+      
+      retirement_criteria:
+        - "True positive rate <10% after multiple tuning attempts"
+        - "No true positives in 90 consecutive days"
+        - "Technique no longer relevant to threat model"
+        - "Replaced by higher-fidelity detection"
+        
+      retirement_process:
+        disable_rule: "Turn off alerting but continue logging rule matches"
+        observation_period: "Monitor for 30 days to confirm no missed attacks"
+        documentation: "Document retirement rationale"
+        archive: "Move rule to archive repository with context"
+        coverage_update: "Update ATT&CK coverage matrix"
+        
+  coverage_assessment:
+    
+    audience: "Level 3+ organizations measuring program effectiveness"
+    
+    overview: |
+      Detection coverage assessment quantifies program capability and identifies 
+      gaps. Systematic coverage measurement enables data-driven investment 
+      decisions and demonstrates security posture to executive leadership.
+      
+    mitre_attack_coverage_mapping:
+      
+      mapping_methodology:
+        
+        step_1_rule_inventory:
+          action: "List all active detection rules"
+          data_to_collect:
+            - "Rule name and unique ID"
+            - "Detection logic summary"
+            - "Data sources used"
+            - "True positive rate"
+            
+        step_2_technique_tagging:
+          action: "Map each rule to MITRE ATT&CK technique(s)"
+          guidelines:
+            - "Tag all techniques rule could detect (primary and secondary)"
+            - "Use most specific technique (sub-technique when applicable)"
+            - "Multiple tags acceptable for multi-purpose rules"
+          tool_support: "MITRE ATT&CK Navigator for visualization"
+          
+        step_3_fidelity_rating:
+          action: "Rate detection fidelity for each technique"
+          rating_scale:
+            high: "TP rate >70%, production-ready"
+            medium: "TP rate 40-70%, acceptable with tuning"
+            low: "TP rate <40%, requires improvement or retirement"
+          aggregation: "If multiple rules cover technique, use highest fidelity"
+          
+        step_4_gap_identification:
+          action: "Identify techniques with no coverage"
+          prioritization:
+            - "Used by relevant adversary groups"
+            - "Observed in recent incidents"
+            - "Direct path to crown jewels"
+          output: "Prioritized list of coverage gaps"
+          
+      coverage_metrics:
+        
+        overall_coverage:
+          formula: "Coverage % = (Techniques with Detection / Total ATT&CK Techniques) × 100"
+          interpretation:
+            excellent: ">80% coverage"
+            good: "60-80% coverage"
+            developing: "40-60% coverage"
+            insufficient: "<40% coverage"
+            
+        tactic_coverage:
+          rationale: "Some tactics more critical than others"
+          high_priority_tactics:
+            - "Initial Access (how attackers get in)"
+            - "Execution (code execution on systems)"
+            - "Persistence (maintaining access)"
+            - "Credential Access (stealing credentials)"
+            - "Lateral Movement (spreading through network)"
+            - "Exfiltration (stealing data)"
+          goal: ">80% coverage for high-priority tactics, >60% overall"
+          
+        weighted_coverage:
+          rationale: "Not all techniques equally likely or impactful"
+          weighting_factors:
+            adversary_usage: "Techniques used by relevant threat groups (40%)"
+            business_impact: "Techniques enabling access to crown jewels (30%)"
+            detection_fidelity: "Quality of existing detection (20%)"
+            compliance_requirement: "Mandated by regulation or audit (10%)"
+          formula: "Weighted Coverage = Σ(Technique Weight × Detection Fidelity)"
+          
+    coverage_reporting:
+      
+      executive_dashboard:
+        monthly_metrics:
+          - "Overall ATT&CK coverage percentage and trend"
+          - "High-priority tactic coverage"
+          - "New detections deployed this month"
+          - "Detection program health (TP rate, alert volume)"
+        visualization:
+          - "ATT&CK heatmap showing coverage by technique"
+          - "Coverage trend over time (quarterly snapshots)"
+          - "Comparison to industry benchmarks"
+          
+      technical_report:
+        quarterly_deep_dive:
+          - "Detailed coverage matrix by technique"
+          - "Gap analysis with prioritized backlog"
+          - "Detection performance metrics (per rule)"
+          - "Tuning activities and outcomes"
+          - "Validation results (red team exercises)"
+          
+    continuous_improvement:
+      
+      quarterly_assessment_cycle:
+        q1: "Baseline coverage assessment, identify top 10 gaps"
+        q2: "Deploy detections for Q1 gaps, reassess coverage"
+        q3: "Mid-year deep dive, update threat model, red team validation"
+        q4: "Year-end assessment, benchmark against industry, plan next year"
+        
+      coverage_goal_setting:
+        year_1: "Achieve 40% baseline coverage"
+        year_2: "Achieve 60% coverage, 70% for high-priority tactics"
+        year_3: "Achieve 80% coverage, 85% for high-priority tactics"
+        year_4: "Maintain >80%, focus on fidelity improvement"
+        
+  threat_intelligence_integration:
+    
+    audience: "Level 2+ organizations enhancing detection with external intelligence"
+    
+    overview: |
+      Threat intelligence enhances detection by providing context on adversary 
+      behavior, tactics, and indicators. This section addresses intelligence 
+      source selection, integration methods, and operationalization for detection 
+      engineering.
+      
+    intelligence_source_types:
+      
+      strategic_intelligence:
+        definition: "High-level trends, adversary group profiles, campaign analysis"
+        use_case: "Informs detection strategy and priority setting"
+        sources:
+          - "Vendor threat reports (Mandiant, CrowdStrike, Recorded Future)"
+          - "Government bulletins (CISA, FBI, NSA)"
+          - "ISAC sharing (industry-specific)"
+        update_frequency: "Monthly to quarterly"
+        
+      tactical_intelligence:
+        definition: "TTPs, attack techniques, detection guidance"
+        use_case: "Informs detection rule development"
+        sources:
+          - "MITRE ATT&CK adversary profiles"
+          - "Vendor TTP reports"
+          - "Community research and blogs"
+        update_frequency: "Weekly to monthly"
+        
+      operational_intelligence:
+        definition: "Indicators of compromise (IPs, domains, file hashes)"
+        use_case: "Direct integration into detection rules"
+        sources:
+          - "Commercial feeds (AlienVault, ThreatConnect)"
+          - "Open source feeds (abuse.ch, Emerging Threats)"
+          - "Industry sharing (ISAC, Information Sharing and Analysis Organizations)"
+        update_frequency: "Real-time to daily"
+        
+    intelligence_integration_architecture:
+      
+      threat_intelligence_platform:
+        purpose: "Aggregate, normalize, and distribute intelligence feeds"
+        capabilities:
+          - "Ingest multiple feed formats"
+          - "Deduplicate and score indicators"
+          - "Enrich with context (geolocation, reputation)"
+          - "Distribute to SIEM, firewall, proxy, EDR"
+        platforms: "MISP, ThreatConnect, Anomali, ThreatQuotient"
+        
+      siem_integration:
+        methods:
+          lookup_enrichment: "Enrich alerts with threat intel at detection time"
+          watchlist_matching: "Alert when activity matches known-bad indicator"
+          risk_scoring: "Increase alert severity for activity involving threat intel hits"
+          
+      automated_blocking:
+        use_case: "High-confidence indicators (known C2 infrastructure)"
+        integration_points:
+          - "Firewall block rules"
+          - "DNS sinkhole"
+          - "Proxy blacklist"
+          - "EDR containment"
+        caution: "False positive in threat feed can cause outage - vet feeds carefully"
+        
+    intelligence_operationalization:
+      
+      indicator_lifecycle:
+        
+        ingestion:
+          - "Receive indicator from feed"
+          - "Validate format and required fields"
+          - "Assign confidence score based on source"
+          
+        enrichment:
+          - "Add geolocation data"
+          - "Check against historical logs (has this been seen before?)"
+          - "Correlate with other indicators"
+          
+        activation:
+          - "High confidence: Automated blocking"
+          - "Medium confidence: Alert on match"
+          - "Low confidence: Log match for analysis"
+          
+        aging:
+          - "Indicators expire based on type (IP: 30 days, domain: 90 days, file hash: 1 year)"
+          - "Remove expired indicators to maintain performance"
+          
+        feedback_loop:
+          - "Analysts mark indicators as true positive or false positive"
+          - "Adjust confidence scoring based on feedback"
+          - "Share false positives back to feed provider"
+          
+      feed_quality_management:
+        
+        evaluation_criteria:
+          relevance: "Feed covers threats relevant to organization"
+          accuracy: "Low false positive rate in production"
+          timeliness: "Indicators published quickly after threat discovery"
+          volume: "Manageable indicator volume for systems"
+          
+        continuous_assessment:
+          - "Track false positive rate per feed"
+          - "Measure detection success attributed to feed"
+          - "Review feed value quarterly"
+          - "Discontinue low-value feeds"
+          
+references:
+  mitre_attack: "https://attack.mitre.org"
+  sigma_rules: "https://github.com/SigmaHQ/sigma"
+  elastic_detection_rules: "https://github.com/elastic/detection-rules"
+  splunk_security_content: "https://github.com/splunk/security_content"
+  
+cross_references:
+  vault_repositories:
+    - repo: "vault-detection-response"
+      description: "Actual detection rules and SIEM queries"
+      relevance: "Implementation examples for this chapter"
+    - repo: "vault-security-analytics"
+      description: "Security analytics and threat intelligence"
+      relevance: "Advanced analytics techniques"
+    - repo: "vault-incident-response"
+      description: "Incident response playbooks"
+      relevance: "What happens after detection fires"
+    - repo: "vault-automation-scripts"
+      description: "Security automation and orchestration"
+      relevance: "Automated response to detections"
+      
+  manual_chapters:
+    - chapter: "3.1"
+      title: "IAM at Scale"
+      relevance: "Identity-based detection and monitoring"
+    - chapter: "4.1"
+      title: "Security Automation"
+      relevance: "Automating detection deployment and response"
+    - chapter: "4.3"
+      title: "Incident Response"
+      relevance: "Responding to detection alerts"
