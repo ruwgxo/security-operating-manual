@@ -1,6 +1,6 @@
 # Security Operating Manual
  
-Enterprise security architecture built from 13 years in the field.
+Enterprise security architecture built from work in the field since 2012.
  
 Five available chapters covering detection engineering, threat intelligence, IAM, automation, and incident response.
  
