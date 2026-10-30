@@ -1,0 +1,210 @@
+title: Investigation and Response
+id: response
+updated: '2026-10-31'
+standard: '1.1'
+version: 1.0.0
+status: review
+authors:
+- Raghav Dinesh
+language: en
+meta:
+  edition: Curated reference edition; original sources retained under chapters/
+body:
+- type: lead
+  text: >-
+    A useful response process preserves what is known, makes uncertainty visible and assigns authority
+    for actions that affect the business. The case is a starting point for that process.
+- type: heading
+  level: 2
+  text: Prepare authority before an incident
+  id: authority
+- type: prose
+  text: >-
+    Assign an incident commander, technical investigator, business owner and communications lead.
+    Small teams may combine roles, but the responsibilities must remain explicit. Define escalation
+    routes, backups, emergency access and a channel that remains available if the primary identity
+    system fails. Exercise these arrangements before they are needed.
+- type: prose
+  text: >-
+    NIST SP 800-61 Revision 3, published in April 2025, supersedes Revision 2 and places incident
+    response within CSF 2.0 cybersecurity risk management. This manual uses that current framing while
+    retaining practical investigation, containment, recovery and learning procedures. See [Incident
+    Response Recommendations](https://csrc.nist.gov/pubs/sp/800/61/r3/final).
+- type: fields
+  subject: Decision authority
+  entries:
+  - label: Investigator
+    value: >-
+      Collects evidence, tests hypotheses and recommends scope and action.
+  - label: Incident commander
+    value: >-
+      Coordinates the incident, records decisions and invokes the agreed escalation process.
+  - label: Business owner
+    value: >-
+      Explains service impact, dependencies and recovery priorities.
+  - label: Action approver
+    value: >-
+      Authorizes the specific containment action under the organization's policy.
+  - label: Communications lead
+    value: >-
+      Maintains consistent internal and external updates with the appropriate specialists.
+- type: heading
+  level: 2
+  text: Investigate the Northstar case
+  id: investigation
+- type: steps
+  items:
+  - title: Validate the signal
+    detail: >-
+      Confirm the telemetry contract and source health. Inspect the quarantined malformed event separately.
+      Verify the identity and asset context against authoritative systems in a real incident.
+  - title: Establish a timeline
+    detail: >-
+      Read the successful authentication at 10:00 UTC, restricted reads at 10:03 and 10:04, and receipt
+      times. Preserve both timestamps and note that the exercise is evaluated at 10:30 UTC.
+  - title: Test the benign explanation
+    detail: >-
+      Ask whether a new approved device or planned data export explains the activity. Confirm independently;
+      an attacker may control the suspect session.
+  - title: Expand scope
+    detail: >-
+      Inspect related sessions, credential changes, grants, accessed objects and other identities.
+      The fixture contains only a small event set, so it cannot establish absence of wider compromise.
+  - title: Assess business impact
+    detail: >-
+      Identify the restricted resource, amount read, affected process and operational consequence
+      of session revocation. Keep suspected exposure separate from confirmed loss.
+  - title: Record the decision
+    detail: >-
+      Write the hypothesis, evidence identifiers, unresolved questions, chosen action, approver and
+      review point. Preserve the rationale even if the initial suspicion is later dismissed.
+- type: heading
+  level: 2
+  text: Preserve evidence and its limits
+  id: evidence
+- type: prose
+  text: >-
+    Store original exports with collection time, source system, collector identity, access controls
+    and integrity digests. Keep a record of subsequent transformations and access. A digest detects
+    a difference from the version hashed; it does not establish that a log was truthful, that the
+    collector was authorized or that a chain of custody is complete. Legal or forensic requirements
+    need a separately designed evidence process.
+- type: prose
+  text: >-
+    The lab writes report.json with the event evidence and context, run-manifest.json with input and
+    report digests, and response-state.json with simulated actions. These files are editable local
+    artifacts and are not a tamper-evident evidence store. Preserve copies before experimenting if
+    you want to compare runs.
+- type: heading
+  level: 2
+  text: Choose containment from scope and consequence
+  id: containment
+- type: table
+  columns:
+  - Option
+  - Possible benefit
+  - Question before use
+  rows:
+  - - Revoke one session
+    - Limits a specific active access path
+    - Which tokens and application sessions remain valid?
+  - - Disable an identity
+    - Stops broader access through that identity
+    - Which services or emergency processes will fail?
+  - - Restrict a resource
+    - Protects a known data boundary
+    - Can the business continue and can investigators still collect evidence?
+  - - Observe briefly with safeguards
+    - May clarify scope before disruption
+    - Who accepts the risk and when must the decision be revisited?
+  caption: Containment choices for a suspected identity incident
+- type: prose
+  text: >-
+    The exercise simulates only session revocation. Approval is bound to the case fingerprint and
+    action, has an issue time and expiry, and names a synthetic reviewer. The response function also
+    checks the kill switch and protected-identity flag. These checks demonstrate policy concepts.
+    The reviewer string is not authentication, the approval is not signed and no independent approver
+    service exists.
+- type: callout
+  variant: note
+  title: Restore access through a new trust decision
+  text: >-
+    A revoked session is not restored by undoing a Boolean flag. Verify the user, remove the compromise
+    path and issue a new authorized session. Account recovery, credential replacement and resource
+    recovery may each need separate owners and validation.
+- type: heading
+  level: 2
+  text: Communicate what the evidence supports
+  id: communication
+- type: fields
+  subject: Example internal update
+  entries:
+  - label: Status
+    value: >-
+      Investigating one synthetic finance session following an unusual-device authentication and restricted
+      object reads.
+  - label: Known impact
+    value: >-
+      The fixture records 110,000,000 bytes of successful restricted reads. External exfiltration
+      is not established.
+  - label: Action
+    value: >-
+      Session revocation has been recommended; the lab can record an approved simulation only.
+  - label: Uncertainty
+    value: >-
+      Root cause, wider access and the legitimacy of the device are unresolved.
+  - label: Next update
+    value: >-
+      The incident commander sets a review time based on impact and the next evidence collection step.
+- type: prose
+  text: >-
+    Set update frequency according to impact and decision needs, not a universal hourly rule. Keep
+    an agreed record of what was communicated, to whom and when. External notifications require jurisdiction-,
+    sector- and contract-specific assessment with the appropriate specialists; this manual does not
+    provide a universal notification clock.
+- type: heading
+  level: 2
+  text: Recovery and learning
+  id: recovery
+- type: steps
+  items:
+  - title: Confirm containment
+    detail: >-
+      Verify that the selected access path is actually closed. A successful API response may only
+      mean the request was accepted.
+  - title: Remove the cause
+    detail: >-
+      Address the credential, session, device, application or permission weakness supported by the
+      investigation. Do not assume a password reset addresses every token or persistence path.
+  - title: Restore deliberately
+    detail: >-
+      Bring access and services back with owner approval and observation. Confirm business functionality
+      and define which evidence would trigger renewed containment.
+  - title: Review the incident
+    detail: >-
+      Compare the initial hypothesis with the final assessment. Identify collection, decision and
+      communication failures without using the review to assign blame.
+  - title: Track improvements
+    detail: >-
+      Give each action an owner, expected evidence, due date and verification procedure. Close it
+      when the change has been tested, not when a ticket is created.
+- type: heading
+  level: 2
+  text: Exercise the operating process
+  id: exercise
+- type: prose
+  text: >-
+    Use the lab as a tabletop as well as a code demonstration. Pause before approval and ask who owns
+    the session, who can authorize the action and how to reach the user through an independent channel.
+    Inject an unavailable identity provider, a protected workload identity or contradictory intelligence.
+    Record the decisions that the code cannot make.
+- type: prose
+  text: >-
+    Measure time to an informed decision, evidence completeness, action verification and closure of
+    improvement items. Distinguish occurrence time, collection time, detection time, analyst start
+    and containment verification. Reporting a single mean can conceal long delays or missing observations;
+    show distributions and unresolved cases when the data permits.
+- type: prose
+  text: >-
+    The [Automation chapter](automation#response) turns this procedure into a controlled execution
+    boundary. The incident commander remains responsible for the decision that precedes any real action.

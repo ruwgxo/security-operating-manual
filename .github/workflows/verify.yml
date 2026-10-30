@@ -1,0 +1,45 @@
+name: Verify manual and reference workflow
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install publication dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          sudo apt-get update
+          sudo apt-get install -y fonts-dejavu-core
+      - name: Test workflow and publication validation
+        run: python -m unittest discover -s tests -v
+      - name: Rebuild readable editions
+        run: python tools/publication.py --pdf
+      - name: Run example and verify replay
+        run: |
+          python -m lab --simulate-approved
+          python -m lab --simulate-approved
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('build/lab/report.json').read_text())
+          manifest = json.loads(Path('build/lab/run-manifest.json').read_text())
+          assert len(report['alerts']) == 1
+          assert manifest['responses'][0]['outcome'] == 'already simulated'
+          assert json.loads(Path('docs/build-report.json').read_text())['warnings'] == []
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manual-and-exercise-evidence
+          path: |
+            docs/manual.html
+            docs/security-operating-manual.pdf
+            docs/build-report.json
+            build/lab/

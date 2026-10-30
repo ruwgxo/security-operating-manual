@@ -1,0 +1,15 @@
+{
+  "validation_date": "2026-10-31",
+  "python": "3.12",
+  "tests_passed": 29,
+  "publication_documents": 7,
+  "reader_blocks": 149,
+  "pdf_pages": 23,
+  "build_warnings": 0,
+  "scenario_alerts": 1,
+  "scenario_quarantines": 1,
+  "scenario_duplicates": 1,
+  "restricted_bytes": 110000000,
+  "replay_outcome": "already simulated",
+  "limitations": "Local verification only; hosted CI status must be checked separately."
+}

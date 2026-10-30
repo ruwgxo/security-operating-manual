@@ -1,0 +1,11 @@
+{
+  "scenario_sha256": "0d33e7a869c343716f8e977487cbafac21e68d37f7f8653b294709f6698716b4",
+  "policy_sha256": "5aa2050ad651e9c15deab551f5d98c346fbd536f5f99028f145382c3bec377b8",
+  "report_sha256": "fbd3eaee334dc613966f0148b40827150d36be1675691c64ca139f22afdc2516",
+  "responses": [
+    {
+      "case_id": "case-286ee924d03b51bb",
+      "outcome": "already simulated"
+    }
+  ]
+}

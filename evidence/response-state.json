@@ -1,0 +1,14 @@
+{
+  "actions": {
+    "9aa5fcee55ad096d9dc83c10c9301e76f59ee77be0de21b78b352cd6625b18ce": {
+      "action": "revoke_session",
+      "case_fingerprint": "286ee924d03b51bb9c5617ccaf48e46c92543e608ecde81fc167530509cb9613",
+      "identity_id": "analyst-01",
+      "recovery": "Issue a new verified session; revocation is not reversible.",
+      "result": "simulated_only",
+      "reviewer": "synthetic-incident-commander",
+      "session_id": "session-suspect",
+      "simulated_at": "2026-10-01T10:30:00Z"
+    }
+  }
+}

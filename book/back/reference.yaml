@@ -1,0 +1,149 @@
+title: Reference Architecture and Exercise Contract
+id: reference
+updated: '2026-10-31'
+standard: '1.1'
+version: 1.0.0
+status: review
+authors:
+- Raghav Dinesh
+language: en
+meta:
+  edition: Curated reference edition; original sources retained under chapters/
+body:
+- type: lead
+  text: >-
+    The architecture is a local reference workflow with explicit handoffs. Every component described
+    as implemented is present in the repository; production extensions are identified separately.
+- type: figure
+  src: ../../docs/architecture.svg
+  sources:
+    svg: ../../docs/architecture.svg
+    png: ../../docs/architecture.png
+  alt: Synthetic inputs pass through validation and correlation to an evidence-linked case, then a
+    synthetic approval and a local response simulation. No external action is performed.
+  caption: Reference workflow and its offline execution boundary.
+- type: heading
+  level: 2
+  text: Components and boundaries
+  id: architecture
+- type: table
+  columns:
+  - Component
+  - Implemented responsibility
+  - Boundary
+  rows:
+  - - Scenario fixture
+    - Synthetic identities, assets, intelligence and events
+    - Assumed source input; no discovery or producer authentication
+  - - Normalizer
+    - Schema checks, time checks and event deduplication
+    - In-memory batch; rejected records remain visible
+  - - Correlation engine
+    - Same-session restricted-read rule
+    - One rule; no SIEM or behavioral model
+  - - Case assembler
+    - Evidence, context, provenance and fingerprint
+    - Editable local evidence; no chain-of-custody service
+  - - Approval simulation
+    - Case-bound, time-bounded exercise decision
+    - No authentication, signatures or independent approver
+  - - Response simulator
+    - Guard checks and idempotent local action record
+    - No external side effects; single-process ledger
+  caption: Implemented components
+- type: heading
+  level: 2
+  text: Data contracts
+  id: data-contracts
+- type: fields
+  subject: Events
+  entries:
+  - label: Common
+    value: >-
+      event_id, identity_id, session_id, kind, source, source_ip, occurred_at, received_at and outcome.
+  - label: Authentication
+    value: >-
+      kind authentication, source identity-provider, outcome success or failure and a Boolean unusual_device.
+  - label: Object read
+    value: >-
+      kind object_read, source object-store, known asset_id, outcome success or failure and nonnegative
+      integer bytes.
+  - label: Time
+    value: >-
+      Timezone-aware ISO 8601. The fixture requires occurred_at <= received_at <= as_of.
+  - label: Duplicates
+    value: >-
+      Identical records with the same event ID count once. Conflicting records sharing an ID are quarantined.
+- type: fields
+  subject: Policy
+  entries:
+  - label: Rule
+    value: >-
+      rule_id and version are nonempty strings.
+  - label: Window
+    value: >-
+      window_seconds is a positive integer; the upper correlation boundary is inclusive.
+  - label: Volume
+    value: >-
+      minimum_bytes is a positive integer. Only successful restricted reads in the matching session
+      count.
+  - label: Control
+    value: >-
+      kill_switch is Boolean and blocks simulated response when true.
+- type: heading
+  level: 2
+  text: Expected exercise result
+  id: expected-result
+- type: prose
+  text: >-
+    The default fixture yields one case for analyst-01 in session-suspect, with 110,000,000 bytes
+    from read-01 and read-02 after auth-suspect. It counts one duplicate and quarantines auth-malformed
+    because its occurrence time lacks a timezone. The public read and unrelated session do not contribute.
+    Missing-source reporting is empty because both required source kinds have accepted records.
+- type: prose
+  text: >-
+    The first approved simulation writes one action. A second run using the same output directory
+    records already simulated and leaves the existing action unchanged. An output directory reset
+    removes this local replay memory. This behavior is a fixture-level idempotency demonstration,
+    not a guarantee across independent installations.
+- type: heading
+  level: 2
+  text: Production gaps and extension requirements
+  id: production-gaps
+- type: list
+  style: bullet
+  items:
+  - >-
+    Authenticated collectors and source integrity; immutable raw evidence with retention and access
+    controls.
+  - >-
+    Source-specific schema adapters, realistic clock-skew policy and measured delivery delays.
+  - >-
+    Durable incremental processing, late-event handling, concurrent transactional action state and
+    reconciliation.
+  - >-
+    Authenticated independent approval, business-owner routing and provider-specific containment verification.
+  - >-
+    Representative historical evaluation and analyst adjudication before any effectiveness claim.
+  - >-
+    Privacy, sharing, retention and notification decisions appropriate to the actual deployment.
+- type: heading
+  level: 2
+  text: Primary references
+  id: sources
+- type: list
+  style: bullet
+  items:
+  - >-
+    [NIST SP 800-207: Zero Trust Architecture](https://csrc.nist.gov/pubs/sp/800/207/final) - conceptual
+    resource and identity trust boundary.
+  - >-
+    [NIST SP 800-61 Revision 3](https://csrc.nist.gov/pubs/sp/800/61/r3/final) - current incident-response
+    risk-management framing.
+  - >-
+    [FIRST Traffic Light Protocol](https://www.first.org/tlp/) - sharing labels and usage guidance.
+- type: prose
+  text: >-
+    References were checked on 2026-10-31. They support the named framework descriptions, not the
+    lab's arbitrary threshold, performance claims or organizational compliance. No vendor pricing
+    or production effectiveness claim is made in this edition.

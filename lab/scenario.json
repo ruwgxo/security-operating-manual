@@ -1,0 +1,154 @@
+{
+  "scenario_id": "northstar-session-compromise",
+  "as_of": "2026-10-01T10:30:00Z",
+  "identities": {
+    "analyst-01": {
+      "owner": "Synthetic Finance Team",
+      "role": "finance-reader",
+      "protected": false
+    },
+    "backup-01": {
+      "owner": "Synthetic Platform Team",
+      "role": "backup",
+      "protected": true
+    }
+  },
+  "assets": {
+    "ledger-export": {
+      "owner": "Synthetic Finance Team",
+      "classification": "restricted"
+    },
+    "public-guide": {
+      "owner": "Synthetic Documentation Team",
+      "classification": "public"
+    }
+  },
+  "intelligence": [
+    {
+      "id": "synthetic-ip-01",
+      "kind": "ip",
+      "value": "203.0.113.44",
+      "confidence": "high",
+      "source": "synthetic-exercise-feed",
+      "valid_from": "2026-10-01T09:00:00Z",
+      "valid_until": "2026-10-01T12:00:00Z",
+      "tlp": "TLP:CLEAR"
+    }
+  ],
+  "events": [
+    {
+      "event_id": "auth-benign",
+      "kind": "authentication",
+      "occurred_at": "2026-10-01T09:55:00Z",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-benign",
+      "source_ip": "192.0.2.10",
+      "source": "identity-provider",
+      "outcome": "success",
+      "unusual_device": false
+    },
+    {
+      "event_id": "read-benign",
+      "kind": "object_read",
+      "occurred_at": "2026-10-01T09:57:00Z",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-benign",
+      "source_ip": "192.0.2.10",
+      "source": "object-store",
+      "outcome": "success",
+      "asset_id": "ledger-export",
+      "bytes": 150000000
+    },
+    {
+      "event_id": "auth-suspect",
+      "kind": "authentication",
+      "occurred_at": "2026-10-01T10:00:00Z",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-suspect",
+      "source_ip": "203.0.113.44",
+      "source": "identity-provider",
+      "outcome": "success",
+      "unusual_device": true
+    },
+    {
+      "event_id": "read-01",
+      "kind": "object_read",
+      "occurred_at": "2026-10-01T10:03:00Z",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-suspect",
+      "source_ip": "203.0.113.44",
+      "source": "object-store",
+      "outcome": "success",
+      "asset_id": "ledger-export",
+      "bytes": 60000000
+    },
+    {
+      "event_id": "read-02",
+      "kind": "object_read",
+      "occurred_at": "2026-10-01T10:04:00Z",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-suspect",
+      "source_ip": "203.0.113.44",
+      "source": "object-store",
+      "outcome": "success",
+      "asset_id": "ledger-export",
+      "bytes": 50000000
+    },
+    {
+      "event_id": "read-public",
+      "kind": "object_read",
+      "occurred_at": "2026-10-01T10:05:00Z",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-suspect",
+      "source_ip": "203.0.113.44",
+      "source": "object-store",
+      "outcome": "success",
+      "asset_id": "public-guide",
+      "bytes": 900000000
+    },
+    {
+      "event_id": "read-other-session",
+      "kind": "object_read",
+      "occurred_at": "2026-10-01T10:06:00Z",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-unrelated",
+      "source_ip": "203.0.113.44",
+      "source": "object-store",
+      "outcome": "success",
+      "asset_id": "ledger-export",
+      "bytes": 500000000
+    },
+    {
+      "event_id": "auth-malformed",
+      "kind": "authentication",
+      "occurred_at": "2026-10-01T10:07:00",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-suspect",
+      "source_ip": "203.0.113.44",
+      "source": "identity-provider",
+      "outcome": "success",
+      "unusual_device": true
+    },
+    {
+      "event_id": "read-01",
+      "kind": "object_read",
+      "occurred_at": "2026-10-01T10:03:00Z",
+      "received_at": "2026-10-01T10:20:00Z",
+      "identity_id": "analyst-01",
+      "session_id": "session-suspect",
+      "source_ip": "203.0.113.44",
+      "source": "object-store",
+      "outcome": "success",
+      "asset_id": "ledger-export",
+      "bytes": 60000000
+    }
+  ]
+}

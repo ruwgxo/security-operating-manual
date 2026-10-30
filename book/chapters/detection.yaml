@@ -1,0 +1,218 @@
+title: Detection Engineering
+id: detection
+updated: '2026-10-31'
+standard: '1.1'
+version: 1.0.0
+status: review
+authors:
+- Raghav Dinesh
+language: en
+meta:
+  edition: Curated reference edition; original sources retained under chapters/
+body:
+- type: lead
+  text: >-
+    A detection is an executable hypothesis with evidence requirements, explicit failure behavior
+    and a person responsible for keeping it useful. Its most important interface is often the data
+    contract beneath it.
+- type: heading
+  level: 2
+  text: Specify the rule before tuning it
+  id: rule
+- type: fields
+  subject: 'SOM-DE-001: suspicious session with restricted reads'
+  entries:
+  - label: Hypothesis
+    value: >-
+      A successful unusual-device login from a currently valid, high-confidence exercise indicator
+      followed by sensitive reads in the same session deserves investigation.
+  - label: Required telemetry
+    value: >-
+      Authentication and object-read audit records with matching identity, session and source IP.
+      Both occurrence and receipt times must be timezone-aware.
+  - label: Correlation
+    value: >-
+      Successful restricted-object reads at or after authentication and within 900 seconds inclusive.
+      Aggregate only events for that identity, session and source address.
+  - label: Threshold
+    value: >-
+      At least 100,000,000 bytes of successful restricted reads. This is an exercise parameter, not
+      a recommended enterprise threshold.
+  - label: Output
+    value: >-
+      A high-priority case with event records, asset and identity context, intelligence provenance,
+      rule version and a reproducible fingerprint.
+  - label: Limit
+    value: >-
+      The rule detects a narrow conjunction of signals. It will miss compromise without these signals
+      and does not establish external exfiltration.
+- type: prose
+  text: >-
+    Write a benign explanation before shipping the rule. A legitimate analyst may use a new device
+    and download a large ledger. An address may be reassigned or shared. The conjunction justifies
+    investigation under the exercise policy; it does not justify declaring a breach. A useful case
+    keeps both the reason for concern and the alternative explanation visible.
+- type: heading
+  level: 2
+  text: Normalize without inventing evidence
+  id: normalization
+- type: prose
+  text: >-
+    The lab validates records before correlation. Malformed times, missing identifiers, invalid byte
+    counts, unknown identities and unknown assets are quarantined with reasons. Authentication records
+    must name the identity-provider source and reads must name object-store. These source strings
+    are fixture labels, not cryptographic authentication of a producer. A production ingestion boundary
+    would need authenticated collection and controls against forged records.
+- type: prose
+  text: >-
+    Exact duplicates are counted once. If two records share an event ID but differ in content, both
+    versions are excluded and reported. Choosing the first arrival would make results depend on ingestion
+    order and could allow corrupted evidence to win. The lab sorts accepted records by occurrence
+    time and event ID so fixture order does not change the case.
+- type: prose
+  text: >-
+    The source payload remains attached to the case. Identity, asset, indicator and policy context
+    are included in the case fingerprint, so a changed assessment does not silently reuse an approval
+    bound to earlier context. A digest helps identify changes; it does not prove source authenticity,
+    trusted collection or legal chain of custody.
+- type: heading
+  level: 2
+  text: Choose a data architecture from workload
+  id: architecture
+- type: table
+  columns:
+  - Pattern
+  - Useful property
+  - Operating cost or risk
+  rows:
+  - - Single local batch
+    - Easy to reproduce and inspect
+    - No continuous ingestion, scheduling or concurrency
+  - - Central search platform
+    - Shared investigation and correlation
+    - Ingestion cost, retention planning and query contention
+  - - Stream plus durable store
+    - Continuous decisions and replayable evidence
+    - Watermarks, late data, idempotency and state recovery
+  - - Federated search
+    - Keeps some data within source boundaries
+    - Uneven schemas, availability and query semantics
+  caption: Architecture choices beyond the local exercise
+- type: prose
+  text: >-
+    Choose retention by investigation needs, legal obligations, privacy and storage cost. Keep search
+    access and evidence retention as distinct requirements. Tiering can reduce cost, but an archive
+    that cannot be retrieved within the incident decision window may not satisfy the operational need.
+    Benchmark representative queries and failure conditions rather than relying on vendor list prices
+    or broad event-volume claims.
+- type: prose
+  text: >-
+    For continuous correlation, specify how late events reopen or update a case, when a window is
+    final, how replay avoids duplicate actions and how state survives failure. The batch lab does
+    not implement watermarks, streaming state or durable delivery. Its fixed as_of clock is an explicit
+    simplification that makes tests repeatable.
+- type: heading
+  level: 2
+  text: Test evidence boundaries
+  id: testing
+- type: steps
+  items:
+  - title: Positive behavior
+    detail: >-
+      Confirm the expected session produces one case with auth-suspect, read-01 and read-02 as evidence.
+      Verify the restricted total is 110,000,000 bytes.
+  - title: Benign controls
+    detail: >-
+      Confirm the legitimate session, public-object read and unrelated session do not contribute to
+      that total.
+  - title: Time and volume boundaries
+    detail: >-
+      Test exactly the threshold, one byte below it, exactly 900 seconds and one second outside the
+      window. Test both occurrence and receipt constraints.
+  - title: Data failures
+    detail: >-
+      Test conflicting duplicates, missing sources, wrong source kinds, unknown identities and malformed
+      records. Inspect the quality report, not only alert count.
+  - title: Intelligence behavior
+    detail: >-
+      Test expiry, low confidence, absent provenance and a validity interval starting after authentication.
+  - title: Operational review
+    detail: >-
+      Before any real deployment, replay approved historical samples, review privacy and query cost,
+      and run shadow evaluation with analyst feedback.
+- type: code
+  lang: shell
+  text: |
+    python -m unittest discover -s tests -v
+    python -m lab --simulate-approved --output build/review
+  alt: Run meaningful boundary tests and inspect a fresh exercise run.
+  caption: Run meaningful boundary tests and inspect a fresh exercise run.
+- type: heading
+  level: 2
+  text: Use metrics with correct denominators
+  id: metrics
+- type: table
+  columns:
+  - Metric
+  - Definition
+  - Interpretation limit
+  rows:
+  - - Precision
+    - True positives / (true positives + false positives)
+    - Requires adjudicated alerts and consistent labels
+  - - Recall / true positive rate
+    - True positives / (true positives + false negatives)
+    - Unknown missed attacks make production recall hard to estimate
+  - - False positive rate
+    - False positives / (false positives + true negatives)
+    - Depends on the evaluation population
+  - - Data-quality rejection rate
+    - Rejected input records / all input records
+    - Can rise because the source changed, not because attackers increased
+  - - Decision latency
+    - Decision time minus the chosen reference event time
+    - State whether it includes delivery delay and analyst work
+  caption: Metrics that should not be used interchangeably
+- type: prose
+  text: >-
+    The original draft called an alert-quality target a true positive rate. In that context precision
+    is the relevant measure. This edition makes the denominator explicit. Do not claim production
+    precision or recall from this tiny synthetic fixture. The tests establish specified behavior for
+    known cases; they do not sample a real operating environment.
+- type: heading
+  level: 2
+  text: Tune and retire responsibly
+  id: tuning
+- type: prose
+  text: >-
+    Investigate the cause of noise before increasing a threshold. Duplicated logs, stale identity
+    context, a known batch workload and an incorrect time field need different fixes. A permanent
+    allowlist can conceal future abuse. Give exceptions an owner, reason, scope, expiry and tests
+    that show which behavior is deliberately excluded.
+- type: prose
+  text: >-
+    Version each rule with its data requirements, owner, test fixtures, expected output, tuning history
+    and rollback procedure. Deploy a new version in shadow mode when uncertainty is high. Retire a
+    rule when its purpose is superseded or its required telemetry is unavailable, while recording
+    the resulting visibility gap. Silence is not a success metric.
+- type: heading
+  level: 2
+  text: Coverage and behavioral analytics
+  id: coverage
+- type: prose
+  text: >-
+    Technique mappings are useful indexes into an evaluation plan. They do not show that all implementations
+    of a behavior are detected. Record the exact procedure exercised, source prerequisites, environment
+    and test date. Add an owner and remediation plan for missing telemetry. A colored coverage matrix
+    without those details can imply more assurance than the evidence supports.
+- type: prose
+  text: >-
+    Behavioral baselines and learned models need representative observation windows, evaluation labels,
+    drift monitoring and explicit treatment of changing jobs or workloads. A fixed 30- or 90-day baseline
+    is not universally sufficient. This exercise uses a supplied unusual_device boolean; it does not
+    learn behavior, inspect device posture or implement an ML detector.
+- type: prose
+  text: >-
+    Hand the case and its limitations to the analyst. [Investigation and Response](response#investigation)
+    describes how to turn that case into a scoped decision without promoting the initial hypothesis
+    to a fact.

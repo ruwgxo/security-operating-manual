@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="1000" height="580" preserveAspectRatio="xMinYMin meet" viewBox="0 0 1000 580" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="1000" height="580"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-580)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="0" y="0" width="1000" height="580" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(94%,96%,96%); fill-rule: evenodd;"/>
+			<text x="34" y="542" style="font-family: Helvetica-Bold; font-size: 22px;fill: rgb(8%,23%,31%); stroke:none;" transform="translate(0,1084) scale(1,-1)">NORTHSTAR: EVIDENCE TO SIMULATED ACTION</text>
+			<rect x="35" y="340" width="270" height="140" rx="7" ry="7" style="stroke: rgb(54%,65%,69%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="50" y="453" style="font-family: Helvetica-Bold; font-size: 16px;fill: rgb(9%,38%,41%); stroke:none;" transform="translate(0,906) scale(1,-1)">Synthetic inputs</text>
+			<text x="50" y="428" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,856) scale(1,-1)">Identity and asset context</text>
+			<text x="50" y="408" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,816) scale(1,-1)">Timed intelligence</text>
+			<text x="50" y="388" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,776) scale(1,-1)">Authentication and read events</text>
+			<rect x="365" y="340" width="270" height="140" rx="7" ry="7" style="stroke: rgb(54%,65%,69%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="380" y="453" style="font-family: Helvetica-Bold; font-size: 16px;fill: rgb(9%,38%,41%); stroke:none;" transform="translate(0,906) scale(1,-1)">Normalize and correlate</text>
+			<text x="380" y="428" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,856) scale(1,-1)">Validate and deduplicate</text>
+			<text x="380" y="408" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,816) scale(1,-1)">Quarantine malformed records</text>
+			<text x="380" y="388" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,776) scale(1,-1)">Apply SOM-DE-001</text>
+			<rect x="695" y="340" width="270" height="140" rx="7" ry="7" style="stroke: rgb(54%,65%,69%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="710" y="453" style="font-family: Helvetica-Bold; font-size: 16px;fill: rgb(9%,38%,41%); stroke:none;" transform="translate(0,906) scale(1,-1)">Evidence-linked case</text>
+			<text x="710" y="428" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,856) scale(1,-1)">Events and context</text>
+			<text x="710" y="408" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,816) scale(1,-1)">Indicator provenance</text>
+			<text x="710" y="388" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,776) scale(1,-1)">Case fingerprint</text>
+			<path d="M 305,410 L 365,410 Z" style="stroke: rgb(9%,38%,41%); stroke-linecap: butt; stroke-width: 2;"/>
+			<polygon points="356 405, 365 410, 356 415" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,38%,41%); fill-rule: evenodd;"/>
+			<path d="M 635,410 L 695,410 Z" style="stroke: rgb(9%,38%,41%); stroke-linecap: butt; stroke-width: 2;"/>
+			<polygon points="686 405, 695 410, 686 415" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,38%,41%); fill-rule: evenodd;"/>
+			<rect x="365" y="100" width="270" height="155" rx="7" ry="7" style="stroke: rgb(54%,65%,69%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="380" y="228" style="font-family: Helvetica-Bold; font-size: 16px;fill: rgb(9%,38%,41%); stroke:none;" transform="translate(0,456) scale(1,-1)">Synthetic approval</text>
+			<text x="380" y="203" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,406) scale(1,-1)">Exact case and action</text>
+			<text x="380" y="183" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,366) scale(1,-1)">Reviewer label and validity</text>
+			<text x="380" y="163" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,326) scale(1,-1)">No authenticated approver</text>
+			<rect x="695" y="100" width="270" height="155" rx="7" ry="7" style="stroke: rgb(54%,65%,69%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="710" y="228" style="font-family: Helvetica-Bold; font-size: 16px;fill: rgb(9%,38%,41%); stroke:none;" transform="translate(0,456) scale(1,-1)">Response simulation</text>
+			<text x="710" y="203" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,406) scale(1,-1)">Kill switch and protected ID</text>
+			<text x="710" y="183" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,366) scale(1,-1)">Replay check in local state</text>
+			<text x="710" y="163" style="font-family: Helvetica; font-size: 13px;fill: rgb(14%,20%,25%); stroke:none;" transform="translate(0,326) scale(1,-1)">No external side effects</text>
+			<path d="M 830,340 L 830,285 Z" style="stroke: rgb(9%,38%,41%); stroke-linecap: butt; stroke-width: 2;"/>
+			<polygon points="825 294, 830 285, 835 294" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,38%,41%); fill-rule: evenodd;"/>
+			<path d="M 830,285 L 500,285 Z" style="stroke: rgb(9%,38%,41%); stroke-linecap: butt; stroke-width: 2;"/>
+			<path d="M 500,285 L 500,255 Z" style="stroke: rgb(9%,38%,41%); stroke-linecap: butt; stroke-width: 2;"/>
+			<polygon points="495 264, 500 255, 505 264" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,38%,41%); fill-rule: evenodd;"/>
+			<path d="M 635,178 L 695,178 Z" style="stroke: rgb(9%,38%,41%); stroke-linecap: butt; stroke-width: 2;"/>
+			<polygon points="686 173, 695 178, 686 183" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,38%,41%); fill-rule: evenodd;"/>
+			<text x="35" y="57" style="font-family: Helvetica-Bold; font-size: 14px;fill: rgb(8%,23%,31%); stroke:none;" transform="translate(0,114) scale(1,-1)">Boundary: offline, local, single process. All inputs are synthetic.</text>
+			<text x="35" y="32" style="font-family: Helvetica; font-size: 13px;fill: rgb(32%,40%,45%); stroke:none;" transform="translate(0,64) scale(1,-1)">A production system needs trusted collection, durable state, authenticated approval and provider verification.</text>
+		</g>
+	</g>
+</svg>

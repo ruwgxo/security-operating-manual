@@ -1,0 +1,7 @@
+{
+  "rule_id": "SOM-DE-001",
+  "version": "1.0.0",
+  "window_seconds": 900,
+  "minimum_bytes": 100000000,
+  "kill_switch": false
+}

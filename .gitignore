@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Local reference workflow and publication scratch output
+build/
+__pycache__/
+*.pyc
+.venv/

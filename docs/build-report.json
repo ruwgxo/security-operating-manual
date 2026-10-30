@@ -1,0 +1,9 @@
+{
+  "standard_version": "1.1.0",
+  "documents": 7,
+  "reader_blocks": 149,
+  "warnings": [],
+  "degraded_blocks": [],
+  "skipped_content": [],
+  "scope": "Explicit blocks used by this manual; not a full multi-target standard implementation."
+}

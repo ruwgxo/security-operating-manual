@@ -1,0 +1,207 @@
+title: Threat Intelligence and Prioritization
+id: intelligence
+updated: '2026-10-31'
+standard: '1.1'
+version: 1.0.0
+status: review
+authors:
+- Raghav Dinesh
+language: en
+meta:
+  edition: Curated reference edition; original sources retained under chapters/
+body:
+- type: lead
+  text: >-
+    Intelligence is useful when it changes a decision and the team can explain why. A feed entry should
+    carry provenance, validity and uncertainty through every downstream use.
+- type: heading
+  level: 2
+  text: Define the intelligence requirement
+  id: requirements
+- type: prose
+  text: >-
+    For Northstar, the requirement is narrow: should a successful unusual-device login receive higher
+    investigative priority when its source address appears in relevant intelligence? The indicator
+    is one part of a correlation, not an instruction to block traffic. The follow-on access to restricted
+    data supplies additional evidence. The exercise does not infer a named threat actor from an address.
+- type: prose
+  text: >-
+    A useful requirement names the consumer, the decision, the affected assets, the time horizon and
+    the action that might follow. Strategic intelligence can inform resource allocation; operational
+    intelligence can inform a campaign hypothesis; tactical information can support a particular investigation
+    or rule. Collect only what the team can validate and use within that requirement.
+- type: steps
+  items:
+  - title: Direct
+    detail: >-
+      Write the question and intended consumer. Define what evidence would change the priority or
+      action.
+  - title: Collect
+    detail: >-
+      Select sources that cover the relevant environment. Record original references, observation
+      dates and usage restrictions.
+  - title: Process
+    detail: >-
+      Normalize observable types, preserve provenance and deduplicate without destroying distinct
+      observations.
+  - title: Analyze
+    detail: >-
+      Separate observed facts from inference. Consider benign alternatives, contradictory reporting
+      and source dependence.
+  - title: Disseminate
+    detail: >-
+      Send a decision-focused product with confidence, expiry, restrictions and the recommended next
+      step.
+  - title: Evaluate
+    detail: >-
+      Ask the consumer whether it changed the decision. Record irrelevant or harmful matches and revise
+      the requirement.
+- type: heading
+  level: 2
+  text: Use a time-bounded indicator contract
+  id: contract
+- type: fields
+  subject: Indicator record
+  entries:
+  - label: Identity
+    value: >-
+      A stable indicator ID and typed value such as an IP address or domain.
+  - label: Provenance
+    value: >-
+      The original source and observation context. Several feeds repeating one report are not independent
+      corroboration.
+  - label: Validity
+    value: >-
+      An explicit valid_from and valid_until interval. Local policy must define how expiry is assigned
+      and reviewed.
+  - label: Assessment
+    value: >-
+      Confidence, relevance to the requirement and known benign uses or shared-infrastructure risks.
+  - label: Handling
+    value: >-
+      Sharing label and any additional restrictions that must survive export and enrichment.
+- type: prose
+  text: >-
+    The fixture uses 203.0.113.44 as an invented exercise indicator and labels its source synthetic-exercise-feed.
+    It is not live malicious infrastructure. The lab accepts only high-confidence IP indicators valid
+    both at the authentication event and at the fixed evaluation time. This deliberate conservative
+    policy makes expiry easy to inspect. A historical hunt may need a different policy that preserves
+    and evaluates the intelligence known at the time.
+- type: prose
+  text: >-
+    Exact IP comparison avoids the ambiguity of substring matching. Domain and URL indicators need
+    separate normalization rules: hostname case, internationalized names, subdomain boundaries, ports,
+    paths and query components have different semantics. Never lowercase an entire URL and assume
+    identity is preserved. This implementation handles IP indicators only.
+- type: heading
+  level: 2
+  text: Confidence is not priority
+  id: confidence
+- type: prose
+  text: >-
+    Confidence describes the strength of an assessment. Priority also depends on exposure, asset importance,
+    observed behavior and response cost. High confidence that an address has hosted malicious activity
+    does not prove every user of that address is malicious. Shared hosting, VPNs, reassignment and
+    stale reporting can all create misleading matches.
+- type: table
+  columns:
+  - Observation
+  - What it supports
+  - What remains unknown
+  rows:
+  - - Address matches valid intelligence
+    - A reason to enrich and investigate
+    - Whether this session is malicious
+  - - Login from an unusual device
+    - A deviation from supplied device context
+    - Whether a legitimate device changed
+  - - Restricted reads in the same session
+    - Sensitive access after authentication
+    - Whether data left the approved boundary
+  - - Several correlated observations
+    - Higher investigative priority
+    - Root cause and full incident scope
+  caption: Separate observations from conclusions
+- type: prose
+  text: >-
+    An analyst should be able to inspect each source rather than just a synthetic confidence score.
+    Avoid multiplication of arbitrary feed scores into a pseudo-probability. If a score is used for
+    ranking, document its purpose, inputs and calibration limits. Preserve the underlying facts so
+    a reviewer can disagree with the ranking.
+- type: heading
+  level: 2
+  text: Handling and dissemination
+  id: handling
+- type: prose
+  text: >-
+    FIRST TLP version 2.0 uses TLP:CLEAR, TLP:GREEN, TLP:AMBER and TLP:RED; TLP:AMBER+STRICT restricts
+    sharing to the recipient organization. Apply the source's handling instructions and consult the
+    full [FIRST TLP guidance](https://www.first.org/tlp/) before sharing. TLP is a sharing convention,
+    not a substitute for access control or encryption.
+- type: prose
+  text: >-
+    The public lab accepts TLP:CLEAR only and reports other labels as intelligence errors. This is
+    a narrow example policy, not a general implementation of TLP permissions. Real sharing requires
+    audience checks, minimization, redaction and an export path that preserves restrictions. Do not
+    publish raw customer telemetry alongside a sanitized indicator.
+- type: fields
+  subject: Decision-focused intelligence brief
+  entries:
+  - label: Requirement
+    value: >-
+      Explain which asset or decision the intelligence concerns.
+  - label: Evidence
+    value: >-
+      List the actual observations, original references and relevant time intervals.
+  - label: Assessment
+    value: >-
+      State the inference, confidence, competing explanation and what would change the assessment.
+  - label: Action
+    value: >-
+      Name the consumer, recommended next step, decision deadline and expiry or review date.
+- type: heading
+  level: 2
+  text: Turn intelligence into a testable hypothesis
+  id: hypothesis
+- type: prose
+  text: >-
+    The lab hypothesis is that an unusual successful login from a valid high-confidence indicator
+    followed by a large restricted-data read in the same session deserves a case. It is intentionally
+    more specific than matching every indicator against every log. The subsequent [Detection Engineering
+    chapter](detection#rule) specifies the window, threshold and evidence joins.
+- type: list
+  style: bullet
+  items:
+  - >-
+    Test an expired indicator: it should not contribute to the finding.
+  - >-
+    Test missing provenance: reject the indicator visibly.
+  - >-
+    Test a low-confidence match: record its policy treatment rather than silently upgrading it.
+  - >-
+    Test shared or benign activity: an indicator match alone should not trigger this rule.
+  - >-
+    Test the indicator at exact expiry: this lab uses a half-open interval, so valid_until itself
+    is expired.
+- type: heading
+  level: 2
+  text: Measure value and maintain the program
+  id: value
+- type: prose
+  text: >-
+    Measure requirement coverage, time from observation to usable analysis, analyst-confirmed relevance
+    and decisions changed. Track harmful or irrelevant matches alongside useful ones. Count outputs
+    as operational workload, not as proof of effectiveness. A million collected indicators can still
+    leave the highest-priority requirement unanswered.
+- type: prose
+  text: >-
+    Do not calculate realized savings by multiplying an average breach cost by every blocked address.
+    The counterfactual is unknown. Report measured handling time, integration costs, review effort
+    and documented decision examples. If estimating avoided loss, state the assumptions and uncertainty
+    separately from measured outcomes.
+- type: prose
+  text: >-
+    Start with a small set of requirements and sources, then add capacity when the team can demonstrate
+    operational use. Advanced attribution, machine learning and deception can be separate programs
+    with their own authority and validation. They are outside this example. A maintainable source
+    review should remove redundant feeds, expire obsolete assessments and revisit collection restrictions.

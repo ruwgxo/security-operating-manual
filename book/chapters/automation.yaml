@@ -1,0 +1,208 @@
+title: Automation and Continuous Improvement
+id: automation
+updated: '2026-10-31'
+standard: '1.1'
+version: 1.0.0
+status: review
+authors:
+- Raghav Dinesh
+language: en
+meta:
+  edition: Curated reference edition; original sources retained under chapters/
+body:
+- type: lead
+  text: >-
+    Automation should make a procedure more dependable and explainable. A fast action with stale context
+    or unclear authority can increase the cost of an incident.
+- type: heading
+  level: 2
+  text: Select work that has a stable decision boundary
+  id: selection
+- type: prose
+  text: >-
+    Begin with repetitive evidence retrieval, normalization and case preparation. Write the manual
+    procedure first, identify required inputs and define what a successful result looks like. If experienced
+    analysts disagree about the next step, preserve a review point rather than hiding the disagreement
+    inside a script.
+- type: table
+  columns:
+  - Task
+  - First automation step
+  - Boundary to preserve
+  rows:
+  - - Context lookup
+    - Retrieve source and collection time
+    - Missing context must remain visible
+  - - Case preparation
+    - Attach evidence and recommended questions
+    - A finding is not an incident verdict
+  - - Response recommendation
+    - Produce an action-specific proposal
+    - Authority and business impact need review
+  - - Containment
+    - Use a tested, narrowly scoped adapter
+    - Identity, approval, expiry and result verification
+  caption: Build automation around explicit decisions
+- type: prose
+  text: >-
+    Estimate value from observed task duration, frequency, maintenance and review cost. Separate hours
+    released from cash savings. A script that reduces handling time but increases analyst rework may
+    not improve the process. Avoid using a theoretical breach cost as measured automation return.
+- type: heading
+  level: 2
+  text: Make execution state explicit
+  id: state
+- type: prose
+  text: >-
+    The reference pipeline is a local batch: validate inputs, correlate evidence, assemble cases and
+    optionally simulate approved response. It has no scheduler, queue, network adapter or worker pool.
+    A real orchestrator needs durable delivery, bounded retries, timeouts, integration credentials,
+    rate-limit handling and a dead-letter or review route. Each of these changes the failure model.
+- type: fields
+  subject: Execution record
+  entries:
+  - label: Identity
+    value: >-
+      A stable case and action identifier, target scope and input version.
+  - label: Authority
+    value: >-
+      A verified approver or authorized policy decision, its lifetime and the exact action approved.
+  - label: Progress
+    value: >-
+      Requested, accepted, verified, failed or unknown outcome. Distinguish an accepted request from
+      a completed action.
+  - label: Recovery
+    value: >-
+      What can be retried, what needs a compensating action and what requires a new human decision.
+- type: heading
+  level: 2
+  text: Approval and the response boundary
+  id: response
+- type: prose
+  text: >-
+    The simulator receives a case, an approval, policy, local state and an explicit clock. It blocks
+    a global kill switch or protected identity, then checks the fingerprint, action, reviewer and
+    approval interval. A matching action already present in state is reported as already simulated.
+    Otherwise a new action record is returned without modifying the caller's state object.
+- type: prose
+  text: >-
+    The CLI generates a synthetic approval only when --simulate-approved is supplied. It binds the
+    approval to the case and evaluates it at the fixed fixture clock. Its reviewer name documents
+    an exercise role; it does not prove that a person approved anything. No function revokes real
+    access, sends a message or makes a network request.
+- type: list
+  style: bullet
+  items:
+  - >-
+    Idempotency is scoped to a case fingerprint and action. Changed evidence or context creates a
+    different case and needs a new decision.
+  - >-
+    The local JSON ledger is single-process state. It has no locking or atomic multi-file transaction
+    and is not suitable for concurrent workers.
+  - >-
+    The simulator demonstrates checks for its own case objects. It does not authenticate an untrusted
+    case payload or defend against a local file editor.
+  - >-
+    Real execution requires authenticated approvals, tamper-resistant state, trusted identity and
+    asset context, and provider-specific verification.
+- type: heading
+  level: 2
+  text: Retries, partial failure and recovery
+  id: failure
+- type: prose
+  text: >-
+    Classify failures before retrying. A temporary connection error may justify a bounded retry; an
+    invalid target or expired approval needs a new decision. Use backoff and a retry budget for real
+    integrations, and honor provider rate limits. Retry the same operation identifier rather than
+    creating a new side effect on every attempt.
+- type: prose
+  text: >-
+    A timeout after a request may leave the outcome unknown. Query the provider or reconcile the state
+    before retrying an irreversible operation. If the provider does not support idempotency, design
+    a deduplication and reconciliation boundary before enabling automatic action. A successful local
+    log write is not verification of a remote effect.
+- type: prose
+  text: >-
+    Rollback is appropriate for a reversible configuration deployment, but it is not a universal property
+    of response. Session revocation needs a new authorized session for recovery. Deleting data may
+    have no safe inverse. Document the recovery procedure and its business prerequisites for each
+    action.
+- type: heading
+  level: 2
+  text: Treat operational logic as reviewed code
+  id: code-review
+- type: steps
+  items:
+  - title: Propose
+    detail: >-
+      Describe the problem, intended behavior, required telemetry and expected operational impact.
+  - title: Test
+    detail: >-
+      Use positive, benign, boundary and failure fixtures. Verify expected evidence and state transitions,
+      not just whether a function returns.
+  - title: Review
+    detail: >-
+      Have a maintainer inspect the logic, data contract, response scope and documentation. A passing
+      test suite does not replace review.
+  - title: Stage
+    detail: >-
+      Use a shadow or recommendation-only deployment before side effects. Observe data quality and
+      analyst workload.
+  - title: Release
+    detail: >-
+      Record the deployed version and a recovery plan. Use least-privileged integration credentials
+      and keep secrets out of source.
+  - title: Observe
+    detail: >-
+      Monitor failures, unknown outcomes, stale sources and rejected approvals. Reconcile the action
+      ledger with actual provider state.
+- type: prose
+  text: >-
+    Infrastructure and policy definitions deserve the same review discipline. Static scanning can
+    identify some configuration problems, but a passing scan does not establish that runtime identity,
+    network paths and business permissions are correct. Verify the deployed state and test the behavior
+    that matters.
+- type: heading
+  level: 2
+  text: Build an improvement loop
+  id: improvement
+- type: fields
+  subject: Operating review
+  entries:
+  - label: Daily or on call
+    value: >-
+      Check ingestion health, quarantines, failed executions, unknown outcomes and decisions waiting
+      for owners.
+  - label: Periodic
+    value: >-
+      Review noise causes, exception expiry, source relevance, access reconciliation and response
+      exercise outcomes.
+  - label: After change
+    value: >-
+      Replay affected fixtures and confirm that documentation and action scopes still match the implementation.
+  - label: After incident
+    value: >-
+      Turn lessons into owned changes with evidence-based closure. Feed new behavior and failure cases
+      back into tests.
+- type: prose
+  text: >-
+    Set the cadence according to service criticality and change rate. Avoid treating a fixed calendar
+    as evidence that the control works. Good review records show what was examined, what was found
+    and how follow-up was verified. Keep operational workload metrics separate from security outcomes
+    so a growing automation count does not conceal a growing failure queue.
+- type: heading
+  level: 2
+  text: Extend only when the boundary is ready
+  id: extension
+- type: prose
+  text: >-
+    The next useful extension is a second scenario with a different benign explanation or missing
+    source, not a dashboard. A real provider adapter would be a separate project milestone requiring
+    an authenticated approval service, credential management, durable transactional state, provider
+    contract tests and a controlled deployment environment.
+- type: prose
+  text: >-
+    This edition is complete when the five chapters, architecture, fixture, tests and generated publication
+    agree. Further cloud integrations, machine learning and autonomous action belong to subsequent
+    versions with their own evidence. The current implementation is intentionally sufficient to inspect
+    the operating model from input through decision and simulated action.

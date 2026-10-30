@@ -1,0 +1,211 @@
+title: Security Context and Identity
+id: context-and-identity
+updated: '2026-10-31'
+standard: '1.1'
+version: 1.0.0
+status: review
+authors:
+- Raghav Dinesh
+language: en
+meta:
+  edition: Curated reference edition; original sources retained under chapters/
+body:
+- type: lead
+  text: >-
+    An alert about an account is incomplete until someone can explain whose account it is, what it
+    can reach, and what a response would interrupt. Build that context before automating decisions.
+- type: heading
+  level: 2
+  text: Start with the decision
+  id: decision
+- type: prose
+  text: >-
+    The reference decision is whether to investigate and potentially revoke one suspicious session.
+    That decision requires an identity owner, a session identifier, the accessed resource, its sensitivity,
+    and evidence of activity. The lab models these as stable identifiers instead of joining on display
+    names or email strings. Real estates need source identifiers and documented reconciliation because
+    names, aliases and ownership change.
+- type: fields
+  subject: Minimum ownership record
+  entries:
+  - label: Identity
+    value: >-
+      Stable source identity ID, identity type, accountable owner and lifecycle state.
+  - label: Access
+    value: >-
+      Approved role or grant, resource scope, purpose, approval reference and expiry where applicable.
+  - label: Resource
+    value: >-
+      Stable asset ID, business owner, classification, environment and dependencies.
+  - label: Evidence
+    value: >-
+      Authoritative source, collection time, last successful reconciliation and uncertainty or missing
+      fields.
+- type: prose
+  text: >-
+    A service account needs an accountable owner even when no person logs in with it. Include the
+    workload, credential issuer, privilege boundary and rotation or renewal mechanism. An unowned
+    credential should become a tracked exception with an expiry and remediation owner. Assigning a
+    generic team label is insufficient if nobody can approve changes or respond to an incident.
+- type: heading
+  level: 2
+  text: Choose access controls deliberately
+  id: access-controls
+- type: table
+  columns:
+  - Model
+  - Useful when
+  - Review carefully
+  rows:
+  - - Role-based access
+    - Job functions have stable permission sets
+    - Role proliferation and inherited permissions
+  - - Attribute-based access
+    - Resource and request context affect decisions
+    - Attribute freshness and policy explainability
+  - - Relationship-based access
+    - Sharing follows relationships between objects and people
+    - Graph changes, inheritance and revocation behavior
+  caption: Access models and their operating trade-offs
+- type: prose
+  text: >-
+    Authentication establishes evidence about a subject. Authorization decides whether that subject
+    may perform a particular action. Federation can reduce separate login systems, but it creates
+    a trust relationship that needs explicit issuer, audience, lifetime and deprovisioning behavior.
+    A successful login does not establish that every subsequent request is appropriate.
+- type: prose
+  text: >-
+    NIST SP 800-207 describes zero trust around resources, users and assets, and rejects implicit
+    trust based solely on network location or ownership. Use that framing to ask what each resource
+    request actually verifies. Network reachability, device ownership and a prior login are context;
+    none should silently grant unlimited authority. See [Zero Trust Architecture](https://csrc.nist.gov/pubs/sp/800/207/final).
+- type: heading
+  level: 2
+  text: Operate the identity lifecycle
+  id: lifecycle
+- type: steps
+  items:
+  - title: Join
+    detail: >-
+      Create access from an approved purpose. Record the role, resource scope, owner and start condition.
+      Confirm the authoritative person or workload identity before provisioning.
+  - title: Move
+    detail: >-
+      Recalculate required access after a role change. Remove obsolete grants instead of only adding
+      new ones. Ask resource owners to review exceptions that survive the move.
+  - title: Leave
+    detail: >-
+      Disable further authentication, address existing sessions and tokens, and reconcile downstream
+      resources. Test each integration; a directory change does not prove every application revoked
+      access.
+  - title: Reconcile
+    detail: >-
+      Compare intended access with observed accounts and grants. Queue orphaned identities, failed
+      provisioning and unexpected privilege changes for an accountable owner.
+  - title: Recover
+    detail: >-
+      Use a documented emergency-access process with protected credentials, explicit authorization,
+      monitoring and a post-use review. Test recovery without depending on the broken primary identity
+      system.
+- type: heading
+  level: 2
+  text: Session boundaries and protected identities
+  id: sessions
+- type: prose
+  text: >-
+    A targeted session action has a different blast radius from disabling an entire identity. The
+    lab binds a case to identity_id and session_id, then records a simulated revoke_session action.
+    It does not contact an identity provider. In a real integration, establish what revocation actually
+    invalidates, how quickly applications enforce it, and which refresh tokens or credentials remain
+    usable.
+- type: prose
+  text: >-
+    Revocation is not an operation that can simply be undone. Recovery usually means issuing a new
+    session after verifying the subject and removing the cause of compromise. The simulation records
+    that distinction instead of promising a reversible action. Protect emergency and critical workload
+    identities from routine automatic containment and route them to a separate decision process.
+- type: fields
+  subject: Northstar context
+  entries:
+  - label: Identity
+    value: >-
+      analyst-01 belongs to the Synthetic Finance Team and has the finance-reader role.
+  - label: Resource
+    value: >-
+      ledger-export is classified restricted. public-guide is classified public and is excluded from
+      the sensitive-read total.
+  - label: Protected identity
+    value: >-
+      backup-01 models a critical workload identity. The response simulator blocks it even with a
+      matching approval.
+  - label: Boundary
+    value: >-
+      The fixture context is assumed authoritative. The lab does not discover grants, perform access
+      reviews, enforce authorization or implement an identity provider.
+- type: heading
+  level: 2
+  text: Telemetry contracts and data quality
+  id: telemetry
+- type: prose
+  text: >-
+    Write the log contract with the team that owns the source. Required fields must have defined meanings:
+    actor identity, session, event kind, outcome, resource, source address, occurrence time and receipt
+    time. Preserve the original source event identifier. Document whether bytes means a successful
+    response payload, requested size, compressed transfer or a provider estimate; these are not interchangeable.
+- type: prose
+  text: >-
+    The lab requires timezone-aware timestamps and occurred_at <= received_at <= as_of. This is a
+    strict fixture rule, not a universal assumption about distributed clocks. A production pipeline
+    should measure clock skew and implement an explicit tolerance or quarantine policy. Do not silently
+    replace an invalid occurrence time with collection time, because that changes correlation semantics.
+- type: list
+  style: bullet
+  items:
+  - >-
+    Keep occurrence and receipt times separately so delayed delivery remains visible.
+  - >-
+    Track source health and freshness separately from alert volume. A source with one old event can
+    still be unhealthy.
+  - >-
+    Treat unknown identities and assets as data-quality failures. Do not silently assign them to a
+    generic owner.
+  - >-
+    Separate raw evidence from normalized fields and derived context. Record the transformation version.
+- type: heading
+  level: 2
+  text: Build the capability in stages
+  id: rollout
+- type: steps
+  items:
+  - title: Inventory
+    detail: >-
+      Start with one sensitive resource and its identities. Resolve ownership and record exceptions
+      before expanding.
+  - title: Reconcile
+    detail: >-
+      Compare intended grants with observed access. Test joiner, mover and leaver paths, including
+      failures.
+  - title: Observe
+    detail: >-
+      Confirm authentication and resource audit records can be connected through stable identifiers.
+      Measure missing-field and delivery-delay distributions.
+  - title: Exercise
+    detail: >-
+      Run a session-compromise tabletop. Identify who can approve containment and how a legitimate
+      user regains access.
+- type: prose
+  text: >-
+    Use evidence of capability instead of a single maturity score: can the team identify the owner,
+    explain the grant, retrieve the events, and revoke the relevant access? Report the proportion
+    of in-scope identities with verified ownership, overdue access reviews and failed revocation tests.
+    State the denominator and observation period; avoid arbitrary claims that every program must reach
+    the same percentage.
+- type: heading
+  level: 2
+  text: Handoff to intelligence and detection
+  id: handoff
+- type: prose
+  text: >-
+    Identity context supplies the business meaning that a network indicator lacks. The next chapter
+    explains how intelligence contributes a time-bounded hypothesis. [Threat Intelligence and Prioritization](intelligence#requirements)
+    starts with the decision that intelligence must support.

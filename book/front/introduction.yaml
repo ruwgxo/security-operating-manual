@@ -1,0 +1,98 @@
+title: A security program you can inspect
+id: introduction
+updated: '2026-10-31'
+standard: '1.1'
+version: 1.0.0
+status: review
+authors:
+- Raghav Dinesh
+language: en
+meta:
+  edition: Curated reference edition; original sources retained under chapters/
+body:
+- type: lead
+  text: >-
+    Security operations become useful when a decision can be traced back to evidence, an accountable
+    owner, and a tested action. This manual connects identity, intelligence, detection, investigation
+    and automation through one small reference system.
+- type: heading
+  level: 2
+  text: Audience and scope
+  id: scope
+- type: prose
+  text: >-
+    This edition is for security engineers and technical leads who need to connect capabilities that
+    are often deployed separately. It assumes familiarity with authentication, logs and basic Python.
+    It provides operating procedures and design questions, plus an offline implementation that can
+    be reproduced on a laptop. It does not require a commercial SIEM, cloud account, API key or paid
+    model.
+- type: prose
+  text: >-
+    The five chapters form a complete, bounded reference edition. The original repository contains
+    longer drafts with vendor comparisons, broad maturity models and planning material. Those drafts
+    remain available for comparison, but they are not part of this publication and contain invalid
+    YAML and unverified historical claims. This edition deliberately replaces universal numeric targets
+    with decisions that readers can test in their own environment.
+- type: heading
+  level: 2
+  text: The Northstar exercise
+  id: northstar
+- type: prose
+  text: >-
+    Northstar is a fictional organization. A finance identity can read a restricted ledger export.
+    An unusual-device authentication from a synthetic intelligence indicator is followed by two successful
+    reads in the same session. The workflow produces a case and simulates revoking that session after
+    a synthetic approval. A normal session, an unrelated session, a public-object read, a duplicate
+    and a malformed record test its boundaries.
+- type: callout
+  variant: note
+  title: What the evidence establishes
+  text: >-
+    The exercise demonstrates a suspicious session and sensitive object access. It does not prove
+    malware execution, credential theft or external exfiltration. Identities, owners, indicators and
+    events are invented for the exercise; none is a customer incident or a production result.
+- type: heading
+  level: 2
+  text: Read, run and inspect
+  id: reading
+- type: steps
+  items:
+  - title: Read the architecture
+    detail: >-
+      Start with the reference architecture to understand the information and trust boundaries.
+  - title: Run the lab
+    detail: >-
+      From the repository root, run the commands below with Python 3.11 or newer. The lab itself uses
+      only the Python standard library.
+  - title: Inspect the result
+    detail: >-
+      Read report.json, run-manifest.json and response-state.json. Trace each finding back to its
+      event identifiers.
+  - title: Change a condition
+    detail: >-
+      Expire the intelligence, remove object-store events or change the threshold in a copy of the
+      fixture. Observe the changed finding and data-quality output.
+- type: code
+  lang: shell
+  text: |
+    python -m lab --simulate-approved
+    python -m unittest discover -s tests -v
+  alt: Run the offline exercise and its tests.
+  caption: Run the offline exercise and its tests.
+- type: prose
+  text: >-
+    The default output is build/lab/. Running the command again reuses that directory and reports
+    that the response was already simulated. Use a fresh output directory to begin a new exercise.
+    The evaluation clock is the fixture's fixed as_of value, so the example remains reproducible after
+    its synthetic indicator expires in real time.
+- type: heading
+  level: 2
+  text: How to interpret the recommendations
+  id: recommendations
+- type: prose
+  text: >-
+    Unattributed procedures and design choices in this manual are recommendations for review, not
+    industry mandates. Primary references are linked where a framework or external standard is discussed.
+    A reader adopting the design must assign owners, validate provider behavior, establish retention
+    and privacy rules, and test its assumptions. The evidence is an executable explanation of a narrow
+    workflow; it is not a claim of production readiness.

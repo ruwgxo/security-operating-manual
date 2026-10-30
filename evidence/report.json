@@ -1,0 +1,99 @@
+{
+  "scenario_id": "northstar-session-compromise",
+  "as_of": "2026-10-01T10:30:00Z",
+  "alerts": [
+    {
+      "case_id": "case-286ee924d03b51bb",
+      "fingerprint": "286ee924d03b51bb9c5617ccaf48e46c92543e608ecde81fc167530509cb9613",
+      "identity_id": "analyst-01",
+      "session_id": "session-suspect",
+      "severity": "high",
+      "bytes_read": 110000000,
+      "rule_id": "SOM-DE-001",
+      "rule_version": "1.0.0",
+      "evidence": [
+        {
+          "event_id": "auth-suspect",
+          "kind": "authentication",
+          "occurred_at": "2026-10-01T10:00:00Z",
+          "received_at": "2026-10-01T10:20:00Z",
+          "identity_id": "analyst-01",
+          "session_id": "session-suspect",
+          "source_ip": "203.0.113.44",
+          "source": "identity-provider",
+          "outcome": "success",
+          "unusual_device": true
+        },
+        {
+          "event_id": "read-01",
+          "kind": "object_read",
+          "occurred_at": "2026-10-01T10:03:00Z",
+          "received_at": "2026-10-01T10:20:00Z",
+          "identity_id": "analyst-01",
+          "session_id": "session-suspect",
+          "source_ip": "203.0.113.44",
+          "source": "object-store",
+          "outcome": "success",
+          "asset_id": "ledger-export",
+          "bytes": 60000000
+        },
+        {
+          "event_id": "read-02",
+          "kind": "object_read",
+          "occurred_at": "2026-10-01T10:04:00Z",
+          "received_at": "2026-10-01T10:20:00Z",
+          "identity_id": "analyst-01",
+          "session_id": "session-suspect",
+          "source_ip": "203.0.113.44",
+          "source": "object-store",
+          "outcome": "success",
+          "asset_id": "ledger-export",
+          "bytes": 50000000
+        }
+      ],
+      "indicators": [
+        {
+          "id": "synthetic-ip-01",
+          "kind": "ip",
+          "value": "203.0.113.44",
+          "confidence": "high",
+          "source": "synthetic-exercise-feed",
+          "valid_from": "2026-10-01T09:00:00Z",
+          "valid_until": "2026-10-01T12:00:00Z",
+          "tlp": "TLP:CLEAR"
+        }
+      ],
+      "identity_context": {
+        "owner": "Synthetic Finance Team",
+        "role": "finance-reader",
+        "protected": false
+      },
+      "asset_context": {
+        "ledger-export": {
+          "owner": "Synthetic Finance Team",
+          "classification": "restricted"
+        }
+      },
+      "assessment": "Suspected session compromise; object reads do not prove external exfiltration.",
+      "next_steps": [
+        "Validate device and session with identity owner.",
+        "Inspect grants, object access and adjacent sessions.",
+        "Preserve evidence before scoped containment."
+      ]
+    }
+  ],
+  "quarantined_events": [
+    {
+      "event_id": "auth-malformed",
+      "reason": "timestamp needs an explicit timezone"
+    }
+  ],
+  "intelligence_errors": [],
+  "duplicate_events": 1,
+  "missing_sources": [],
+  "limitations": [
+    "Batch evaluation only; source presence is not a health check.",
+    "No matching alert is not evidence of a clean environment.",
+    "All context, indicators and telemetry are synthetic."
+  ]
+}

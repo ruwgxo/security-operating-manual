@@ -1,0 +1,42 @@
+type: book
+title: Security Operating Manual
+subtitle: A reference system for identity, intelligence, detection, response and automation
+authors:
+- Raghav Dinesh
+updated: '2026-10-31'
+standard: '1.1'
+language: en
+version: 1.0.0
+status: review
+numbering:
+  chapters: decimal
+  sections: chapter.decimal
+  tables: chapter.decimal
+  figures: chapter.decimal
+  code: chapter.decimal
+labels:
+  chapter: Chapter
+  section: Section
+  table: Table
+  figure: Figure
+  code: Listing
+front:
+- file: front/introduction.yaml
+chapters:
+- title: Security Context and Identity
+  id: context-and-identity
+  file: chapters/context-and-identity.yaml
+- title: Threat Intelligence and Prioritization
+  id: intelligence
+  file: chapters/intelligence.yaml
+- title: Detection Engineering
+  id: detection
+  file: chapters/detection.yaml
+- title: Investigation and Response
+  id: response
+  file: chapters/response.yaml
+- title: Automation and Continuous Improvement
+  id: automation
+  file: chapters/automation.yaml
+appendices:
+- file: back/reference.yaml
