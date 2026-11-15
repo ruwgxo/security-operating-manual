@@ -24,7 +24,7 @@ No theory. Just what works at scale.
 - Enterprise detection platforms managing 450K+ assets
 - Multi-cloud security architecture (AWS, Azure, GCP, IBM Cloud)
 - Zero Trust implementations at scale
-- MTech Cybersecurity research (IIT Kanpur)
+- eMasters in Cyber Security (IIT Kanpur)
 ---
  
 ## Format
