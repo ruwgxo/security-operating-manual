@@ -21,7 +21,7 @@ No theory. Just what works at scale.
  
 ## Built From
  
-- Enterprise detection platforms managing 450K+ assets
+- Enterprise detection platforms at fleet scale
 - Multi-cloud security architecture (AWS, Azure, GCP, IBM Cloud)
 - Zero Trust implementations at scale
 - eMasters in Cyber Security (IIT Kanpur)
