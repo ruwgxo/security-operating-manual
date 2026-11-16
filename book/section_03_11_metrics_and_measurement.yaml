@@ -1,0 +1,185 @@
+# section_03_11_metrics_and_measurement.yaml
+
+---
+title: Metrics and Measurement
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 11
+  section_code: '0311'
+  source_chapter: '4.1'
+  source_key: security_automation.metrics_and_measurement
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          All levels - measure automation effectiveness
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Automation metrics demonstrate value and identify improvement opportunities. This section addresses
+          metrics collection, reporting, and continuous improvement based on data.
+  - heading: Automation Metrics
+    id: automation_metrics
+    blocks:
+      - type: heading
+        level: 3
+        text: Operational Metrics
+      - type: fields
+        subject: Playbook Execution Volume
+        entries:
+          - label: Metric
+            value: Executions per day per playbook
+          - label: Target
+            value: Increasing trend = more automation adoption
+      - type: fields
+        subject: Playbook Success Rate
+        entries:
+          - label: Metric
+            value: Successful executions / Total executions
+          - label: Target
+            value: '>95%'
+          - label: Action if low
+            value: Debug failures, improve error handling
+      - type: fields
+        subject: Playbook Execution Time
+        entries:
+          - label: Metric
+            value: Average time to complete playbook
+          - label: Target
+            value: Decreasing trend = optimization working
+      - type: heading
+        level: 3
+        text: Efficiency Metrics
+      - type: fields
+        subject: Time Saved
+        entries:
+          - label: Calculation
+            value: (Manual time - Automated time) × Executions
+          - label: Example
+            value: (15 min - 30 sec) × 100 executions/day = 24 hours saved daily
+      - type: fields
+        subject: Cost Savings
+        entries:
+          - label: Calculation
+            value: Time saved × Analyst hourly rate
+          - label: Example
+            value: 24 hours × $100/hour = $2,400 saved daily = $600K annually
+      - type: fields
+        subject: Analyst Capacity Freed
+        entries:
+          - label: Metric
+            value: Percentage of analyst time redirected from toil to high-value work
+          - label: Target
+            value: '>40% time freed'
+      - type: heading
+        level: 3
+        text: Effectiveness Metrics
+      - type: fields
+        subject: Mean Time to Respond
+        entries:
+          - label: Metric
+            value: Time from alert to response action
+          - label: Baseline
+            value: Manual MTTR (typically hours)
+          - label: Automated
+            value: Automated MTTR (typically minutes)
+          - label: Improvement
+            value: 80-90% reduction typical
+      - type: fields
+        subject: Incident Auto Resolution Rate
+        entries:
+          - label: Metric
+            value: Incidents resolved without human intervention / Total incidents
+          - label: Target
+            value: 'Level 2: >30%, Level 3: >60%'
+      - type: fields
+        subject: False Positive Reduction
+        entries:
+          - label: Metric
+            value: Alerts requiring investigation after enrichment / Total alerts
+          - label: Target
+            value: <50% (automation filters out >50% noise)
+  - heading: Reporting and Dashboards
+    id: reporting_and_dashboards
+    blocks:
+      - type: fields
+        subject: Executive Dashboard
+        entries:
+          - label: Metrics
+            value:
+              - Total time saved this quarter
+              - Cost savings (time × rate)
+              - MTTR reduction percentage
+              - Automation ROI
+          - label: Frequency
+            value: Monthly or quarterly
+          - label: Format
+            value: High-level summary, charts, trend lines
+      - type: fields
+        subject: Operational Dashboard
+        entries:
+          - label: Metrics
+            value:
+              - Playbook execution volume (last 24 hours)
+              - Playbook success rate
+              - Failed playbooks requiring attention
+              - Active incidents and automation status
+          - label: Frequency
+            value: Real-time
+          - label: Format
+            value: SOC analyst view, alerts on failures
+      - type: fields
+        subject: Automation Health Dashboard
+        entries:
+          - label: Metrics
+            value:
+              - Integration status (API connectivity)
+              - Playbook test results
+              - Automation error rate trends
+              - Performance metrics (execution time)
+          - label: Frequency
+            value: Real-time
+          - label: Format
+            value: Automation engineering team view
+  - heading: Continuous Improvement
+    id: continuous_improvement
+    blocks:
+      - type: heading
+        level: 3
+        text: Weekly Review
+      - type: list
+        style: bullet
+        items:
+          - Review failed automations
+          - Identify patterns in failures
+          - Deploy fixes
+      - type: heading
+        level: 3
+        text: Monthly Review
+      - type: list
+        style: bullet
+        items:
+          - Review playbook performance metrics
+          - Identify low-value automations for retirement
+          - Identify high-value manual tasks for automation
+      - type: heading
+        level: 3
+        text: Quarterly Review
+      - type: list
+        style: bullet
+        items:
+          - Comprehensive automation effectiveness assessment
+          - Update automation strategy and roadmap
+          - Present results to leadership
+          - Plan next quarter automation investments

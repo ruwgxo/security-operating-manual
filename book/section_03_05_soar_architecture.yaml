@@ -1,0 +1,225 @@
+# section_03_05_soar_architecture.yaml
+
+---
+title: SOAR Architecture
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 5
+  section_code: '0305'
+  source_chapter: '4.1'
+  source_key: security_automation.soar_architecture
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations deploying SOAR platforms
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          SOAR (Security Orchestration, Automation, and Response) platforms centralize security automation
+          and orchestration. This section addresses SOAR architecture, integration patterns, and operational
+          considerations for enterprise deployments.
+  - heading: SOAR Components
+    id: soar_components
+    blocks:
+      - type: fields
+        subject: Orchestration Engine
+        entries:
+          - label: Purpose
+            value: Execute playbooks and coordinate actions across tools
+          - label: Capabilities
+            value:
+              - Workflow execution engine
+              - Error handling and retry logic
+              - Parallel and sequential action execution
+              - State management for long-running workflows
+      - type: heading
+        level: 3
+        text: Integration Layer
+      - type: definition
+        items:
+          - term: Purpose
+            description: Connect to security tools via APIs
+      - type: fields
+        subject: Integration Types
+        entries:
+          - label: Pre-built
+            value: Vendor-provided integrations (300+ for major platforms)
+          - label: Custom
+            value: Custom Python/PowerShell integrations
+          - label: API connectors
+            value: Generic REST/SOAP API connectors
+      - type: fields
+        subject: Data Flow
+        entries:
+          - label: Inbound
+            value: Alerts from SIEM, tickets from ITSM
+          - label: Outbound
+            value: Actions to security tools, updates to systems
+      - type: fields
+        subject: Case Management
+        entries:
+          - label: Purpose
+            value: Track incidents and investigations
+          - label: Features
+            value:
+              - Incident timeline and evidence collection
+              - Analyst collaboration and notes
+              - Task assignment and tracking
+              - Metrics and SLA tracking
+      - type: fields
+        subject: Threat Intelligence Platform
+        entries:
+          - label: Purpose
+            value: Aggregate and normalize threat intel
+          - label: Capabilities
+            value:
+              - Ingest multiple threat feeds
+              - Deduplicate and score indicators
+              - Enrich alerts with threat context
+              - Export to security tools
+      - type: fields
+        subject: Reporting and Analytics
+        entries:
+          - label: Purpose
+            value: Measure automation effectiveness
+          - label: Metrics
+            value:
+              - Playbook execution volume and success rate
+              - Mean time to respond trends
+              - Analyst time saved
+              - Incident resolution metrics
+  - heading: SOAR Integration Patterns
+    id: soar_integration_patterns
+    blocks:
+      - type: fields
+        subject: SIEM Integration
+        entries:
+          - label: Data flow
+            value: SIEM → SOAR
+          - label: Trigger
+            value: SIEM alert fires
+          - label: Actions
+            value:
+              - SOAR receives alert via webhook or API poll
+              - Enrichment playbook executes
+              - Results written back to SIEM alert
+              - Ticket created if escalation required
+          - label: Best practices
+            value:
+              - Filter alerts before sending to SOAR (reduce noise)
+              - Normalize alert format for consistent playbook logic
+              - Bidirectional sync (SOAR updates SIEM, SIEM updates SOAR)
+      - type: heading
+        level: 3
+        text: EDR Integration
+      - type: definition
+        items:
+          - term: Data flow
+            description: SOAR ↔ EDR
+      - type: fields
+        subject: Capabilities
+        entries:
+          - label: Query
+            value: Search endpoints for IOCs
+          - label: Containment
+            value: Isolate infected endpoints
+          - label: Remediation
+            value: Kill processes, delete files, remove persistence
+      - type: heading
+        level: 3
+        text: Firewall Integration
+      - type: definition
+        items:
+          - term: Data flow
+            description: SOAR → Firewall
+      - type: fields
+        subject: Capabilities
+        entries:
+          - label: Blocking
+            value: Block malicious IPs, domains
+          - label: Rule management
+            value: Create, modify, delete firewall rules
+          - label: Logging
+            value: Retrieve firewall logs for investigation
+      - type: heading
+        level: 3
+        text: ITSM Integration
+      - type: definition
+        items:
+          - term: Data flow
+            description: SOAR ↔ ITSM (ServiceNow, Jira)
+      - type: fields
+        subject: Capabilities
+        entries:
+          - label: Ticket creation
+            value: Auto-create tickets from alerts
+          - label: Ticket updates
+            value: Update tickets with enrichment and actions
+          - label: Ticket closure
+            value: Auto-close tickets when resolved
+      - type: heading
+        level: 3
+        text: Identity Integration
+      - type: definition
+        items:
+          - term: Data flow
+            description: SOAR ↔ Active Directory / Azure AD
+      - type: fields
+        subject: Capabilities
+        entries:
+          - label: User lookup
+            value: Retrieve user context
+          - label: Account management
+            value: Disable accounts, reset passwords
+          - label: Group management
+            value: Add/remove from groups
+  - heading: SOAR Deployment Considerations
+    id: soar_deployment_considerations
+    blocks:
+      - type: fields
+        subject: High Availability
+        entries:
+          - label: Architecture
+            value: Active-passive or active-active clustering
+          - label: Requirements
+            value:
+              - Load balancer for API endpoints
+              - Shared database for state
+              - Session affinity for playbook execution
+          - label: Uptime target
+            value: 99.9% (critical security infrastructure)
+      - type: fields
+        subject: Scalability
+        entries:
+          - label: Vertical
+            value: Increase CPU/RAM for orchestration engine
+          - label: Horizontal
+            value: Add worker nodes for playbook execution
+          - label: Capacity planning
+            value:
+              - Measure playbook execution time
+              - Calculate concurrent playbook capacity
+              - Plan for 2-3x growth
+      - type: fields
+        subject: Security
+        entries:
+          - label: Authentication
+            value: SSO integration with MFA
+          - label: Authorization
+            value: RBAC for playbook access and execution
+          - label: Secrets management
+            value: Encrypted credential storage, rotation
+          - label: Network security
+            value: Firewall rules, network segmentation

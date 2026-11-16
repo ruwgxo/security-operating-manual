@@ -1,0 +1,279 @@
+# section_04_09_communication_and_escalation.yaml
+
+---
+title: Communication and Escalation
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 9
+  section_code: 0409
+  source_chapter: '4.3'
+  source_key: incident_response.communication_and_escalation
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          All levels - stakeholder management during incidents
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Effective communication prevents panic, enables coordination, and maintains trust. This section
+          addresses communication strategies for different stakeholders, escalation procedures, and regulatory
+          notification requirements.
+  - heading: Internal Communication
+    id: internal_communication
+    blocks:
+      - type: heading
+        level: 3
+        text: IR Team Communication
+      - type: heading
+        level: 4
+        text: War Room
+      - type: definition
+        items:
+          - term: Purpose
+            description: Central coordination point during incident
+      - type: fields
+        subject: Format
+        entries:
+          - label: Physical
+            value: Conference room with displays, phones, workstations
+          - label: Virtual
+            value: Video conference + shared chat (Slack, Teams)
+      - type: definition
+        items:
+          - term: Participants
+            description: IR team, IT operations, relevant SMEs
+          - term: Duration
+            description: Entire incident response period
+      - type: fields
+        subject: Communication Cadence
+        entries:
+          - label: Active incident
+            value: Continuous communication in war room
+          - label: Updates
+            value: Hourly status updates to management
+          - label: Shift handoffs
+            value: Detailed handoff documentation between shifts
+      - type: heading
+        level: 3
+        text: Management Communication
+      - type: fields
+        subject: Executive Briefs
+        entries:
+          - label: Frequency
+            value: Hourly for P1, twice daily for P2, daily for P3
+          - label: Format
+            value: Email or Slack with consistent structure
+          - label: Content
+            value:
+              - Current status (one sentence)
+              - Business impact
+              - Actions taken
+              - Next steps and timeline
+              - Assistance needed
+          - label: Tone
+            value: Concise, factual, no technical jargon
+      - type: fields
+        subject: Escalation Triggers
+        entries:
+          - label: Immediate escalation
+            value:
+              - P1 critical incident
+              - Potential data breach requiring notification
+              - Significant business operations impact
+              - Media inquiry or public awareness
+          - label: Scheduled escalation
+            value:
+              - Daily briefing for extended incidents
+              - Major decisions (ransom payment, system shutdown)
+      - type: fields
+        subject: Employee Communication
+        entries:
+          - label: When to communicate
+            value:
+              - If employees directly impacted (systems down, password resets required)
+              - If public disclosure made
+              - If employee action required (phishing awareness)
+          - label: Messaging
+            value:
+              - What happened (high level, no sensitive details)
+              - What employees should do
+              - Who to contact with questions
+              - Expected timeline for resolution
+  - heading: External Communication
+    id: external_communication
+    blocks:
+      - type: fields
+        subject: Customer Communication
+        entries:
+          - label: Notification requirements
+            value:
+              - Data breach affecting customer data
+              - Service disruption impacting customers
+              - Security incident requiring customer action (password reset)
+          - label: Timing
+            value:
+              - As soon as facts established (don't delay unnecessarily)
+              - Balance speed with accuracy (don't communicate speculation)
+          - label: Channels
+            value:
+              - Email to affected customers
+              - Public statement on website
+              - Social media updates
+              - Status page for service disruptions
+          - label: Content
+            value:
+              - What happened and when
+              - What data was involved
+              - What organization is doing
+              - What customers should do
+              - Who to contact for questions
+          - label: Tone
+            value: Transparent, empathetic, actionable
+      - type: heading
+        level: 3
+        text: Regulatory Notification
+      - type: heading
+        level: 4
+        text: GDPR Requirements
+      - type: definition
+        items:
+          - term: Jurisdiction
+            description: European Union, UK
+          - term: Trigger
+            description: Personal data breach
+      - type: fields
+        subject: Timeline
+        entries:
+          - label: Authority
+            value: 72 hours to data protection authority
+          - label: Individuals
+            value: Without undue delay if high risk
+      - type: heading
+        level: 5
+        text: Content
+      - type: list
+        style: bullet
+        items:
+          - Nature of breach and data involved
+          - Number of affected individuals
+          - Consequences and remediation
+          - Contact information for inquiries
+      - type: definition
+        items:
+          - term: Penalties
+            description: Up to €20M or 4% revenue
+      - type: heading
+        level: 4
+        text: Us State Breach Laws
+      - type: definition
+        items:
+          - term: Jurisdiction
+            description: All 50 US states have laws (specifics vary)
+          - term: Trigger
+            description: Personal information breach (SSN, financial, health)
+          - term: Timeline
+            description: Varies by state (typically 'expeditiously', some specify days)
+      - type: fields
+        subject: Requirements
+        entries:
+          - label: California
+            value: Attorney General if >500 residents
+          - label: Massachusetts
+            value: Attorney General, Director of Consumer Affairs
+          - label: Others
+            value: Check state-specific requirements
+      - type: fields
+        subject: Sector Specific
+        entries:
+          - label: HIPAA
+            value: Healthcare - 60 days for breaches affecting >500 individuals
+          - label: GLBA
+            value: Financial services - notify customers as soon as possible
+          - label: PCI DSS
+            value: Payment cards - notify card brands and acquirer immediately
+      - type: heading
+        level: 3
+        text: Media Relations
+      - type: heading
+        level: 4
+        text: When Media Involved
+      - type: list
+        style: bullet
+        items:
+          - Public-facing incident (website defacement, service outage)
+          - Data breach affecting significant number of people
+          - High-profile victim organization
+      - type: heading
+        level: 4
+        text: Spokesperson
+      - type: list
+        style: bullet
+        items:
+          - Designated spokesperson (CEO, CISO, PR lead)
+          - Media training recommended
+          - Consistent messaging across all interviews
+      - type: fields
+        subject: Message Discipline
+        entries:
+          - label: Do
+            value:
+              - Acknowledge incident factually
+              - Express commitment to customers and security
+              - Explain actions being taken
+          - label: don't
+            value:
+              - Speculate on details not yet confirmed
+              - Blame individuals or teams
+              - Provide overly technical details
+              - Say 'no comment' (looks defensive)
+      - type: heading
+        level: 3
+        text: Law Enforcement Coordination
+      - type: heading
+        level: 4
+        text: When to Engage
+      - type: list
+        style: bullet
+        items:
+          - Nation-state or APT activity
+          - Ransomware incident
+          - Significant financial fraud
+          - Child exploitation material discovered
+      - type: fields
+        subject: Who to Contact
+        entries:
+          - label: Us
+            value: FBI Cyber Division, Secret Service
+          - label: International
+            value: Interpol, Europol, local authorities
+      - type: heading
+        level: 4
+        text: What to Provide
+      - type: list
+        style: bullet
+        items:
+          - Incident summary
+          - IOCs and evidence
+          - Business impact
+          - Attacker attribution if known
+      - type: heading
+        level: 4
+        text: Expectations
+      - type: list
+        style: bullet
+        items:
+          - Investigation may be slow
+          - Prosecution not guaranteed
+          - Coordination on public disclosure

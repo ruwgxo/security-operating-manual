@@ -1,0 +1,1091 @@
+# section_05_03_intelligence_lifecycle.yaml
+
+---
+title: Intelligence Lifecycle
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 5
+  section: 3
+  section_code: '0503'
+  source_chapter: '4.4'
+  source_key: threat_intelligence_operations.intelligence_lifecycle
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Intelligence lifecycle is iterative process from planning through dissemination. Understanding
+          lifecycle ensures systematic intelligence operations and continuous improvement. Each phase
+          feeds the next, creating intelligence feedback loop.
+  - heading: 'Phase 1: Planning and Direction'
+    id: phase_1_planning_and_direction
+    blocks:
+      - type: definition
+        items:
+          - term: Objective
+            description: Define intelligence requirements and priorities
+      - type: heading
+        level: 3
+        text: Key Activities
+      - type: heading
+        level: 4
+        text: Define Intelligence Requirements
+      - type: fields
+        subject: Priority Intelligence Requirements
+        entries:
+          - label: Definition
+            value: Critical questions intelligence must answer to support decisions
+          - label: Examples
+            value:
+              - What ransomware groups target our industry?
+              - What cloud misconfigurations are adversaries exploiting?
+              - What supply chain threats affect our vendors?
+              - What are emerging attack techniques against our technology stack?
+          - label: Development process
+            value:
+              - Interview security leadership about decisions needing intelligence
+              - Survey SOC, IR, architecture teams about intelligence gaps
+              - Analyze past incidents - what intelligence would have prevented them?
+              - Review industry threat landscape for relevant threats
+          - label: Update frequency
+            value: Quarterly review, ad-hoc updates as priorities shift
+      - type: heading
+        level: 4
+        text: Stakeholder Identification
+      - type: fields
+        subject: Internal Stakeholders
+        entries:
+          - label: Executives
+            value: Strategic intelligence consumers
+          - label: Security operations
+            value: Operational and tactical intelligence consumers
+          - label: It operations
+            value: Tactical intelligence consumers (patching, configuration)
+          - label: Risk management
+            value: Strategic and operational intelligence consumers
+          - label: Legal compliance
+            value: Regulatory and legal risk intelligence consumers
+      - type: fields
+        subject: External Stakeholders
+        entries:
+          - label: Customers
+            value: May receive sanitized intelligence about threats affecting them
+          - label: Partners
+            value: Bilateral intelligence sharing relationships
+          - label: Industry peers
+            value: ISAC and community sharing
+      - type: fields
+        subject: Collection Planning
+        entries:
+          - label: Identify sources
+            value:
+              - What sources can answer our PIRs?
+              - What collection methods are needed?
+              - What resources (budget, tools, personnel) required?
+          - label: Prioritization
+            value:
+              - High-value targets for collection efforts
+              - Balance between strategic, operational, tactical collection
+      - type: heading
+        level: 3
+        text: Outputs
+      - type: list
+        style: bullet
+        items:
+          - Prioritized Intelligence Requirements (PIRs) document
+          - Stakeholder map and communication plan
+          - Collection plan with sources and methods
+      - type: heading
+        level: 3
+        text: Success Criteria
+      - type: list
+        style: bullet
+        items:
+          - PIRs align with business priorities and security strategy
+          - All key stakeholders identified with intelligence needs documented
+          - Collection plan has clear resource allocation
+  - heading: 'Phase 2: Collection'
+    id: phase_2_collection
+    blocks:
+      - type: definition
+        items:
+          - term: Objective
+            description: Gather raw information from diverse sources
+      - type: heading
+        level: 3
+        text: Collection Sources
+      - type: fields
+        subject: Open Source Intelligence
+        entries:
+          - label: Sources
+            value:
+              - Security blogs and researcher publications
+              - Social media (Twitter, Reddit security communities)
+              - Pastebin, dark web forums (credential dumps, breach data)
+              - CVE databases, exploit databases
+              - News media and industry publications
+          - label: Tools
+            value:
+              - Google Alerts, RSS feeds
+              - Social media monitoring (Brandwatch, Hootsuite)
+              - Dark web monitoring (Intel471, Flashpoint)
+          - label: Advantages
+            value:
+              - Free or low-cost
+              - Broad coverage
+              - Real-time discovery
+          - label: Challenges
+            value:
+              - High noise-to-signal ratio
+              - Requires significant analyst time to filter
+              - Reliability varies widely
+      - type: fields
+        subject: Commercial Threat Feeds
+        entries:
+          - label: Vendors
+            value:
+              - Recorded Future, Mandiant Threat Intelligence
+              - CrowdStrike Falcon Intelligence
+              - FireEye iSIGHT Intelligence
+              - Anomali ThreatStream
+          - label: Content
+            value:
+              - Curated IOCs with context
+              - Campaign analysis and attribution
+              - Vulnerability intelligence
+              - Industry-specific threat reporting
+          - label: Advantages
+            value:
+              - High-quality, analyzed intelligence
+              - Lower analyst burden
+              - Timely tactical intelligence
+          - label: Challenges
+            value:
+              - Expensive ($50K-$500K+ annually)
+              - Overlap between vendors
+              - May include generic threats not relevant to you
+          - label: Selection criteria
+            value:
+              - Coverage of your industry and geography
+              - Quality of analysis and attribution
+              - Integration capabilities (API, STIX/TAXII)
+              - Vendor reputation and customer references
+      - type: heading
+        level: 4
+        text: Information Sharing Communities
+      - type: fields
+        subject: ISACs
+        entries:
+          - label: Fs ISAC
+            value: Financial Services ISAC
+          - label: H ISAC
+            value: Health ISAC
+          - label: It ISAC
+            value: Information Technology ISAC
+          - label: Ren ISAC
+            value: Research and Education Networks ISAC
+      - type: heading
+        level: 5
+        text: MISP Communities
+      - type: list
+        style: bullet
+        items:
+          - Private MISP instances (invite-only)
+          - Industry-specific sharing communities
+          - Geographic/regional communities
+      - type: heading
+        level: 5
+        text: Peer Organizations
+      - type: list
+        style: bullet
+        items:
+          - Bilateral intelligence sharing agreements
+          - Informal relationships with peer security teams
+      - type: heading
+        level: 5
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Highly relevant, targeted intelligence
+          - Early warning of campaigns targeting your sector
+          - Trusted relationships enable sensitive sharing
+      - type: heading
+        level: 5
+        text: Challenges
+      - type: list
+        style: bullet
+        items:
+          - Requires contributing to receive value
+          - Trust building takes time
+          - Confidentiality and sanitization complexity
+      - type: fields
+        subject: Internal Sources
+        entries:
+          - label: Security tools
+            value:
+              - SIEM logs and alerts
+              - EDR telemetry and detections
+              - Firewall, IDS/IPS logs
+              - Email security gateway (phishing attempts)
+              - Web proxy logs (malicious site access attempts)
+          - label: Incident investigations
+            value:
+              - IOCs from IR investigations
+              - Adversary TTPs observed
+              - Lessons learned from incidents
+          - label: Honeypots and deception
+            value:
+              - Attacker behavior in honeypot environments
+              - Tools and techniques observed
+              - C2 infrastructure discovered
+          - label: Advantages
+            value:
+              - Highly relevant to your environment
+              - Direct evidence of targeting
+              - No external sharing needed
+          - label: Challenges
+            value:
+              - Limited to threats that already reached you
+              - May miss emerging threats
+      - type: fields
+        subject: Government and Law Enforcement
+        entries:
+          - label: Sources
+            value:
+              - CISA alerts (US)
+              - FBI flash reports
+              - National cyber security centers (UK NCSC, etc)
+              - Sector-specific bulletins
+          - label: Advantages
+            value:
+              - Authoritative, often includes classified intelligence (sanitized)
+              - Early warning of nation-state threats
+              - Free
+          - label: Challenges
+            value:
+              - Variable timeliness
+              - Often lacks tactical details
+              - May be broad and not actionable
+      - type: fields
+        subject: Collection Methods
+        entries:
+          - label: Automated collection
+            value:
+              - API integration with threat feeds
+              - STIX/TAXII feeds
+              - Web scraping (within legal/ethical bounds)
+              - RSS feed monitoring
+          - label: Manual collection
+            value:
+              - Analyst review of security research
+              - Dark web manual monitoring
+              - Conference and researcher engagement
+              - Peer communication and sharing
+      - type: heading
+        level: 3
+        text: Outputs
+      - type: list
+        style: bullet
+        items:
+          - Raw intelligence data (IOCs, reports, alerts)
+          - Collection logs (source, timestamp, reliability)
+  - heading: 'Phase 3: Processing'
+    id: phase_3_processing
+    blocks:
+      - type: definition
+        items:
+          - term: Objective
+            description: Transform raw data into usable format for analysis
+      - type: heading
+        level: 3
+        text: Key Activities
+      - type: fields
+        subject: Normalization
+        entries:
+          - label: Challenge
+            value: Different sources use different formats
+          - label: Solution
+            value:
+              - Convert all IOCs to standard format (STIX 2.1)
+              - Normalize timestamps to UTC
+              - Standardize indicator types (ip, domain, hash, etc)
+              - Map to standard taxonomy (MITRE ATT&CK)
+          - label: Tools
+            value:
+              - Threat intelligence platforms (TIPs)
+              - Custom ETL scripts
+      - type: fields
+        subject: Deduplication
+        entries:
+          - label: Challenge
+            value: Same IOC from multiple sources creates duplicates
+          - label: Solution
+            value:
+              - Hash-based deduplication
+              - Fuzzy matching for similar but not identical indicators
+              - Merge metadata from multiple sources
+          - label: Benefit
+            value: Reduces noise, increases confidence through corroboration
+      - type: fields
+        subject: Enrichment
+        entries:
+          - label: Add context
+            value:
+              - Whois data for domains/IPs
+              - Geolocation for IPs
+              - VirusTotal, AbuseIPDB reputation scores
+              - Historical observation data
+          - label: Cross-reference
+            value:
+              - Link IOCs to known campaigns
+              - Map TTPs to MITRE ATT&CK
+              - Associate with adversary attribution
+      - type: fields
+        subject: Validation
+        entries:
+          - label: Checks
+            value:
+              - Is IOC still active/valid?
+              - Is IOC actually malicious (avoid false positives)?
+              - Is source reliable?
+              - Does indicator make sense in context?
+          - label: False positive prevention
+            value:
+              - Check against whitelists (CDNs, popular services)
+              - Validate with multiple sources
+              - Analyst review of high-impact indicators before blocking
+      - type: heading
+        level: 4
+        text: Tagging and Categorization
+      - type: fields
+        subject: Metadata Tags
+        entries:
+          - label: Adversary
+            value: APT29, FIN7, Lazarus Group
+          - label: Campaign
+            value: Operation CloudHopper, SolarWinds compromise
+          - label: Industry
+            value: Financial, healthcare, critical infrastructure
+          - label: Geography
+            value: US, Europe, APAC
+          - label: Technique
+            value: MITRE ATT&CK technique IDs
+          - label: Confidence
+            value: High, medium, low
+          - label: TLP
+            value: Traffic Light Protocol (TLP:WHITE, GREEN, AMBER, RED)
+      - type: heading
+        level: 5
+        text: Benefits
+      - type: list
+        style: bullet
+        items:
+          - Enables filtering and prioritization
+          - Supports automated routing to relevant teams
+          - Facilitates searching and correlation
+      - type: heading
+        level: 3
+        text: Outputs
+      - type: list
+        style: bullet
+        items:
+          - Normalized, deduplicated intelligence in standard format
+          - Enriched indicators with full context
+          - Validated and tagged for analysis
+  - heading: 'Phase 4: Analysis'
+    id: phase_4_analysis
+    blocks:
+      - type: definition
+        items:
+          - term: Objective
+            description: Transform processed data into actionable intelligence
+      - type: heading
+        level: 3
+        text: Analysis Types
+      - type: fields
+        subject: Descriptive Analysis
+        entries:
+          - label: Question
+            value: What happened?
+          - label: Activities
+            value:
+              - Timeline reconstruction
+              - Attack chain mapping
+              - Indicator correlation
+          - label: Output
+            value: Incident report, campaign description
+      - type: fields
+        subject: Diagnostic Analysis
+        entries:
+          - label: Question
+            value: Why did it happen?
+          - label: Activities
+            value:
+              - Root cause analysis
+              - Adversary motivation assessment
+              - Vulnerability analysis
+          - label: Output
+            value: Attribution report, root cause analysis
+      - type: fields
+        subject: Predictive Analysis
+        entries:
+          - label: Question
+            value: What will happen?
+          - label: Activities
+            value:
+              - Trend analysis
+              - Adversary behavior modeling
+              - Campaign forecasting
+          - label: Output
+            value: Threat forecast, risk prediction
+      - type: fields
+        subject: Prescriptive Analysis
+        entries:
+          - label: Question
+            value: What should we do?
+          - label: Activities
+            value:
+              - Mitigation recommendation development
+              - Control effectiveness assessment
+              - Prioritization frameworks
+          - label: Output
+            value: Actionable recommendations, roadmap
+      - type: heading
+        level: 3
+        text: Analysis Techniques
+      - type: heading
+        level: 4
+        text: Structured Analytic Techniques
+      - type: fields
+        subject: Kill Chain Mapping
+        entries:
+          - label: Framework
+            value: Lockheed Martin Cyber Kill Chain or MITRE ATT&CK
+          - label: Process
+            value:
+              - Map observed TTPs to kill chain stages
+              - Identify detection opportunities at each stage
+              - Assess adversary progression
+          - label: Output
+            value: Kill chain diagram with detection coverage gaps
+      - type: heading
+        level: 5
+        text: Diamond Model
+      - type: fields
+        subject: Components
+        entries:
+          - label: Adversary
+            value: Who is attacking?
+          - label: Capability
+            value: What tools/techniques?
+          - label: Infrastructure
+            value: What infrastructure used?
+          - label: Victim
+            value: Who is targeted?
+      - type: heading
+        level: 6
+        text: Process
+      - type: list
+        style: bullet
+        items:
+          - Map known elements to diamond
+          - Infer unknown elements from relationships
+          - Pivot on each element to discover more
+      - type: definition
+        items:
+          - term: Output
+            description: Comprehensive adversary profile
+      - type: heading
+        level: 5
+        text: Hypothesis Testing
+      - type: heading
+        level: 6
+        text: Process
+      - type: list
+        style: bullet
+        items:
+          - Develop hypotheses about adversary, campaign, or technique
+          - Gather evidence to support or refute
+          - Revise hypotheses based on evidence
+          - Document confidence levels
+      - type: fields
+        subject: Example
+        entries:
+          - label: Hypothesis
+            value: APT29 targeting financial services M&A teams
+          - label: Supporting evidence
+            value:
+              - TTPs match known APT29 campaigns
+              - 3 financial services firms targeted in last 30 days
+              - Phishing themes reference M&A topics
+          - label: Refuting evidence
+            value:
+              - Infrastructure doesn't match known APT29 patterns
+          - label: Conclusion
+            value: 'Possible APT29, medium confidence. Alternative: copycat adversary.'
+      - type: fields
+        subject: Timeline Analysis
+        entries:
+          - label: Process
+            value:
+              - Plot all events chronologically
+              - Identify patterns and sequences
+              - Detect anomalies and gaps
+          - label: Output
+            value: Attack timeline with key events
+      - type: fields
+        subject: Link Analysis
+        entries:
+          - label: Process
+            value:
+              - Visualize relationships between entities (IPs, domains, actors)
+              - Identify clusters and patterns
+              - Discover infrastructure connections
+          - label: Tools
+            value: Maltego, i2 Analyst Notebook, custom graphs
+          - label: Output
+            value: Network graph showing adversary infrastructure
+      - type: heading
+        level: 4
+        text: Adversary Attribution
+      - type: fields
+        subject: Attribution Levels
+        entries:
+          - label: Infrastructure
+            value: These IOCs are related
+          - label: Tools and techniques
+            value: Same TTPs as known adversary
+          - label: Operational
+            value: Attack timing, targeting matches known adversary
+          - label: Strategic
+            value: Adversary motivation aligns with nation-state/criminal objectives
+      - type: fields
+        subject: Attribution Confidence
+        entries:
+          - label: Low
+            value: Possible connection, limited evidence
+          - label: Medium
+            value: Likely attribution, multiple corroborating factors
+          - label: High
+            value: Definitive attribution, strong evidence across multiple dimensions
+      - type: fields
+        subject: Attribution Challenges
+        entries:
+          - label: False flags
+            value: Adversaries intentionally use other groups' tools to mislead
+          - label: Tool sharing
+            value: Multiple groups use same publicly available tools
+          - label: Limited visibility
+            value: Incomplete evidence prevents high-confidence attribution
+      - type: heading
+        level: 5
+        text: Attribution Best Practices
+      - type: list
+        style: bullet
+        items:
+          - Never attribute based on single indicator
+          - Document confidence level and reasoning
+          - Update attribution as new evidence emerges
+          - Distinguish between 'likely' and 'definitive'
+      - type: heading
+        level: 4
+        text: Relevance Assessment
+      - type: fields
+        subject: Targeting Assessment
+        entries:
+          - label: Questions
+            value:
+              - Does adversary target our industry?
+              - Does adversary target our geography?
+              - Does adversary target our technology stack?
+          - label: Scoring
+            value: High/Medium/Low relevance
+      - type: fields
+        subject: Capability Assessment
+        entries:
+          - label: Questions
+            value:
+              - Do we have vulnerabilities adversary exploits?
+              - Can our defenses detect adversary TTPs?
+              - What is impact if adversary succeeds?
+          - label: Scoring
+            value: High/Medium/Low risk
+      - type: code
+        lang: text
+        caption: >-
+          Prioritization matrix
+        text: |
+          Relevance  |  High Risk  |  Medium Risk  |  Low Risk
+          -------------------------------------------------------
+          High       |  Critical   |  High         |  Medium
+          Medium     |  High       |  Medium       |  Low
+          Low        |  Medium     |  Low          |  Informational
+      - type: heading
+        level: 3
+        text: Analytic Tradecraft
+      - type: heading
+        level: 4
+        text: Source Reliability Assessment
+      - type: fields
+        subject: Categories
+        entries:
+          - label: A reliable
+            value: No doubt about authenticity, trustworthiness, competency
+          - label: B usually reliable
+            value: Minor doubts, generally trusted
+          - label: C fairly reliable
+            value: Doubts about reliability, use with caution
+          - label: D not usually reliable
+            value: Significant doubts, corroboration required
+          - label: E unreliable
+            value: Lacks authenticity, trustworthiness, or competency
+          - label: F cannot be judged
+            value: No basis for evaluating reliability
+      - type: heading
+        level: 4
+        text: Information Credibility Assessment
+      - type: fields
+        subject: Categories
+        entries:
+          - label: 1 confirmed
+            value: Confirmed by other sources, logical in context
+          - label: 2 probably true
+            value: Not confirmed, logical, agrees with other information
+          - label: 3 possibly true
+            value: Not confirmed, reasonably logical, no other information
+          - label: 4 doubtful
+            value: Not confirmed, illogical, contradicts other information
+          - label: 5 improbable
+            value: Confirmed to be false
+          - label: 6 cannot be judged
+            value: No basis for evaluating credibility
+      - type: heading
+        level: 4
+        text: Confidence Level Expression
+      - type: fields
+        subject: High Confidence
+        entries:
+          - label: Definition
+            value: Judgments based on high-quality information and/or strong analytic basis
+          - label: Expression
+            value: We assess with high confidence that...
+      - type: fields
+        subject: Moderate Confidence
+        entries:
+          - label: Definition
+            value: Information is credibly sourced but not corroborated, or analytic basis is plausible
+              but not definitive
+          - label: Expression
+            value: We assess with moderate confidence that...
+      - type: fields
+        subject: Low Confidence
+        entries:
+          - label: Definition
+            value: Questionable or fragmented information, gaps in analytic basis
+          - label: Expression
+            value: We assess with low confidence that...
+      - type: fields
+        subject: Alternative Analysis
+        entries:
+          - label: Devil advocacy
+            value:
+              - Intentionally argue against prevailing hypothesis
+              - Identify weaknesses in reasoning
+          - label: Red teaming
+            value:
+              - Simulate adversary perspective
+              - Challenge assumptions
+          - label: What if analysis
+            value:
+              - Explore alternative scenarios
+              - Assess impact of different outcomes
+      - type: heading
+        level: 3
+        text: Outputs
+      - type: list
+        style: bullet
+        items:
+          - Analyzed intelligence with context and confidence levels
+          - Attribution assessment
+          - Relevance and risk scoring
+          - Recommendations for action
+  - heading: 'Phase 5: Dissemination'
+    id: phase_5_dissemination
+    blocks:
+      - type: definition
+        items:
+          - term: Objective
+            description: Deliver intelligence to stakeholders in actionable format
+      - type: heading
+        level: 3
+        text: Dissemination Principles
+      - type: heading
+        level: 4
+        text: Know Your Audience
+      - type: fields
+        subject: Executives
+        entries:
+          - label: Format
+            value: 1-2 page executive summary, bullet points
+          - label: Focus
+            value: Business impact, strategic implications, decisions needed
+          - label: Language
+            value: Non-technical, business terms
+      - type: fields
+        subject: Security Operations
+        entries:
+          - label: Format
+            value: Detailed technical report with detection rules
+          - label: Focus
+            value: TTPs, detection opportunities, hunting queries
+          - label: Language
+            value: Technical detail appropriate for practitioners
+      - type: fields
+        subject: Security Tools
+        entries:
+          - label: Format
+            value: Machine-readable feeds (STIX, JSON, CSV)
+          - label: Focus
+            value: IOCs, signatures, rules
+          - label: Language
+            value: Structured data for automated ingestion
+      - type: heading
+        level: 4
+        text: Right Format for Purpose
+      - type: heading
+        level: 5
+        text: Intelligence Reports
+      - type: fields
+        subject: Types
+        entries:
+          - label: Flash report
+            value: Breaking news, 1-2 pages, immediate threat
+          - label: Tactical report
+            value: IOCs and detection guidance, 3-5 pages
+          - label: Operational report
+            value: Campaign analysis, 5-10 pages
+          - label: Strategic assessment
+            value: Threat landscape, 10-20+ pages
+      - type: fields
+        subject: Structure
+        entries:
+          - label: Executive summary
+            value: Key points in 3-5 bullets
+          - label: Intelligence questions
+            value: What questions does this answer?
+          - label: Findings
+            value: What did we learn?
+          - label: Analysis
+            value: What does it mean?
+          - label: Recommendations
+            value: What should we do?
+          - label: Appendices
+            value: IOCs, detection rules, references
+      - type: heading
+        level: 5
+        text: Threat Bulletins
+      - type: definition
+        items:
+          - term: Purpose
+            description: Rapid dissemination of time-sensitive intelligence
+          - term: Format
+            description: Email, Slack, ticketing system
+      - type: heading
+        level: 6
+        text: Content
+      - type: list
+        style: bullet
+        items:
+          - Threat overview (2-3 sentences)
+          - Recommended immediate actions
+          - IOCs (if available)
+          - Link to detailed report (if available)
+      - type: code
+        lang: text
+        caption: >-
+          Example
+        text: |
+          THREAT BULLETIN: Emotet Targeting Financial Services
+
+          SUMMARY: Emotet botnet active with malicious Word attachments.
+          High volume targeting financial sector US/UK.
+
+          IMMEDIATE ACTIONS:
+          1. Review email gateway for macro-enabled attachments
+          2. Deploy detection rules: TI-2024-089 (see wiki)
+          3. Hunt for IOCs: 198.51.100.89, update-ms[.]com
+
+          DETAILS: See full report TI-2024-089 in threat intel portal
+
+          QUESTIONS: Contact threat-intel@company.com
+      - type: heading
+        level: 5
+        text: IOC Feeds
+      - type: fields
+        subject: Formats
+        entries:
+          - label: STIX
+            value: Structured Threat Information eXpression (JSON)
+          - label: CSV
+            value: Simple comma-separated for tools without STIX support
+          - label: JSON
+            value: Custom JSON schema
+      - type: heading
+        level: 6
+        text: Metadata Required
+      - type: list
+        style: bullet
+        items:
+          - Indicator value (IP, domain, hash)
+          - Indicator type
+          - Confidence level
+          - First/last seen timestamps
+          - Associated threat actor/campaign
+          - Recommended action (block, alert, monitor)
+          - Expiration date
+      - type: heading
+        level: 6
+        text: Automation
+      - type: list
+        style: bullet
+        items:
+          - Automated ingestion into security tools
+          - SIEM correlation rules
+          - Firewall/proxy blocking
+          - EDR IOC scanning
+      - type: fields
+        subject: Detection Content
+        entries:
+          - label: Formats
+            value:
+              - Sigma rules (vendor-agnostic)
+              - SIEM-specific queries (Splunk SPL, Elastic KQL)
+              - YARA rules
+              - Suricata/Snort signatures
+          - label: Packaging
+            value:
+              - Rules + test data
+              - Expected false positive scenarios
+              - Tuning guidance
+              - Integration instructions
+          - label: Distribution
+            value:
+              - Detection engineering team
+              - SOC for deployment
+              - Version control system (Git)
+      - type: heading
+        level: 4
+        text: Timely Delivery
+      - type: fields
+        subject: SLAs by Priority
+        entries:
+          - label: Critical
+            value: Within 1 hour (active threat to organization)
+          - label: High
+            value: Within 4 hours (relevant threat, immediate action needed)
+          - label: Medium
+            value: Within 24 hours (relevant threat, near-term action)
+          - label: Low
+            value: Within 1 week (informational, long-term planning)
+      - type: fields
+        subject: Dissemination Channels
+        entries:
+          - label: Urgent
+            value: Phone call, Slack/Teams direct message
+          - label: High priority
+            value: Email + Slack channel notification
+          - label: Routine
+            value: Email, threat intel portal, scheduled briefing
+      - type: fields
+        subject: Feedback Mechanisms
+        entries:
+          - label: Intelligence consumption tracking
+            value:
+              - Email open rates, document downloads
+              - Portal access logs
+              - 'Survey: ''Was this intelligence useful?'''
+          - label: Stakeholder feedback
+            value:
+              - Regular check-ins with intelligence consumers
+              - Quarterly stakeholder survey
+              - Ad-hoc feedback requests
+          - label: Action tracking
+            value:
+              - Tag intelligence with actions taken
+              - Track detection rules deployed from intelligence
+              - Track threat hunts initiated from intelligence
+              - Track security decisions influenced by intelligence
+      - type: heading
+        level: 3
+        text: Dissemination Challenges
+      - type: fields
+        subject: Over Classification
+        entries:
+          - label: Problem
+            value: Overly restrictive sharing prevents intelligence use
+          - label: Solution
+            value:
+              - Use Traffic Light Protocol (TLP) appropriately
+              - Default to TLP:AMBER (organization sharing) unless sensitive
+              - Sanitize before sharing externally, not before internal use
+      - type: fields
+        subject: Information Overload
+        entries:
+          - label: Problem
+            value: Too much intelligence, stakeholders tune out
+          - label: Solution
+            value:
+              - Filter by relevance - only send what matters to recipient
+              - Summarize - executive summaries, not 20-page reports
+              - Prioritize - clear high/medium/low tagging
+      - type: fields
+        subject: Technical vs Non-Technical
+        entries:
+          - label: Problem
+            value: Technical analysts and executives need different content
+          - label: Solution
+            value:
+              - 'Layered reporting: exec summary + technical details'
+              - Separate dissemination tracks for different audiences
+              - Glossary and context for non-technical readers
+      - type: heading
+        level: 3
+        text: Outputs
+      - type: list
+        style: bullet
+        items:
+          - Intelligence reports delivered to stakeholders
+          - IOC feeds ingested into security tools
+          - Detection content deployed
+          - Dissemination logs (who received what, when)
+  - heading: 'Phase 6: Feedback and Evaluation'
+    id: phase_6_feedback_and_evaluation
+    blocks:
+      - type: definition
+        items:
+          - term: Objective
+            description: Assess intelligence effectiveness and refine future operations
+      - type: fields
+        subject: Evaluation Questions
+        entries:
+          - label: Did intelligence answer PIRs
+            value:
+              - Did intelligence address priority intelligence requirements?
+              - Are stakeholders satisfied with intelligence products?
+              - What questions remain unanswered?
+          - label: Did intelligence drive action
+            value:
+              - How many detection rules deployed from intelligence?
+              - How many threat hunts initiated?
+              - How many security decisions influenced?
+              - What actions were NOT taken and why?
+          - label: Was intelligence timely
+            value:
+              - Was intelligence delivered within SLA?
+              - Was intelligence fresh (not stale when delivered)?
+              - Did intelligence arrive too late to be useful?
+          - label: Was intelligence accurate
+            value:
+              - False positive rate from intelligence-based detections
+              - Attribution accuracy (if verifiable)
+              - Confidence levels appropriate for evidence?
+      - type: heading
+        level: 3
+        text: Feedback Collection Methods
+      - type: fields
+        subject: Stakeholder Surveys
+        entries:
+          - label: Frequency
+            value: Quarterly
+          - label: Questions
+            value:
+              - Rate intelligence relevance (1-5)
+              - Rate intelligence timeliness (1-5)
+              - Rate intelligence quality (1-5)
+              - What intelligence needs are not being met?
+              - What intelligence products are most/least valuable?
+      - type: fields
+        subject: Intelligence Consumer Interviews
+        entries:
+          - label: Frequency
+            value: Semi-annually
+          - label: Participants
+            value: Key stakeholders (CISO, SOC manager, IR lead)
+          - label: Format
+            value: 30-minute structured interview
+          - label: Topics
+            value:
+              - How do you use threat intelligence?
+              - What intelligence gaps exist?
+              - How can intelligence better support your mission?
+      - type: fields
+        subject: Action Tracking
+        entries:
+          - label: Automated
+            value:
+              - Detection rule deployment tracking
+              - IOC blocking statistics
+              - Threat hunt initiation logs
+          - label: Manual
+            value:
+              - Tag intelligence with actions in ticket system
+              - Quarterly review of actions taken
+      - type: fields
+        subject: Process Improvement
+        entries:
+          - label: Collection refinement
+            value:
+              - Are current sources meeting needs?
+              - Should we add/remove sources?
+              - Are we collecting efficiently?
+          - label: Analysis improvement
+            value:
+              - Where did analysis fall short?
+              - What techniques could improve analysis?
+              - Do analysts need additional training?
+          - label: Dissemination optimization
+            value:
+              - Are we reaching the right audiences?
+              - Are formats effective?
+              - Can we automate more dissemination?
+      - type: heading
+        level: 3
+        text: Outputs
+      - type: list
+        style: bullet
+        items:
+          - Intelligence program metrics and KPIs
+          - Stakeholder satisfaction scores
+          - Process improvement recommendations
+          - Updated PIRs based on feedback
+  - heading: Lifecycle Iteration
+    id: lifecycle_iteration
+    blocks:
+      - type: heading
+        level: 3
+        text: Continuous Improvement
+      - type: list
+        style: bullet
+        items:
+          - Feedback from phase 6 informs planning in phase 1
+          - Lessons learned update collection, analysis, dissemination
+          - Intelligence requirements evolve based on threat landscape
+          - Process optimization ongoing
+      - type: heading
+        level: 3
+        text: Agile Intelligence
+      - type: list
+        style: bullet
+        items:
+          - Intelligence lifecycle is not linear - phases overlap
+          - Rapid iteration for tactical intelligence (IOCs)
+          - Longer cycles for strategic intelligence
+          - Flexibility to adjust based on urgent requirements

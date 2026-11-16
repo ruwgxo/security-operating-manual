@@ -1,0 +1,230 @@
+# section_03_07_detection_as_code.yaml
+
+---
+title: Detection as Code
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 7
+  section_code: '0307'
+  source_chapter: '4.1'
+  source_key: security_automation.detection_as_code
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 3+ organizations implementing detection engineering as code
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Detection-as-code applies software engineering practices to security detection development.
+          Detections are code, version controlled, tested, and deployed via CI/CD. This section expands
+          on Chapter 2.4's detection engineering with automation-focused implementation patterns.
+  - heading: Detection Code Repository Structure
+    id: detection_code_repository_structure
+    blocks:
+      - type: code
+        lang: text
+        caption: >-
+          Directory layout
+        text: |
+          detection-rules/
+            rules/
+              authentication/
+                failed_logins.yml
+                impossible_travel.yml
+                mfa_bypass.yml
+              lateral_movement/
+                rdp_lateral_movement.yml
+                smb_lateral_movement.yml
+              privilege_escalation/
+                admin_group_addition.yml
+                sudo_abuse.yml
+              persistence/
+                startup_items.yml
+                scheduled_tasks.yml
+            tests/
+              test_authentication.py
+              test_lateral_movement.py
+              test_fixtures/
+                benign_events.json
+                malicious_events.json
+            docs/
+              development_guide.md
+              deployment_guide.md
+            .github/
+              workflows/
+                test.yml
+                deploy.yml
+            scripts/
+              sigma_to_splunk.py
+              sigma_to_elastic.py
+      - type: fields
+        subject: Rule Metadata Requirements
+        entries:
+          - label: Required fields
+            value:
+              - 'title: Human-readable detection name'
+              - 'id: Unique UUID'
+              - 'status: experimental, testing, stable'
+              - 'description: What attack does this detect?'
+              - 'references: MITRE ATT&CK, threat intel'
+              - 'author: Who wrote this rule?'
+              - 'date: Creation date'
+              - 'modified: Last modification date'
+          - label: Optional fields
+            value:
+              - 'tags: Categories and labels'
+              - 'falsepositives: Known false positive scenarios'
+              - 'level: low, medium, high, critical'
+  - heading: CI/CD Pipeline for Detections
+    id: ci_cd_pipeline_for_detections
+    blocks:
+      - type: heading
+        level: 3
+        text: Continuous Integration
+      - type: fields
+        subject: On Pull Request
+        entries:
+          - label: 'Step 1: Linting'
+            value:
+              - Validate Sigma YAML syntax
+              - Check required fields present
+              - Enforce naming conventions
+          - label: 'Step 2: Unit tests'
+            value:
+              - Run detection against known malicious samples
+              - Verify true positive detection
+              - Run against known benign samples
+              - Verify no false positives
+          - label: 'Step 3: Conversion test'
+            value:
+              - Convert Sigma to target SIEM formats
+              - Validate converted queries syntax
+          - label: 'Step 4: Peer review'
+            value:
+              - Require 1+ approving reviews
+              - Review detection logic
+              - Review test coverage
+              - Review documentation
+      - type: code
+        lang: python
+        caption: >-
+          Automated testing example
+        text: |
+          import pytest
+          from sigma_converter import convert_to_splunk
+          from siem_emulator import run_query
+
+          def test_brute_force_detection():
+              # Load Sigma rule
+              rule = load_sigma_rule('rules/authentication/brute_force.yml')
+
+              # Convert to Splunk
+              spl_query = convert_to_splunk(rule)
+
+              # Load test data
+              malicious_events = load_fixture('tests/fixtures/brute_force_attack.json')
+              benign_events = load_fixture('tests/fixtures/normal_logins.json')
+
+              # Test true positive
+              results = run_query(spl_query, malicious_events)
+              assert results.alert_triggered == True
+              assert results.event_count >= 10
+
+              # Test true negative
+              results = run_query(spl_query, benign_events)
+              assert results.alert_triggered == False
+      - type: heading
+        level: 3
+        text: Continuous Deployment
+      - type: fields
+        subject: On Merge to Main
+        entries:
+          - label: 'Step 1: Conversion'
+            value:
+              - Convert Sigma rules to production SIEM format
+              - Generate deployment artifacts
+          - label: 'Step 2: Staging deployment'
+            value:
+              - Deploy to staging SIEM
+              - Run against last 7 days of real data
+              - Measure false positive rate
+              - Require <5% FP rate to proceed
+          - label: 'Step 3: Production deployment'
+            value:
+              - Deploy to production SIEM
+              - Enable alerting
+              - Notify SOC team
+          - label: 'Step 4: Documentation'
+            value:
+              - Update detection coverage matrix
+              - Generate release notes
+              - Update runbooks
+      - type: heading
+        level: 3
+        text: Rollback Capability
+      - type: fields
+        subject: Automated Rollback
+        entries:
+          - label: Trigger
+            value: False positive rate >20% in first hour
+          - label: Action
+            value:
+              - Disable detection rule automatically
+              - Create incident ticket
+              - Notify detection engineering team
+      - type: fields
+        subject: Manual Rollback
+        entries:
+          - label: Process
+            value:
+              - Identify problematic detection
+              - Git revert to previous version
+              - Redeploy to SIEM
+              - Root cause analysis
+  - heading: Detection Performance Monitoring
+    id: detection_performance_monitoring
+    blocks:
+      - type: fields
+        subject: Metrics per Detection
+        entries:
+          - label: Execution metrics
+            value:
+              - Alert volume (alerts per day)
+              - True positive rate
+              - False positive rate
+              - Precision (TP / (TP + FP))
+          - label: Performance metrics
+            value:
+              - Query execution time
+              - SIEM resource consumption
+          - label: Operational metrics
+            value:
+              - Mean time to investigate alerts
+              - Analyst feedback score
+      - type: fields
+        subject: Automated Quality Checks
+        entries:
+          - label: Weekly review
+            value:
+              - Identify detections with >30% FP rate
+              - Flag for tuning or retirement
+          - label: Monthly review
+            value:
+              - Detections with zero true positives in 30 days
+              - Consider retirement
+          - label: Quarterly review
+            value:
+              - Comprehensive performance review
+              - Update coverage assessment

@@ -1,0 +1,289 @@
+# section_01_06_rule_development_methodology.yaml
+
+---
+title: Rule Development Methodology
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 6
+  section_code: '0106'
+  source_chapter: '2.4'
+  source_key: detection_engineering.rule_development_methodology
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations developing custom detection rules
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Detection rule development determines program effectiveness and operational efficiency. This
+          section provides systematic methodology for designing, testing, and deploying high-fidelity
+          detection rules that balance coverage and false positive rates.
+  - heading: Detection Rule Design
+    id: detection_rule_design
+    blocks:
+      - type: heading
+        level: 3
+        text: Hypothesis Driven Approach
+      - type: fields
+        subject: 'Step 1: Hypothesis'
+        entries:
+          - label: Definition
+            value: Specific adversary behavior to detect
+          - label: Example
+            value: Adversary will use Mimikatz to dump LSASS memory for credential theft
+      - type: fields
+        subject: 'Step 2: Data Source'
+        entries:
+          - label: Question
+            value: What logs capture this behavior?
+          - label: Example
+            value: Windows Security Event ID 4656 (LSASS process access) or Sysmon Event ID 10 (Process
+              Access)
+      - type: fields
+        subject: 'Step 3: Detection Logic'
+        entries:
+          - label: Question
+            value: What pattern indicates malicious behavior?
+          - label: Example
+            value: Process accessing LSASS.exe with requested access rights including PROCESS_VM_READ
+      - type: fields
+        subject: 'Step 4: False Positive Prediction'
+        entries:
+          - label: Question
+            value: What legitimate activity triggers this logic?
+          - label: Example
+            value: Legitimate security tools, backup software, Windows processes
+      - type: fields
+        subject: 'Step 5: Tuning Approach'
+        entries:
+          - label: Question
+            value: How to reduce false positives without missing attacks?
+          - label: Example
+            value: Whitelist known-good processes, add context (privileged user performing action)
+      - type: heading
+        level: 3
+        text: Detection Logic Patterns
+      - type: fields
+        subject: Signature Based Detection
+        entries:
+          - label: Definition
+            value: Match known-bad indicators
+          - label: Examples
+            value:
+              - File hash matches known malware
+              - Network connection to known C2 IP address
+              - Process name matches malicious tool (mimikatz.exe)
+          - label: Advantages
+            value: High fidelity when indicators are accurate
+          - label: Disadvantages
+            value: Trivially bypassed (rename file, change IP)
+          - label: Use case
+            value: Commodity threats with stable indicators
+      - type: fields
+        subject: Threshold Based Detection
+        entries:
+          - label: Definition
+            value: Trigger on volume or frequency exceeding baseline
+          - label: Examples
+            value:
+              - More than 10 failed login attempts in 5 minutes
+              - More than 100 DNS queries from single host in 1 minute
+              - More than 1 GB outbound data transfer to uncommon destination
+          - label: Advantages
+            value: Simple to implement, low false positives with good thresholds
+          - label: Disadvantages
+            value: Slow attacks below threshold evade detection
+          - label: Use case
+            value: Brute force, DDoS, bulk data exfiltration
+      - type: fields
+        subject: Anomaly Based Detection
+        entries:
+          - label: Definition
+            value: Identify deviation from normal baseline
+          - label: Examples
+            value:
+              - User accesses system never accessed before
+              - Process executes from unusual path
+              - Network traffic to country never contacted before
+          - label: Advantages
+            value: Detects novel attacks, no prior knowledge needed
+          - label: Disadvantages
+            value: High false positive rate, requires baselining period
+          - label: Use case
+            value: Insider threats, zero-day exploitation, advanced attacks
+      - type: fields
+        subject: Correlation Based Detection
+        entries:
+          - label: Definition
+            value: Multiple events combined indicate attack
+          - label: Examples
+            value:
+              - Failed login followed by successful login from different IP
+              - Port scan followed by exploitation attempt
+              - Privilege escalation followed by lateral movement
+          - label: Advantages
+            value: Higher fidelity than single-event detection
+          - label: Disadvantages
+            value: Complex to build, performance intensive
+          - label: Use case
+            value: Multi-stage attacks, kill chain detection
+  - heading: Rule Testing Framework
+    id: rule_testing_framework
+    blocks:
+      - type: fields
+        subject: Unit Testing
+        entries:
+          - label: Purpose
+            value: Validate rule logic produces expected results
+          - label: Method
+            value:
+              - Create test event matching detection criteria
+              - Verify rule triggers alert
+              - Create test event not matching criteria
+              - Verify rule does not trigger
+          - label: Automation
+            value: Include unit tests in CI/CD pipeline
+      - type: fields
+        subject: Historical Data Testing
+        entries:
+          - label: Purpose
+            value: Measure false positive rate against real logs
+          - label: Method
+            value:
+              - Run rule against 30-90 days historical data
+              - Review all alerts generated
+              - Calculate true positive rate
+              - Tune rule if FP rate >30%
+          - label: Dataset size
+            value: Minimum 10,000 events to get meaningful FP estimate
+      - type: fields
+        subject: Red Team Validation
+        entries:
+          - label: Purpose
+            value: Verify rule detects actual attack
+          - label: Method
+            value:
+              - Red team performs technique rule designed to detect
+              - Validate alert fires within expected timeframe
+              - Confirm alert contains sufficient context for response
+          - label: Frequency
+            value: Quarterly validation of critical detections
+  - heading: Rule Documentation
+    id: rule_documentation
+    blocks:
+      - type: fields
+        subject: Required Elements
+        entries:
+          - label: Rule metadata
+            value:
+              - Unique rule ID
+              - Rule name (descriptive)
+              - MITRE ATT&CK technique mapping
+              - Severity level
+              - Author and creation date
+          - label: Detection logic
+            value:
+              - Plain language description of what rule detects
+              - SIEM query or Sigma rule
+              - Data sources required
+              - Expected alert frequency
+          - label: Investigation guidance
+            value:
+              - What to check when alert fires
+              - True positive indicators
+              - False positive indicators
+              - Escalation criteria
+          - label: Tuning history
+            value:
+              - Changes made to rule over time
+              - Rationale for each change
+              - Performance metrics (TP rate, FP rate)
+      - type: heading
+        level: 3
+        text: Sigma Rule Format
+      - type: definition
+        items:
+          - term: Description
+            description: Vendor-agnostic detection rule format
+      - type: heading
+        level: 4
+        text: Benefits
+      - type: list
+        style: bullet
+        items:
+          - Portable across SIEM platforms
+          - Community sharing and collaboration
+          - Version control friendly (YAML)
+      - type: heading
+        level: 4
+        text: Example Structure
+      - type: definition
+        items:
+          - term: Title
+            description: Mimikatz LSASS Memory Access
+          - term: ID
+            description: unique-uuid
+          - term: Status
+            description: stable
+          - term: Description
+            description: Detects process accessing LSASS memory
+      - type: heading
+        level: 5
+        text: References
+      - type: list
+        style: bullet
+        items:
+          - https://attack.mitre.org/techniques/T1003/001/
+      - type: definition
+        items:
+          - term: Author
+            description: Detection Engineering Team
+          - term: Date
+            description: '2025-01-15'
+      - type: fields
+        subject: Logsource
+        entries:
+          - label: Product
+            value: windows
+          - label: Service
+            value: security
+      - type: heading
+        level: 5
+        text: Detection
+      - type: fields
+        subject: Selection
+        entries:
+          - label: EventID
+            value: '4656'
+          - label: ObjectName
+            value: \Device\HarddiskVolume*\Windows\System32\lsass.exe
+          - label: AccessMask
+            value: '0x1010'
+      - type: definition
+        items:
+          - term: Condition
+            description: selection
+      - type: heading
+        level: 5
+        text: Falsepositives
+      - type: list
+        style: bullet
+        items:
+          - Security software
+          - Backup solutions
+      - type: definition
+        items:
+          - term: Level
+            description: high

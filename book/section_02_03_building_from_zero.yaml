@@ -1,0 +1,1092 @@
+# section_02_03_building_from_zero.yaml
+
+---
+title: Building from Zero
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 3
+  section_code: '0203'
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.building_from_zero
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Maturity Level 0-1 organizations
+  - heading: Scenario
+    id: scenario
+    blocks:
+      - type: prose
+        text: >-
+          Greenfield IAM deployment: startup growing beyond local accounts, enterprise acquiring company
+          with no identity infrastructure, or organization recognizing identity chaos during security
+          audit. This section provides 12-month roadmap from local accounts on every system to centralized
+          identity management with SSO and automation.
+  - heading: Prerequisites
+    id: prerequisites
+    blocks:
+      - type: definition
+        items:
+          - term: Budget
+            description: Estimated $50K-$300K first year (identity platform, integrations, staff)
+          - term: Team
+            description: Minimum 1 identity engineer or systems administrator
+          - term: Executive support
+            description: CIO or IT leadership sponsorship
+          - term: Application inventory
+            description: List of all applications requiring identity integration
+  - heading: 'Phase 1: Directory Deployment'
+    id: phase_1_directory_deployment
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 1-3
+          - term: Objective
+            description: Establish centralized identity repository
+          - term: Maturity progression
+            description: Level 0 → Level 1
+      - type: heading
+        level: 3
+        text: 'Month 1: Planning'
+      - type: definition
+        items:
+          - term: Goal
+            description: Assess current state and design target architecture
+      - type: heading
+        level: 4
+        text: Current State Assessment
+      - type: fields
+        subject: User Inventory
+        entries:
+          - label: Action
+            value: Document all users and their access
+          - label: Method
+            value:
+              - Survey departments for headcount
+              - Identify contractors, vendors, service accounts
+              - Map users to applications and systems
+          - label: Output
+            value: User inventory spreadsheet with access requirements
+      - type: fields
+        subject: Application Inventory
+        entries:
+          - label: Action
+            value: Catalog all applications requiring authentication
+          - label: Categories
+            value:
+              - On-premise applications (internal web apps, databases)
+              - SaaS applications (Salesforce, Workday, GitHub)
+              - Infrastructure (servers, network devices, cloud platforms)
+          - label: Assessment criteria
+            value:
+              - Authentication method (local accounts, LDAP, SAML, OAuth)
+              - Number of users
+              - Criticality to business
+              - Integration complexity
+          - label: Output
+            value: Application inventory with integration priority
+      - type: fields
+        subject: Pain Point Identification
+        entries:
+          - label: Questions
+            value:
+              - How long does new employee account setup take?
+              - How many different passwords do users manage?
+              - How often are terminated employee accounts still active?
+              - What applications cannot integrate with directory?
+          - label: Output
+            value: Prioritized list of problems to solve
+      - type: heading
+        level: 4
+        text: Platform Selection
+      - type: heading
+        level: 5
+        text: Decision Factors
+      - type: fields
+        subject: Organizational Context
+        entries:
+          - label: Windows centric
+            value: Active Directory (on-premise or hybrid)
+          - label: Cloud native
+            value: Azure AD, Okta, Google Workspace
+          - label: Multi-cloud
+            value: Okta, Azure AD (broad integration ecosystem)
+      - type: fields
+        subject: Budget Constraints
+        entries:
+          - label: High budget
+            value: Okta, Azure AD Premium
+          - label: Medium budget
+            value: Azure AD, Google Workspace
+          - label: Low budget
+            value: Open source (FreeIPA, OpenLDAP) - requires expertise
+      - type: fields
+        subject: Timeline
+        entries:
+          - label: Urgent
+            value: Cloud identity (fast deployment)
+          - label: Moderate
+            value: Hybrid AD (flexibility)
+          - label: Patient
+            value: On-premise AD (control)
+      - type: heading
+        level: 5
+        text: Vendor Comparison
+      - type: fields
+        subject: Active Directory
+        entries:
+          - label: Strengths
+            value:
+              - Industry standard for Windows environments
+              - Deep Windows integration
+              - Group Policy for endpoint management
+              - Mature ecosystem
+          - label: Weaknesses
+            value:
+              - On-premise infrastructure required
+              - Limited cloud application support
+              - Complex for non-Windows environments
+          - label: Cost
+            value: $50K-$150K implementation, $20K-$50K annual
+          - label: Best for
+            value: Windows-centric, on-premise applications
+      - type: fields
+        subject: Azure AD
+        entries:
+          - label: Strengths
+            value:
+              - Cloud-native, no infrastructure
+              - Excellent Microsoft 365 integration
+              - Conditional access policies
+              - Growing SaaS integration library
+          - label: Weaknesses
+            value:
+              - Less mature than on-premise AD
+              - Limited on-premise application support without hybrid
+          - label: Cost
+            value: $6-$60 per user/month depending on tier
+          - label: Best for
+            value: Microsoft-centric, cloud-first organizations
+      - type: fields
+        subject: Okta
+        entries:
+          - label: Strengths
+            value:
+              - Best-in-class SSO integration library
+              - Excellent API and automation
+              - Strong lifecycle management
+              - Cloud-agnostic
+          - label: Weaknesses
+            value:
+              - No directory service included (needs backend directory)
+              - Premium pricing
+          - label: Cost
+            value: $3-$15 per user/month
+          - label: Best for
+            value: Multi-cloud, SaaS-heavy environments
+      - type: fields
+        subject: Google Workspace
+        entries:
+          - label: Strengths
+            value:
+              - Includes productivity suite
+              - Simple administration
+              - Good for startups and SMBs
+          - label: Weaknesses
+            value:
+              - Limited enterprise features
+              - Smaller SSO integration library
+          - label: Cost
+            value: $6-$18 per user/month
+          - label: Best for
+            value: Startups, Google-centric organizations
+      - type: heading
+        level: 3
+        text: 'Month 2: Directory Implementation'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy directory service and migrate initial users
+      - type: fields
+        subject: Infrastructure Setup
+        entries:
+          - label: On premise AD
+            value:
+              - Deploy domain controllers (minimum 2 for redundancy)
+              - Configure DNS and DHCP
+              - Establish domain structure and OU hierarchy
+              - Configure group policy baseline
+          - label: Cloud identity
+            value:
+              - Provision tenant (Azure AD, Okta, Google)
+              - Configure custom domain
+              - Set password policies
+              - Configure MFA settings
+      - type: fields
+        subject: Initial User Migration
+        entries:
+          - label: Pilot group selection
+            value:
+              - Select IT department as pilot (10-20 users)
+              - Include mix of roles and use cases
+              - Avoid critical business users in initial pilot
+          - label: Migration process
+            value:
+              - Create user accounts in directory
+              - Assign group memberships
+              - Configure MFA enrollment
+              - Test authentication and access
+          - label: Rollback plan
+            value:
+              - Keep local accounts active during pilot
+              - Document procedure to revert if issues
+      - type: fields
+        subject: Group Structure Design
+        entries:
+          - label: Organizational groups
+            value:
+              - By department (engineering, sales, finance)
+              - By location (HQ, remote offices)
+              - By employee type (FTE, contractor, vendor)
+          - label: Access groups
+            value:
+              - Application-specific (salesforce-users, github-users)
+              - Resource-specific (finance-data-access, engineering-systems)
+              - Privilege levels (admins, power-users, read-only)
+          - label: Best practices
+            value:
+              - Use nested groups (user → role → resource)
+              - Descriptive naming convention
+              - Document group purpose and ownership
+      - type: heading
+        level: 3
+        text: 'Month 3: Endpoint Integration'
+      - type: definition
+        items:
+          - term: Goal
+            description: Integrate workstations and servers with directory
+      - type: fields
+        subject: Workstation Domain Join
+        entries:
+          - label: Windows
+            value:
+              - Domain join workstations to AD
+              - Apply group policies
+              - Enable SSO to directory-integrated apps
+          - label: Mac
+            value:
+              - Bind to directory (AD, Azure AD, Okta)
+              - Configure Kerberos SSO
+              - Deploy configuration profiles
+          - label: Linux
+            value:
+              - Configure SSSD or Winbind for AD integration
+              - Set up Kerberos authentication
+              - Configure sudo via AD groups
+      - type: heading
+        level: 4
+        text: Server Integration
+      - type: list
+        style: bullet
+        items:
+          - Domain join servers or configure LDAP authentication
+          - Replace local admin accounts with domain accounts
+          - Implement privilege management (covered in phase 3)
+      - type: heading
+        level: 4
+        text: VPN Integration
+      - type: list
+        style: bullet
+        items:
+          - Configure VPN to authenticate against directory
+          - Require MFA for VPN access
+          - Deploy client certificates or hardware tokens
+  - heading: 'Phase 2: SSO Deployment'
+    id: phase_2_sso_deployment
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 4-6
+          - term: Objective
+            description: Deploy SSO and eliminate application-specific passwords
+          - term: Maturity progression
+            description: Level 1 → Level 2
+      - type: heading
+        level: 3
+        text: 'Month 4: SSO Platform Deployment'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy SSO infrastructure and integrate first applications
+      - type: heading
+        level: 4
+        text: SSO Platform Selection
+      - type: fields
+        subject: Options
+        entries:
+          - label: Azure AD SSO
+            value: If using Azure AD as directory
+          - label: Okta SSO
+            value: If using Okta or want best-in-class integrations
+          - label: Google workspace SSO
+            value: If using Google Workspace
+      - type: heading
+        level: 4
+        text: SSO Architecture
+      - type: definition
+        items:
+          - term: Identity provider IdP
+            description: SSO platform (Azure AD, Okta)
+          - term: Service provider SP
+            description: Applications users access
+      - type: fields
+        subject: Protocols
+        entries:
+          - label: SAML
+            value: Mature, widely supported, XML-based
+          - label: OIDC
+            value: Modern, JSON-based, better for APIs
+          - label: OAuth
+            value: Delegation protocol, used with OIDC
+      - type: heading
+        level: 4
+        text: Initial Application Integration
+      - type: heading
+        level: 5
+        text: Application Prioritization
+      - type: fields
+        subject: 'Tier 1: Critical'
+        entries:
+          - label: Priority
+            value: Integrate first
+          - label: Criteria
+            value:
+              - High user count (>50% of organization)
+              - Daily usage
+              - Security risk if compromised
+          - label: Examples
+            value: Email, file sharing, productivity suite
+      - type: fields
+        subject: 'Tier 2: Important'
+        entries:
+          - label: Priority
+            value: Integrate second
+          - label: Criteria
+            value:
+              - Moderate user count (20-50% of organization)
+              - Weekly usage
+              - Department-critical
+          - label: Examples
+            value: CRM, project management, collaboration tools
+      - type: fields
+        subject: 'Tier 3: Nice to Have'
+        entries:
+          - label: Priority
+            value: Integrate last
+          - label: Criteria
+            value:
+              - Low user count (<20% of organization)
+              - Infrequent usage
+              - Individual tool preferences
+          - label: Examples
+            value: Specialized tools, personal apps
+      - type: heading
+        level: 5
+        text: Integration Process
+      - type: heading
+        level: 6
+        text: Pre-Built Integrations
+      - type: list
+        style: bullet
+        items:
+          - Check SSO platform app gallery
+          - Follow vendor integration guide
+          - Test with pilot users
+          - Roll out to all users
+      - type: heading
+        level: 6
+        text: Custom Integrations
+      - type: list
+        style: bullet
+        items:
+          - Application supports SAML or OIDC
+          - Configure SSO in application admin panel
+          - Exchange metadata with identity provider
+          - Test authentication flow
+          - Configure attribute mapping (username, email, groups)
+      - type: fields
+        subject: Applications Without SSO
+        entries:
+          - label: Password vaulting
+            value: Store passwords in PAM solution
+          - label: Reverse proxy
+            value: Deploy SSO reverse proxy (e.g., Google IAP, Cloudflare Access)
+          - label: Retirement
+            value: Consider replacing if security-critical
+      - type: heading
+        level: 3
+        text: 'Month 5: MFA Deployment'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy multi-factor authentication organization-wide
+      - type: heading
+        level: 4
+        text: MFA Methods
+      - type: fields
+        subject: Push Notifications
+        entries:
+          - label: Method
+            value: Mobile app push (Duo, Okta Verify, Microsoft Authenticator)
+          - label: Pros
+            value:
+              - User-friendly
+              - Hard to phish (compared to SMS)
+          - label: Cons
+            value:
+              - Requires mobile device
+              - Push fatigue (users approve without checking)
+          - label: Use case
+            value: Primary MFA method for most users
+      - type: fields
+        subject: TOTP Authenticator
+        entries:
+          - label: Method
+            value: Time-based one-time password (Google Authenticator, Authy)
+          - label: Pros
+            value:
+              - Works offline
+              - No phone number required
+          - label: Cons
+            value:
+              - User must type code
+              - Can be phished with real-time proxy attacks
+          - label: Use case
+            value: Backup method, users without smartphones
+      - type: fields
+        subject: Hardware Tokens
+        entries:
+          - label: Method
+            value: FIDO2 security keys (YubiKey, Titan Key)
+          - label: Pros
+            value:
+              - Strongest security (phishing-resistant)
+              - No batteries, long-lived
+          - label: Cons
+            value:
+              - Cost ($20-50 per key)
+              - Users must carry physical token
+          - label: Use case
+            value: High-privilege users (admins, executives)
+      - type: fields
+        subject: SMS Codes
+        entries:
+          - label: Method
+            value: SMS text message with code
+          - label: Pros
+            value:
+              - No app installation required
+              - Familiar to users
+          - label: Cons
+            value:
+              - Vulnerable to SIM swapping
+              - Network-dependent
+              - Not NIST-recommended
+          - label: Use case
+            value: Avoid if possible, only for legacy systems
+      - type: heading
+        level: 4
+        text: MFA Rollout Strategy
+      - type: fields
+        subject: 'Phase 1: Admins'
+        entries:
+          - label: Target
+            value: IT administrators and privileged users
+          - label: Timeline
+            value: Week 1
+          - label: Method
+            value: Hardware tokens
+          - label: Rationale
+            value: Highest risk if compromised
+      - type: fields
+        subject: 'Phase 2: Remote Access'
+        entries:
+          - label: Target
+            value: All users for VPN and remote access
+          - label: Timeline
+            value: Week 2-3
+          - label: Method
+            value: Push notifications or TOTP
+          - label: Rationale
+            value: External access highest risk
+      - type: fields
+        subject: 'Phase 3: All Users'
+        entries:
+          - label: Target
+            value: All users for all applications
+          - label: Timeline
+            value: Week 4-6
+          - label: Method
+            value: Push notifications with TOTP backup
+          - label: Rationale
+            value: Complete MFA coverage
+      - type: heading
+        level: 5
+        text: User Communication
+      - type: list
+        style: bullet
+        items:
+          - Announce MFA requirement 2 weeks in advance
+          - Provide enrollment instructions and support
+          - Offer training sessions
+          - IT help desk prepared for enrollment assistance
+      - type: heading
+        level: 3
+        text: 'Month 6: SSO Expansion'
+      - type: definition
+        items:
+          - term: Goal
+            description: Integrate remaining applications and achieve >90% SSO coverage
+      - type: heading
+        level: 4
+        text: Integration Acceleration
+      - type: list
+        style: bullet
+        items:
+          - Integrate Tier 2 applications (department-critical)
+          - Address custom applications requiring SAML/OIDC configuration
+          - Deploy SSO reverse proxy for legacy apps
+          - Retire or replace applications that cannot integrate
+      - type: fields
+        subject: Password Vault Deployment
+        entries:
+          - label: Use case
+            value: Applications without SSO support
+          - label: Solutions
+            value: 1Password, LastPass Enterprise, CyberArk
+          - label: Configuration
+            value:
+              - Integrate with SSO for vault access
+              - Store application credentials in vault
+              - Users access vault via SSO, vault provides app credentials
+              - Rotate stored credentials quarterly
+      - type: heading
+        level: 4
+        text: Success Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'SSO coverage: >90% of applications'
+          - 'User adoption: >95% of users using SSO daily'
+          - 'Password reset tickets: 50%+ reduction'
+          - 'MFA enrollment: 100% of users'
+  - heading: 'Phase 3: Automation and Governance'
+    id: phase_3_automation_and_governance
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 7-9
+          - term: Objective
+            description: Automate identity lifecycle and establish governance
+          - term: Maturity progression
+            description: Level 2 optimization
+      - type: heading
+        level: 3
+        text: 'Month 7: Automated Provisioning'
+      - type: definition
+        items:
+          - term: Goal
+            description: Automate user provisioning from HR system
+      - type: heading
+        level: 4
+        text: HR System Integration
+      - type: fields
+        subject: Identity Authoritative Source
+        entries:
+          - label: Concept
+            value: HR system is source of truth for user identity
+          - label: Data elements
+            value:
+              - Employee ID (unique identifier)
+              - Name, email, department, manager
+              - Job title, location, employment type
+              - Hire date, termination date, role changes
+      - type: heading
+        level: 5
+        text: Integration Architecture
+      - type: fields
+        subject: Push Based
+        entries:
+          - label: Method
+            value: HR system pushes events to identity platform
+          - label: Technologies
+            value: Webhooks, API calls, message queues
+          - label: Advantages
+            value:
+              - Real-time or near-real-time provisioning
+              - Event-driven (hire, terminate, role change)
+          - label: Disadvantages
+            value:
+              - Requires HR system customization
+              - More complex to implement
+          - label: Use case
+            value: Modern HR platforms with API support
+      - type: fields
+        subject: Pull Based
+        entries:
+          - label: Method
+            value: Identity platform polls HR system periodically
+          - label: Technologies
+            value: Scheduled API calls, SCIM, CSV import
+          - label: Advantages
+            value:
+              - Simpler implementation
+              - Works with legacy HR systems
+          - label: Disadvantages
+            value:
+              - Delay between HR event and provisioning
+              - Polling frequency vs latency tradeoff
+          - label: Use case
+            value: Legacy HR systems without webhook support
+      - type: heading
+        level: 4
+        text: Provisioning Workflows
+      - type: heading
+        level: 5
+        text: New Hire Workflow
+      - type: definition
+        items:
+          - term: Trigger
+            description: HR creates employee record
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: Step 1
+            value: Create user account in directory
+          - label: Step 2
+            value: Assign to groups based on department and role
+          - label: Step 3
+            value: Provision email account
+          - label: Step 4
+            value: Grant access to standard applications (SSO)
+          - label: Step 5
+            value: Send welcome email with enrollment instructions
+          - label: Step 6
+            value: Create ticket for hardware provisioning
+      - type: definition
+        items:
+          - term: Timing
+            description: Complete within 4 hours of hire event
+      - type: heading
+        level: 5
+        text: Role Change Workflow
+      - type: definition
+        items:
+          - term: Trigger
+            description: HR updates job title or department
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: Step 1
+            value: Identify permission changes required
+          - label: Step 2
+            value: Add new permissions
+          - label: Step 3
+            value: Flag old permissions for review (don't auto-remove)
+          - label: Step 4
+            value: Notify manager for access review
+      - type: definition
+        items:
+          - term: Timing
+            description: Initiate within 24 hours of change
+      - type: heading
+        level: 5
+        text: Termination Workflow
+      - type: definition
+        items:
+          - term: Trigger
+            description: HR sets termination date or disables employee
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: Step 1
+            value: Disable user account immediately (within 15 minutes)
+          - label: Step 2
+            value: Revoke SSO sessions (force re-authentication)
+          - label: Step 3
+            value: Disable email forwarding and shared mailbox access
+          - label: Step 4
+            value: Revoke access to all applications
+          - label: Step 5
+            value: Notify manager to reassign owned resources
+          - label: Step 6
+            value: Schedule account deletion after retention period
+      - type: definition
+        items:
+          - term: Timing
+            description: Critical - execute within 15 minutes
+      - type: heading
+        level: 3
+        text: 'Month 8: Access Governance'
+      - type: definition
+        items:
+          - term: Goal
+            description: Implement access reviews and attestation
+      - type: heading
+        level: 4
+        text: Access Review Framework
+      - type: heading
+        level: 5
+        text: Quarterly Manager Reviews
+      - type: definition
+        items:
+          - term: Scope
+            description: Manager reviews direct reports' access
+      - type: fields
+        subject: Process
+        entries:
+          - label: Step 1
+            value: 'System generates report: user → applications → permissions'
+          - label: Step 2
+            value: Manager reviews each user's access
+          - label: Step 3
+            value: Manager attests access is appropriate or flags for removal
+          - label: Step 4
+            value: Flagged access automatically revoked
+          - label: Step 5
+            value: Attestation recorded for audit
+      - type: definition
+        items:
+          - term: Automation
+            description: Email workflow with approve/deny buttons
+      - type: fields
+        subject: Application Owner Reviews
+        entries:
+          - label: Scope
+            value: App owner reviews all users with access to their application
+          - label: Frequency
+            value: Quarterly
+          - label: Focus
+            value: Identify users who no longer need access
+      - type: fields
+        subject: Privileged Access Reviews
+        entries:
+          - label: Scope
+            value: Admin and privileged accounts
+          - label: Frequency
+            value: Monthly (more frequent due to risk)
+          - label: Focus
+            value: Verify privileged access still required
+      - type: heading
+        level: 4
+        text: Segregation of Duties
+      - type: definition
+        items:
+          - term: Concept
+            description: Prevent single user from having conflicting permissions
+      - type: heading
+        level: 5
+        text: SoD Policies
+      - type: fields
+        subject: Financial Controls
+        entries:
+          - label: Conflict
+            value: User cannot both approve and execute payments
+          - label: Enforcement
+            value: System prevents assignment of both permissions
+      - type: fields
+        subject: It Controls
+        entries:
+          - label: Conflict
+            value: Developer cannot deploy to production without approval
+          - label: Enforcement
+            value: Separate groups for dev and prod access
+      - type: fields
+        subject: Security Controls
+        entries:
+          - label: Conflict
+            value: Security engineer cannot bypass their own access restrictions
+          - label: Enforcement
+            value: Segregated admin roles, approval required
+      - type: heading
+        level: 5
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Define SoD policies per regulation (SOX, PCI, HIPAA)
+          - Map policies to permission sets
+          - Configure automated checks in IAM system
+          - Alert on policy violations
+          - Require exception approval and documentation
+      - type: heading
+        level: 3
+        text: 'Month 9: Service Account Governance'
+      - type: definition
+        items:
+          - term: Goal
+            description: Establish service account management and hygiene
+      - type: heading
+        level: 4
+        text: Service Account Discovery
+      - type: definition
+        items:
+          - term: Challenge
+            description: Service accounts proliferate without tracking
+      - type: fields
+        subject: Discovery Methods
+        entries:
+          - label: Directory query
+            value: Query directory for non-interactive accounts
+          - label: Authentication logs
+            value: Identify accounts with API/service authentication patterns
+          - label: Application audit
+            value: Survey application teams for service accounts
+      - type: definition
+        items:
+          - term: Output
+            description: Complete inventory of service accounts with owners
+      - type: heading
+        level: 4
+        text: Service Account Lifecycle
+      - type: fields
+        subject: Creation Process
+        entries:
+          - label: Request
+            value: Developer submits service account request
+          - label: Approval
+            value: Security and application owner approve
+          - label: Provisioning
+            value: Automated creation with metadata
+          - label: Metadata required
+            value:
+              - Owner (team responsible)
+              - Purpose (what application or service)
+              - Expiration date (force review)
+              - Permissions required (least privilege)
+      - type: heading
+        level: 5
+        text: Credential Management
+      - type: fields
+        subject: Long Lived Credentials
+        entries:
+          - label: Problem
+            value: API keys and passwords never rotated
+          - label: Mitigation
+            value:
+              - Mandatory 90-day rotation
+              - Automated rotation where possible
+              - Monitoring for credential age
+      - type: fields
+        subject: Short Lived Credentials
+        entries:
+          - label: Preferred
+            value: Ephemeral credentials via workload identity
+          - label: Implementation
+            value:
+              - 'Cloud platforms: IAM roles for services'
+              - 'Kubernetes: Service account tokens'
+              - 'OAuth: Client credentials with short-lived tokens'
+      - type: fields
+        subject: Permission Reviews
+        entries:
+          - label: Frequency
+            value: Quarterly for each service account
+          - label: Process
+            value:
+              - Owner attests account still needed
+              - Owner attests permissions are least privilege
+              - Unused accounts automatically disabled
+  - heading: 'Phase 4: Maturity and Optimization'
+    id: phase_4_maturity_and_optimization
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 10-12
+          - term: Objective
+            description: Optimize IAM program and prepare for zero trust
+          - term: Maturity progression
+            description: Level 2 → Level 3 preparation
+      - type: heading
+        level: 3
+        text: 'Month 10: Identity Analytics'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy identity analytics and threat detection
+      - type: fields
+        subject: Identity Logging
+        entries:
+          - label: Log sources
+            value:
+              - Authentication events (login success/failure)
+              - Authorization decisions (access granted/denied)
+              - Permission changes (role assignments, policy updates)
+              - Privileged actions (password resets, group modifications)
+          - label: Centralization
+            value: Forward all identity logs to SIEM
+          - label: Retention
+            value: 90 days hot, 1 year warm, 7 years cold
+      - type: heading
+        level: 4
+        text: Identity Threat Detection
+      - type: heading
+        level: 5
+        text: Detection Rules
+      - type: fields
+        subject: Impossible Travel
+        entries:
+          - label: Logic
+            value: User login from two locations <4 hours apart
+          - label: Severity
+            value: High
+      - type: fields
+        subject: Brute Force
+        entries:
+          - label: Logic
+            value: More than 10 failed logins in 5 minutes
+          - label: Severity
+            value: Medium
+      - type: fields
+        subject: Privilege Escalation
+        entries:
+          - label: Logic
+            value: User added to admin group
+          - label: Severity
+            value: High
+      - type: fields
+        subject: After Hours Admin
+        entries:
+          - label: Logic
+            value: Administrative action outside business hours
+          - label: Severity
+            value: Medium
+      - type: fields
+        subject: Dormant Account Login
+        entries:
+          - label: Logic
+            value: Account inactive >90 days suddenly active
+          - label: Severity
+            value: High
+      - type: definition
+        items:
+          - term: Integration
+            description: Reference Chapter 2.4 Detection Engineering for full methodology
+      - type: heading
+        level: 3
+        text: 'Month 11: Privilege Management'
+      - type: definition
+        items:
+          - term: Goal
+            description: Implement just-in-time access and privilege analytics
+      - type: heading
+        level: 4
+        text: Just in Time Access
+      - type: definition
+        items:
+          - term: Concept
+            description: Grant elevated privileges only when needed, automatically revoke
+      - type: heading
+        level: 5
+        text: Implementation
+      - type: heading
+        level: 6
+        text: Request Workflow
+      - type: list
+        style: bullet
+        items:
+          - User requests elevated access via portal
+          - Manager or security approves (or auto-approve for pre-authorized scenarios)
+          - Privileges granted for time-bound period (1-8 hours)
+          - Privileges automatically revoked after expiration
+      - type: fields
+        subject: Break Glass Accounts
+        entries:
+          - label: Use case
+            value: Emergency access when normal procedures fail
+          - label: Implementation
+            value:
+              - Dedicated admin accounts stored offline
+              - Break glass credentials in sealed envelope or hardware vault
+              - Usage triggers immediate incident response
+              - All actions audited and reviewed
+      - type: fields
+        subject: Privileged Access Workstations
+        entries:
+          - label: Concept
+            value: Dedicated hardened workstations for admin tasks
+          - label: Requirements
+            value:
+              - Separate from regular workstations
+              - No internet browsing or email
+              - Enhanced logging and monitoring
+              - MFA required for all access
+          - label: Rationale
+            value: Prevent credential theft via phishing or malware on regular workstation
+      - type: heading
+        level: 3
+        text: 'Month 12: Metrics and Continuous Improvement'
+      - type: definition
+        items:
+          - term: Goal
+            description: Establish IAM program metrics and improvement process
+      - type: fields
+        subject: IAM Program KPIs
+        entries:
+          - label: Provisioning metrics
+            value:
+              - 'Time to provision new hire: Target <4 hours'
+              - 'Time to deprovision terminated employee: Target <1 hour'
+              - 'Percentage of provisioning automated: Target >90%'
+              - 'Orphaned accounts: Target = 0'
+          - label: Access governance metrics
+            value:
+              - 'Access review completion rate: Target 100%'
+              - 'Average time to complete access review: Target <5 days'
+              - 'Permissions revoked per review cycle: Track trend'
+              - 'SoD violations: Target = 0'
+          - label: Authentication metrics
+            value:
+              - 'SSO coverage: Target >95%'
+              - 'MFA enrollment: Target 100%'
+              - 'Password reset tickets: Track reduction trend'
+              - 'Failed authentication rate: Track for anomalies'
+          - label: Security metrics
+            value:
+              - 'Mean time to detect identity compromise: Target <4 hours'
+              - 'Service accounts with rotated credentials: Target >90%'
+              - 'Privileged accounts with MFA: Target 100%'
+              - 'Identity-based security incidents: Track trend'
+      - type: fields
+        subject: Continuous Improvement Cycle
+        entries:
+          - label: Monthly
+            value:
+              - Review operational metrics
+              - Address provisioning delays or errors
+              - Tune detection rules based on false positives
+          - label: Quarterly
+            value:
+              - Conduct access reviews
+              - Assess SSO integration progress
+              - Update threat detection rules
+              - Review and rotate service account credentials
+          - label: Annually
+            value:
+              - Comprehensive IAM program assessment
+              - Benchmark against industry standards
+              - Update IAM strategy and roadmap
+              - Budget planning for next year

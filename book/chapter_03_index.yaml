@@ -1,0 +1,143 @@
+# chapter_03_index.yaml
+
+---
+title: 'Chapter 3: Security Automation and Orchestration - Index'
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  book: Security Operating Manual
+  chapter: 3
+  source_chapter: '4.1'
+  repository: https://github.com/ruwgxo/security-operating-manual
+  license: MIT
+  legacy:
+    part: 'Part IV: Operations'
+    github: github.com/ruwgxo
+    license: MIT
+    classification: Security Operating Manual
+    sections_in_this_document:
+      - overview
+      - core_principles
+      - maturity_model
+      - building_from_zero
+      - automation_strategy
+      - soar_architecture
+      - playbook_development
+      - detection_as_code
+      - infrastructure_as_code_security
+      - automated_response
+      - security_tool_integration
+      - metrics_and_measurement
+    core_principles_covered:
+      - id: AUTO-P001
+        name: Automate toil, amplify analysts
+      - id: AUTO-P002
+        name: Code over clicks
+      - id: AUTO-P003
+        name: Idempotent and reversible
+      - id: AUTO-P004
+        name: Fail safe, not fail deadly
+      - id: AUTO-P005
+        name: Measure everything
+      - id: AUTO-P006
+        name: Security as code
+    how_to_use_this_chapter:
+      step_1: Read overview and core principles
+      step_2: Complete automation maturity self-assessment
+      step_3: Jump to section matching your maturity level
+      step_4: Cross-reference with Chapters 2.4 and 3.1 for automation opportunities
+chapter_overview:
+  overview: >-
+    Security automation transforms repetitive manual tasks into scalable, consistent, and rapid machine-executed
+    processes. The average security analyst spends 60-70% of time on repetitive tasks: alert triage, log
+    analysis, ticket creation, data enrichment. Automation reclaims this time for high-value work: threat
+    hunting, detection engineering, architecture.
+
+
+    This chapter addresses security automation at enterprise scale: SOAR platforms, response playbooks,
+    detection-as-code, infrastructure security automation. Organizations automating effectively achieve
+    10x improvement in mean time to respond while reducing analyst burnout and operational costs.
+
+
+    Security automation is not replacing analysts - it's amplifying their capability. One analyst with
+    automation handles workload of five analysts without automation. This chapter shows how to build that
+    multiplier.
+sections:
+  - section_number: '3.1'
+    title: Core Principles
+    filename: section_03_01_core_principles.yaml
+  - section_number: '3.2'
+    title: Maturity Model
+    filename: section_03_02_maturity_model.yaml
+  - section_number: '3.3'
+    title: Building from Zero
+    filename: section_03_03_building_from_zero.yaml
+  - section_number: '3.4'
+    title: Automation Strategy
+    filename: section_03_04_automation_strategy.yaml
+  - section_number: '3.5'
+    title: SOAR Architecture
+    filename: section_03_05_soar_architecture.yaml
+  - section_number: '3.6'
+    title: Playbook Development
+    filename: section_03_06_playbook_development.yaml
+  - section_number: '3.7'
+    title: Detection as Code
+    filename: section_03_07_detection_as_code.yaml
+  - section_number: '3.8'
+    title: Infrastructure as Code Security
+    filename: section_03_08_infrastructure_as_code_security.yaml
+  - section_number: '3.9'
+    title: Automated Response
+    filename: section_03_09_automated_response.yaml
+  - section_number: '3.10'
+    title: Security Tool Integration
+    filename: section_03_10_security_tool_integration.yaml
+  - section_number: '3.11'
+    title: Metrics and Measurement
+    filename: section_03_11_metrics_and_measurement.yaml
+references:
+  soar_platforms:
+    - Splunk SOAR (formerly Phantom)
+    - Palo Alto Cortex XSOAR
+    - Swimlane
+    - Tines
+    - IBM Resilient
+  iac_security_tools:
+    - 'Checkov: Multi-cloud IaC security scanning'
+    - 'tfsec: Terraform security scanner'
+    - 'Terrascan: IaC security scanner'
+    - 'Bridgecrew: IaC security platform'
+  detection_as_code_tools:
+    - 'Sigma: Generic signature format'
+    - 'Detection Lab: Detection testing environment'
+    - 'Elastic Detection Rules: Detection-as-code examples'
+  policy_as_code:
+    - 'Open Policy Agent (OPA): Policy engine'
+    - 'HashiCorp Sentinel: Policy as code for Terraform'
+    - 'AWS Config Rules: AWS-native compliance'
+    - 'Azure Policy: Azure governance'
+cross_references:
+  manual_chapters:
+    - chapter: '2.4'
+      title: Detection Engineering
+      relevance: Detection-as-code extends detection engineering with automation
+    - chapter: '3.1'
+      title: IAM at Scale
+      relevance: Automated identity lifecycle and response
+    - chapter: '4.3'
+      title: Incident Response
+      relevance: Automated response playbooks execute IR procedures
+  vault_repositories:
+    - repo: vault-automation-scripts
+      description: Security automation scripts and playbooks
+      relevance: Implementation examples for this chapter
+    - repo: vault-detection-response
+      description: Detection rules as code
+      relevance: Detection-as-code implementation
+    - repo: vault-infrastructure
+      description: Infrastructure-as-code with security
+      relevance: Secure IaC patterns

@@ -1,0 +1,341 @@
+# section_01_02_maturity_model.yaml
+
+---
+title: Maturity Model
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 2
+  section_code: '0102'
+  source_chapter: '2.4'
+  source_key: detection_engineering.maturity_model
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Purpose
+    id: purpose
+    blocks:
+      - type: prose
+        text: >-
+          Detection program maturity determines appropriate strategy, tooling, and investment priorities.
+          This model enables organizations to assess current capability, identify gaps, and chart development
+          path. Use self-assessment to determine which sections of this chapter apply to your program.
+  - heading: Maturity Levels
+    id: maturity_levels
+    blocks:
+      - type: heading
+        level: 3
+        text: 'Level 0: No Detection'
+      - type: definition
+        items:
+          - term: Name
+            description: No Detection Capability
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Logging
+            value: No centralized log collection
+          - label: Monitoring
+            value: No security event monitoring
+          - label: Response
+            value: Reactive investigation only after incident discovery
+          - label: Visibility
+            value: Limited to individual system logs
+          - label: Team
+            value: No dedicated detection engineering capability
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Security incidents discovered by users or external parties
+          - No ability to investigate historical activity
+          - Mean time to detect measured in weeks or months
+          - Compliance audits identify lack of monitoring
+      - type: definition
+        items:
+          - term: Next steps
+            description: Follow building_from_zero implementation path
+          - term: Estimated timeline
+            description: 6-12 months to reach Level 1
+      - type: heading
+        level: 3
+        text: 'Level 1: Basic Logging'
+      - type: definition
+        items:
+          - term: Name
+            description: Basic Logging
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Logging
+            value: Centralized log collection deployed
+          - label: Monitoring
+            value: Manual log review only
+          - label: Response
+            value: Incident investigation capability exists
+          - label: Visibility
+            value: Can query historical events
+          - label: Team
+            value: Security analysts performing manual analysis
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Logs collected from critical systems
+          - Investigations require manual log searching
+          - No automated alerting on suspicious activity
+          - Mean time to detect measured in days
+      - type: definition
+        items:
+          - term: Next steps
+            description: Deploy SIEM platform and basic detection rules
+          - term: Estimated timeline
+            description: 6-12 months to reach Level 2
+      - type: heading
+        level: 3
+        text: 'Level 2: Reactive Detection'
+      - type: definition
+        items:
+          - term: Name
+            description: Reactive Detection
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Logging
+            value: Comprehensive log collection across environment
+          - label: Monitoring
+            value: SIEM deployed with signature-based detection
+          - label: Response
+            value: Automated alerting on known-bad indicators
+          - label: Visibility
+            value: Real-time and historical event correlation
+          - label: Team
+            value: SOC analysts triaging automated alerts
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Detection rules deployed for common attack patterns
+          - Alert fatigue common due to high false positive rates
+          - Detection focused on known threats (IOCs, signatures)
+          - Mean time to detect measured in hours to days
+      - type: definition
+        items:
+          - term: Next steps
+            description: Implement detection_strategy for coverage optimization
+          - term: Estimated timeline
+            description: 12-18 months to reach Level 3
+      - type: heading
+        level: 3
+        text: 'Level 3: Proactive Detection'
+      - type: definition
+        items:
+          - term: Name
+            description: Proactive Detection
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Logging
+            value: Comprehensive logging with data enrichment
+          - label: Monitoring
+            value: Behavioral analytics and anomaly detection
+          - label: Response
+            value: Threat hunting and proactive investigation
+          - label: Visibility
+            value: MITRE ATT&CK coverage mapping
+          - label: Team
+            value: Detection engineers developing custom analytics
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Detection-as-code workflow with version control
+          - MITRE ATT&CK coverage >60%
+          - Behavioral analytics deployed (UEBA)
+          - Mean time to detect measured in minutes to hours
+          - Regular threat hunting activities
+      - type: definition
+        items:
+          - term: Next steps
+            description: Advanced analytics, custom ML models, automation
+          - term: Estimated timeline
+            description: 12-24 months to reach Level 4
+      - type: heading
+        level: 3
+        text: 'Level 4: Advanced Detection'
+      - type: definition
+        items:
+          - term: Name
+            description: Advanced Detection
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Logging
+            value: Advanced data lake with ML-ready datasets
+          - label: Monitoring
+            value: Custom ML models for anomaly detection
+          - label: Response
+            value: Automated response orchestration
+          - label: Visibility
+            value: Comprehensive attack surface monitoring
+          - label: Team
+            value: Detection engineering, data science, automation specialists
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Custom machine learning models in production
+          - Automated response playbooks reducing manual work
+          - Threat intelligence integration with automated enrichment
+          - Mean time to detect measured in seconds to minutes
+          - Detection program contributing to community (open source rules)
+          - Continuous detection optimization through feedback loops
+      - type: definition
+        items:
+          - term: Next steps
+            description: Innovation, research, industry leadership
+  - heading: Self-Assessment
+    id: self_assessment
+    blocks:
+      - type: heading
+        level: 3
+        text: Instructions
+      - type: prose
+        text: >-
+          Answer the following questions honestly about your current detection capability. Score: 1 point
+          for each YES answer. Total score determines maturity level.
+      - type: heading
+        level: 3
+        text: Questions
+      - type: fields
+        subject: Q1
+        entries:
+          - label: Question
+            value: Do you have centralized log collection from critical systems?
+          - label: Level indicator
+            value: Level 0 → Level 1
+      - type: fields
+        subject: Q2
+        entries:
+          - label: Question
+            value: Do you have a SIEM or log analytics platform deployed?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q3
+        entries:
+          - label: Question
+            value: Do you have automated detection rules generating alerts?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q4
+        entries:
+          - label: Question
+            value: Do you measure detection coverage systematically (e.g., MITRE ATT&CK)?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q5
+        entries:
+          - label: Question
+            value: Do you have detection-as-code workflow with version control?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q6
+        entries:
+          - label: Question
+            value: Do you deploy behavioral analytics or UEBA?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q7
+        entries:
+          - label: Question
+            value: Do you have dedicated detection engineering team?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q8
+        entries:
+          - label: Question
+            value: Do you perform regular threat hunting activities?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q9
+        entries:
+          - label: Question
+            value: Do you have custom ML models in production for detection?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: fields
+        subject: Q10
+        entries:
+          - label: Question
+            value: Do you have automated response orchestration?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: heading
+        level: 3
+        text: Scoring
+      - type: fields
+        subject: Score 0 1
+        entries:
+          - label: Level
+            value: 'Level 0: No Detection'
+          - label: Next section
+            value: building_from_zero
+          - label: Priority
+            value: Deploy centralized logging and basic monitoring
+      - type: fields
+        subject: Score 2 3
+        entries:
+          - label: Level
+            value: 'Level 1: Basic Logging'
+          - label: Next section
+            value: 'building_from_zero (Phase 3: SIEM deployment)'
+          - label: Priority
+            value: Deploy SIEM and initial detection rules
+      - type: fields
+        subject: Score 4 6
+        entries:
+          - label: Level
+            value: 'Level 2: Reactive Detection'
+          - label: Next section
+            value: detection_strategy
+          - label: Priority
+            value: Optimize coverage and reduce false positives
+      - type: fields
+        subject: Score 7 8
+        entries:
+          - label: Level
+            value: 'Level 3: Proactive Detection'
+          - label: Next section
+            value: behavioral_analytics, advanced sections
+          - label: Priority
+            value: Advanced analytics and automation
+      - type: fields
+        subject: Score 9 10
+        entries:
+          - label: Level
+            value: 'Level 4: Advanced Detection'
+          - label: Next section
+            value: All sections for continuous optimization
+          - label: Priority
+            value: Innovation and community contribution

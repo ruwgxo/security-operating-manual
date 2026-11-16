@@ -1,0 +1,1088 @@
+# section_03_03_building_from_zero.yaml
+
+---
+title: Building from Zero
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 3
+  section_code: '0303'
+  source_chapter: '4.1'
+  source_key: security_automation.building_from_zero
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Maturity Level 0-1 organizations beginning automation journey
+  - heading: Scenario
+    id: scenario
+    blocks:
+      - type: prose
+        text: >-
+          Starting automation from scratch: security team overwhelmed with manual tasks, cannot scale
+          with business growth, analysts burning out. This section provides 12-month roadmap from manual
+          operations to mature SOAR-based automation with 20+ production playbooks.
+  - heading: Prerequisites
+    id: prerequisites
+    blocks:
+      - type: definition
+        items:
+          - term: Budget
+            description: Estimated $50K-$200K first year (SOAR platform, integrations, training)
+          - term: Team
+            description: Minimum 1 security engineer with scripting skills (Python, PowerShell)
+          - term: Executive support
+            description: CISO sponsorship for automation investment
+          - term: Tool access
+            description: API access to security tools (SIEM, EDR, firewall, etc)
+  - heading: 'Phase 1: Quick Wins'
+    id: phase_1_quick_wins
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 1-3
+          - term: Objective
+            description: Demonstrate automation value with high-impact scripts
+          - term: Maturity progression
+            description: Level 0 → Level 1
+      - type: heading
+        level: 3
+        text: 'Month 1: Pain Point Identification'
+      - type: definition
+        items:
+          - term: Goal
+            description: Identify highest-pain repetitive tasks for automation
+      - type: fields
+        subject: Time Tracking Exercise
+        entries:
+          - label: Method
+            value: Analysts log time spent on tasks for 2 weeks
+          - label: Categories
+            value:
+              - Alert triage and enrichment
+              - Threat intelligence lookup
+              - User and asset context gathering
+              - Ticket creation and updating
+              - Log searching and correlation
+              - Report generation
+              - Incident investigation
+          - label: Output
+            value: Task list sorted by time consumption
+      - type: heading
+        level: 4
+        text: Automation Opportunity Scoring
+      - type: fields
+        subject: Criteria
+        entries:
+          - label: Frequency
+            value: How often task performed (daily, weekly, monthly)
+          - label: Time per execution
+            value: Minutes or hours per execution
+          - label: Complexity
+            value: Simple (easily scriptable) vs complex (requires judgment)
+          - label: Impact
+            value: Time saved if automated
+      - type: definition
+        items:
+          - term: Formula
+            description: Automation Priority = (Frequency × Time) / Complexity
+      - type: heading
+        level: 4
+        text: Top Automation Targets
+      - type: fields
+        subject: Typical Results
+        entries:
+          - label: Rank 1
+            value: IP address enrichment (geolocation, reputation, threat intel)
+          - label: Rank 2
+            value: User context lookup (department, manager, recent activity)
+          - label: Rank 3
+            value: Alert ticket creation and field population
+          - label: Rank 4
+            value: Domain reputation and WHOIS lookup
+          - label: Rank 5
+            value: File hash threat intelligence lookup
+      - type: heading
+        level: 3
+        text: 'Month 2: First Automation Scripts'
+      - type: definition
+        items:
+          - term: Goal
+            description: Build and deploy 3-5 automation scripts
+      - type: fields
+        subject: Script 1 IP Enrichment
+        entries:
+          - label: Purpose
+            value: Enrich IP addresses with geolocation and threat intelligence
+          - label: Inputs
+            value: IP address
+          - label: Actions
+            value:
+              - Query geolocation API (MaxMind, IPStack)
+              - Check IP reputation (AbuseIPDB, VirusTotal)
+              - Query threat intelligence feeds
+              - Return enriched data (country, city, reputation score, categories)
+          - label: Time saved
+            value: 10 minutes manual → 30 seconds automated
+          - label: Usage
+            value: Integrate with SIEM or run on-demand
+      - type: fields
+        subject: Script 2 User Lookup
+        entries:
+          - label: Purpose
+            value: Gather user context from Active Directory and HR system
+          - label: Inputs
+            value: Username or email
+          - label: Actions
+            value:
+              - Query AD for user attributes (department, manager, groups)
+              - Query HR system for employment status and role
+              - Check recent authentication logs
+              - Return user profile with context
+          - label: Time saved
+            value: 5 minutes manual → 15 seconds automated
+      - type: fields
+        subject: Script 3 Ticket Creation
+        entries:
+          - label: Purpose
+            value: Automatically create tickets from SIEM alerts
+          - label: Inputs
+            value: SIEM alert JSON
+          - label: Actions
+            value:
+              - Parse alert fields
+              - Enrich with IP and user lookups
+              - Create ticket in ITSM (ServiceNow, Jira)
+              - Populate ticket fields with enriched data
+              - Assign to appropriate team
+          - label: Time saved
+            value: 8 minutes manual → 1 minute automated
+      - type: fields
+        subject: Script Development Best Practices
+        entries:
+          - label: Version control
+            value:
+              - Create Git repository for automation scripts
+              - Commit scripts with descriptive messages
+              - Use branches for development, main for production
+          - label: Error handling
+            value:
+              - Handle API failures gracefully
+              - Log errors for debugging
+              - Return partial results if some enrichment fails
+          - label: Documentation
+            value:
+              - README with script purpose and usage
+              - Inline comments explaining logic
+              - Example inputs and outputs
+          - label: Testing
+            value:
+              - Test with known-good and known-bad inputs
+              - Verify error handling with bad inputs
+              - Test API rate limiting behavior
+      - type: heading
+        level: 3
+        text: 'Month 3: Script Operationalization'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy scripts for analyst use and measure impact
+      - type: fields
+        subject: Deployment Methods
+        entries:
+          - label: Command line tools
+            value:
+              - Package scripts as CLI tools
+              - Distribute to analyst workstations
+              - Create aliases or shortcuts
+          - label: Web interface
+            value:
+              - Simple web UI for script execution
+              - Input form, execute button, results display
+              - Easier for non-technical analysts
+          - label: SIEM integration
+            value:
+              - Trigger scripts from SIEM alert actions
+              - Auto-enrich alerts before analyst sees them
+              - 'Highest impact: enrichment happens automatically'
+      - type: heading
+        level: 4
+        text: Metrics Collection
+      - type: heading
+        level: 5
+        text: Execution Tracking
+      - type: list
+        style: bullet
+        items:
+          - Log each script execution
+          - Track execution time and success/failure
+          - Count daily executions
+      - type: heading
+        level: 5
+        text: Time Savings Calculation
+      - type: list
+        style: bullet
+        items:
+          - Manual time per task (baseline)
+          - Automated time per task (measured)
+          - Time saved = (Manual - Automated) × Executions
+      - type: fields
+        subject: Example Results
+        entries:
+          - label: IP enrichment
+            value: 100 executions/day × 9.5 min saved = 950 min (16 hours) saved daily
+          - label: User lookup
+            value: 80 executions/day × 4.75 min saved = 380 min (6 hours) saved daily
+          - label: Ticket creation
+            value: 50 executions/day × 7 min saved = 350 min (6 hours) saved daily
+          - label: Total
+            value: 28 analyst hours saved daily = 700 hours/month
+      - type: fields
+        subject: Analyst Feedback
+        entries:
+          - label: Gather feedback
+            value:
+              - Weekly check-in with analysts using scripts
+              - What's working well?
+              - What needs improvement?
+              - What else should we automate?
+          - label: Iterate
+            value:
+              - Fix bugs reported by analysts
+              - Add requested features
+              - Build next automation based on feedback
+  - heading: 'Phase 2: SOAR Deployment'
+    id: phase_2_soar_deployment
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 4-6
+          - term: Objective
+            description: Deploy SOAR platform and migrate scripts to playbooks
+          - term: Maturity progression
+            description: Level 1 → Level 2
+      - type: heading
+        level: 3
+        text: 'Month 4: SOAR Platform Selection'
+      - type: definition
+        items:
+          - term: Goal
+            description: Select and deploy SOAR platform
+      - type: fields
+        subject: SOAR Capabilities
+        entries:
+          - label: Orchestration
+            value: Connect and automate across security tools
+          - label: Case management
+            value: Centralized incident tracking and collaboration
+          - label: Playbooks
+            value: Codified response workflows
+          - label: Threat intelligence
+            value: Aggregate and enrich with threat intel
+          - label: Reporting
+            value: Automated metrics and executive dashboards
+      - type: heading
+        level: 4
+        text: Vendor Comparison
+      - type: fields
+        subject: Splunk SOAR
+        entries:
+          - label: Strengths
+            value:
+              - Deep Splunk SIEM integration
+              - Large app library (300+ integrations)
+              - Strong community and content
+          - label: Weaknesses
+            value:
+              - Expensive
+              - Complex for beginners
+          - label: Cost
+            value: $50K-$150K annually
+          - label: Best for
+            value: Splunk shops, large enterprises
+      - type: fields
+        subject: Palo Alto XSOAR
+        entries:
+          - label: Strengths
+            value:
+              - Excellent playbook marketplace
+              - Strong automation engine
+              - Good ML capabilities
+          - label: Weaknesses
+            value:
+              - Steep learning curve
+              - Less intuitive UI
+          - label: Cost
+            value: $75K-$200K annually
+          - label: Best for
+            value: Complex automation requirements
+      - type: fields
+        subject: Swimlane
+        entries:
+          - label: Strengths
+            value:
+              - User-friendly interface
+              - Good low-code/no-code builder
+              - Flexible pricing
+          - label: Weaknesses
+            value:
+              - Smaller integration library
+              - Newer platform
+          - label: Cost
+            value: $40K-$100K annually
+          - label: Best for
+            value: Mid-size orgs, ease of use priority
+      - type: fields
+        subject: Tines
+        entries:
+          - label: Strengths
+            value:
+              - Modern no-code interface
+              - Flexible and powerful
+              - Good API-first design
+          - label: Weaknesses
+            value:
+              - Smaller market presence
+              - Limited pre-built content
+          - label: Cost
+            value: $30K-$80K annually
+          - label: Best for
+            value: Cloud-native, automation-forward teams
+      - type: fields
+        subject: Selection Criteria
+        entries:
+          - label: Integration requirements
+            value:
+              - Must integrate with existing SIEM
+              - Must integrate with ticketing system
+              - Must support major security tools (EDR, firewall, etc)
+          - label: Ease of use
+            value:
+              - Analyst-friendly interface
+              - Low-code playbook builder for non-developers
+              - Good documentation and training
+          - label: Total cost
+            value:
+              - Licensing cost
+              - Integration costs
+              - Training and onboarding
+          - label: Scalability
+            value:
+              - Handles current alert volume
+              - Room for 3-5 year growth
+      - type: heading
+        level: 3
+        text: 'Month 5: SOAR Implementation'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy SOAR and integrate with security tools
+      - type: fields
+        subject: Deployment Architecture
+        entries:
+          - label: On premise
+            value:
+              - SOAR server(s) in datacenter
+              - Direct connectivity to security tools
+              - Full control and customization
+          - label: Cloud
+            value:
+              - SaaS SOAR platform
+              - API connectivity to tools
+              - Faster deployment, less management
+          - label: Hybrid
+            value:
+              - Cloud SOAR with on-premise connectors
+              - Best of both worlds
+      - type: fields
+        subject: Integration Priorities
+        entries:
+          - label: 'Phase 1: Critical'
+            value:
+              - SIEM (alert ingestion)
+              - Ticketing system (case management)
+              - Active Directory (user context)
+              - Threat intelligence platforms
+          - label: 'Phase 2: Important'
+            value:
+              - EDR platform (endpoint actions)
+              - Firewall (network blocking)
+              - Email security (phishing response)
+              - Cloud platforms (AWS, Azure, GCP)
+          - label: 'Phase 3: Nice to have'
+            value:
+              - Vulnerability scanner
+              - Network traffic analysis
+              - DLP systems
+      - type: heading
+        level: 4
+        text: Test Playbook Deployment
+      - type: definition
+        items:
+          - term: Purpose
+            description: Validate SOAR functionality before production
+          - term: Playbook
+            description: Simple alert enrichment
+      - type: fields
+        subject: Flow
+        entries:
+          - label: Step 1
+            value: SOAR receives alert from SIEM
+          - label: Step 2
+            value: Extract IP address from alert
+          - label: Step 3
+            value: Query threat intel for IP reputation
+          - label: Step 4
+            value: Add enrichment to alert
+          - label: Step 5
+            value: Create ticket if IP is malicious
+      - type: heading
+        level: 5
+        text: Validation
+      - type: list
+        style: bullet
+        items:
+          - Playbook executes successfully
+          - Integrations work as expected
+          - Results accurate
+      - type: heading
+        level: 3
+        text: 'Month 6: Playbook Migration'
+      - type: definition
+        items:
+          - term: Goal
+            description: Migrate existing scripts to SOAR playbooks
+      - type: heading
+        level: 4
+        text: Script to Playbook Conversion
+      - type: fields
+        subject: IP Enrichment Playbook
+        entries:
+          - label: Trigger
+            value: New SIEM alert with IP address
+          - label: Actions
+            value:
+              - Extract source and destination IPs
+              - Query geolocation API
+              - Query threat intelligence feeds
+              - Calculate risk score
+              - Update alert with enrichment
+              - Escalate if high-risk IP detected
+      - type: fields
+        subject: User Context Playbook
+        entries:
+          - label: Trigger
+            value: Alert involves user account
+          - label: Actions
+            value:
+              - Extract username from alert
+              - Query Active Directory
+              - Query HR system
+              - Check recent authentication logs
+              - Determine if account is privileged
+              - Add user context to alert
+              - Escalate if privileged account compromised
+      - type: fields
+        subject: Phishing Response Playbook
+        entries:
+          - label: Trigger
+            value: User reports phishing email
+          - label: Actions
+            value:
+              - Extract email indicators (sender, links, attachments)
+              - Check if other users received same email
+              - Query threat intelligence for known phishing
+              - Delete email from all mailboxes if malicious
+              - Block sender domain at email gateway
+              - Create ticket for investigation
+              - Notify affected users
+      - type: fields
+        subject: Playbook Testing
+        entries:
+          - label: Unit testing
+            value:
+              - Test each playbook action individually
+              - Verify API calls return expected data
+              - Test error handling
+          - label: Integration testing
+            value:
+              - Test complete playbook end-to-end
+              - Use realistic test data
+              - Verify all integrations work together
+          - label: Production testing
+            value:
+              - Deploy to 10% of alerts (canary)
+              - Monitor for errors
+              - Expand to 100% if successful
+  - heading: 'Phase 3: Advanced Playbooks'
+    id: phase_3_advanced_playbooks
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 7-9
+          - term: Objective
+            description: Build comprehensive playbook library covering major use cases
+          - term: Maturity progression
+            description: Level 2 optimization
+      - type: heading
+        level: 3
+        text: 'Month 7: Incident Response Playbooks'
+      - type: definition
+        items:
+          - term: Goal
+            description: Automate common incident response scenarios
+      - type: heading
+        level: 4
+        text: Malware Detection Response
+      - type: definition
+        items:
+          - term: Trigger
+            description: EDR detects malware on endpoint
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: 'Step 1: Containment'
+            value:
+              - Isolate infected endpoint from network
+              - Kill malicious process
+              - Quarantine malicious files
+          - label: 'Step 2: Investigation'
+            value:
+              - Extract file hash and IOCs
+              - Query threat intelligence
+              - Search SIEM for other infected hosts
+              - Identify patient zero
+          - label: 'Step 3: Eradication'
+            value:
+              - Remove malware from all infected hosts
+              - Block malware hash at all endpoints
+              - Block C2 domains at firewall
+          - label: 'Step 4: Recovery'
+            value:
+              - Restore endpoint from clean backup if necessary
+              - Remove network isolation
+              - Monitor for reinfection
+          - label: 'Step 5: Documentation'
+            value:
+              - Create incident ticket with full timeline
+              - Generate incident report
+              - Update threat intelligence
+      - type: definition
+        items:
+          - term: Time saved
+            description: 2 hours manual → 10 minutes automated
+      - type: heading
+        level: 4
+        text: Brute Force Response
+      - type: definition
+        items:
+          - term: Trigger
+            description: Multiple failed authentication attempts detected
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: 'Step 1: Validation'
+            value:
+              - Check if source IP is known attacker
+              - Verify failed login pattern matches brute force
+              - Calculate confidence score
+          - label: 'Step 2: Blocking'
+            value:
+              - Block source IP at firewall (if high confidence)
+              - Add IP to threat intelligence feed
+              - Block at all internet-facing services
+          - label: 'Step 3: Victim protection'
+            value:
+              - Force password reset for targeted accounts
+              - Require MFA re-enrollment
+              - Notify account owners
+          - label: 'Step 4: Hunting'
+            value:
+              - Search for successful logins from attacker IP
+              - Check for lateral movement if breach occurred
+              - Escalate to incident response if compromised
+      - type: definition
+        items:
+          - term: Time saved
+            description: 1 hour manual → 5 minutes automated
+      - type: heading
+        level: 4
+        text: Data Exfiltration Response
+      - type: definition
+        items:
+          - term: Trigger
+            description: Unusual large data transfer detected
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: 'Step 1: Validation'
+            value:
+              - Check if user/service account normally transfers large data
+              - Verify destination is unusual
+              - Calculate anomaly score
+          - label: 'Step 2: Containment'
+            value:
+              - Block outbound connection if high risk
+              - Suspend user account pending investigation
+              - Alert security team immediately
+          - label: 'Step 3: Investigation'
+            value:
+              - Identify what data was accessed
+              - Check data classification (public vs confidential)
+              - Review user's recent activity
+              - Determine if account compromised
+          - label: 'Step 4: Impact assessment'
+            value:
+              - Calculate records potentially exfiltrated
+              - Determine regulatory notification requirements
+              - Estimate business impact
+      - type: definition
+        items:
+          - term: Human approval
+            description: Required before blocking (high impact action)
+      - type: heading
+        level: 3
+        text: 'Month 8: Vulnerability Management Automation'
+      - type: definition
+        items:
+          - term: Goal
+            description: Automate vulnerability scanning and remediation workflows
+      - type: heading
+        level: 4
+        text: Critical Vulnerability Response
+      - type: definition
+        items:
+          - term: Trigger
+            description: Vulnerability scanner identifies critical vulnerability
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: 'Step 1: Validation'
+            value:
+              - Verify vulnerability is exploitable (not false positive)
+              - Check if exploit available in wild
+              - Assess asset criticality
+          - label: 'Step 2: Prioritization'
+            value:
+              - 'Calculate risk score: Vulnerability CVSS × Asset criticality'
+              - Check if vulnerability in CISA KEV catalog
+              - Determine SLA for patching
+          - label: 'Step 3: Notification'
+            value:
+              - Create ticket assigned to system owner
+              - Include vulnerability details and remediation steps
+              - Set due date based on risk score
+              - Escalate to management if critical asset
+          - label: 'Step 4: Tracking'
+            value:
+              - Monitor ticket progress
+              - Rescan system after patching
+              - Verify vulnerability remediated
+              - Auto-close ticket if resolved
+      - type: definition
+        items:
+          - term: Time saved
+            description: 30 minutes manual → 2 minutes automated per vulnerability
+      - type: heading
+        level: 4
+        text: Patch Deployment Automation
+      - type: definition
+        items:
+          - term: Trigger
+            description: New critical security patch released
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: 'Step 1: Testing'
+            value:
+              - Deploy patch to test environment
+              - Run automated tests
+              - Verify no breakage
+          - label: 'Step 2: Deployment'
+            value:
+              - Deploy to 10% of production (canary)
+              - Monitor for issues
+              - Deploy to remaining systems if successful
+          - label: 'Step 3: Verification'
+            value:
+              - Scan systems to confirm patch applied
+              - Generate compliance report
+              - Alert on any systems that failed patching
+      - type: definition
+        items:
+          - term: Approval gate
+            description: Security approves after test, operations approves production deployment
+      - type: heading
+        level: 3
+        text: 'Month 9: Threat Hunting Automation'
+      - type: definition
+        items:
+          - term: Goal
+            description: Automate proactive threat hunting workflows
+      - type: heading
+        level: 4
+        text: IOC Hunting Playbook
+      - type: definition
+        items:
+          - term: Trigger
+            description: New threat intelligence with IOCs received
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: 'Step 1: Extraction'
+            value:
+              - Parse threat intel feed
+              - Extract IOCs (IPs, domains, hashes, filenames)
+              - Deduplicate and normalize
+          - label: 'Step 2: Hunting'
+            value:
+              - Search SIEM logs for IOC matches (past 90 days)
+              - Search endpoint EDR telemetry
+              - Check network traffic logs
+              - Query threat intelligence for additional context
+          - label: 'Step 3: Analysis'
+            value:
+              - Calculate confidence score for each match
+              - Enrich matches with host and user context
+              - Prioritize by asset criticality
+          - label: 'Step 4: Response'
+            value:
+              - Create investigation tickets for high-confidence matches
+              - Assign to threat hunting team
+              - Provide investigation context and timeline
+      - type: definition
+        items:
+          - term: Time saved
+            description: 4 hours manual threat hunting → 15 minutes automated
+      - type: heading
+        level: 4
+        text: Behavioral Anomaly Hunting
+      - type: definition
+        items:
+          - term: Trigger
+            description: Scheduled daily (proactive hunting)
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: 'Step 1: Baseline'
+            value:
+              - Calculate baseline for user and entity behavior
+              - Identify statistical outliers
+              - Flag anomalous authentication, access, data transfer
+          - label: 'Step 2: Correlation'
+            value:
+              - Correlate anomalies across multiple data sources
+              - Identify patterns indicating compromise
+              - Score anomalies by risk
+          - label: 'Step 3: Investigation'
+            value:
+              - Automatically investigate low-risk anomalies
+              - Gather context and evidence
+              - Determine if benign or suspicious
+          - label: 'Step 4: Alerting'
+            value:
+              - Create alerts for medium/high-risk anomalies
+              - Auto-resolve benign anomalies with documentation
+              - Track anomaly trends over time
+  - heading: 'Phase 4: Security as Code'
+    id: phase_4_security_as_code
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 10-12
+          - term: Objective
+            description: Embed security automation in development and deployment pipelines
+          - term: Maturity progression
+            description: Level 2 → Level 3
+      - type: heading
+        level: 3
+        text: 'Month 10: Infrastructure as Code Security'
+      - type: definition
+        items:
+          - term: Goal
+            description: Automate security scanning and enforcement for infrastructure code
+      - type: heading
+        level: 4
+        text: IaC Security Scanning
+      - type: heading
+        level: 5
+        text: Tools
+      - type: list
+        style: bullet
+        items:
+          - Checkov (multi-cloud IaC scanning)
+          - tfsec (Terraform security scanner)
+          - CloudFormation Guard (AWS)
+      - type: definition
+        items:
+          - term: Integration point
+            description: CI/CD pipeline before deployment
+      - type: heading
+        level: 5
+        text: Scan Targets
+      - type: list
+        style: bullet
+        items:
+          - Terraform templates
+          - CloudFormation templates
+          - Kubernetes manifests
+          - Ansible playbooks
+      - type: fields
+        subject: Security Checks
+        entries:
+          - label: Encryption
+            value:
+              - S3 buckets encrypted at rest
+              - EBS volumes encrypted
+              - RDS databases encrypted
+          - label: Network security
+            value:
+              - Security groups not open to 0.0.0.0/0
+              - No public IP addresses on sensitive resources
+              - Network ACLs properly configured
+          - label: Access control
+            value:
+              - IAM policies follow least privilege
+              - No wildcard permissions
+              - MFA required for privileged access
+          - label: Logging
+            value:
+              - CloudTrail enabled
+              - VPC flow logs enabled
+              - Access logging enabled
+      - type: fields
+        subject: Enforcement
+        entries:
+          - label: Blocking
+            value: Pipeline fails if critical security issues found
+          - label: Warnings
+            value: Non-critical issues logged but don't block
+          - label: Exemptions
+            value: Risk-accepted exceptions documented and approved
+      - type: fields
+        subject: Automated Remediation
+        entries:
+          - label: Auto fix capability
+            value:
+              - Tool suggests fixes for security issues
+              - Auto-commit fixes to feature branch
+              - Developer reviews and merges
+          - label: Example fixes
+            value:
+              - Add encryption = true to S3 bucket
+              - Change security group from 0.0.0.0/0 to specific CIDR
+              - Add versioning and logging to S3 bucket
+      - type: heading
+        level: 3
+        text: 'Month 11: Application Security Automation'
+      - type: definition
+        items:
+          - term: Goal
+            description: Automate security testing in application development pipeline
+      - type: heading
+        level: 4
+        text: SAST Integration
+      - type: definition
+        items:
+          - term: Tools
+            description: SonarQube, Checkmarx, Semgrep
+          - term: Scan trigger
+            description: Every commit to feature branch
+      - type: heading
+        level: 5
+        text: Scan Targets
+      - type: list
+        style: bullet
+        items:
+          - Source code for vulnerabilities
+          - Dependencies for known CVEs
+          - Secrets scanning (hardcoded credentials)
+      - type: fields
+        subject: Blocking Criteria
+        entries:
+          - label: Critical vulnerabilities
+            value: Block merge
+          - label: High vulnerabilities
+            value: Require security review
+          - label: Medium low
+            value: Warning only
+      - type: fields
+        subject: DAST Integration
+        entries:
+          - label: Tools
+            value: OWASP ZAP, Burp Suite, Acunetix
+          - label: Scan trigger
+            value: Deploy to staging environment
+          - label: Scan targets
+            value:
+              - Web application endpoints
+              - API endpoints
+              - Authentication and authorization
+          - label: Scan types
+            value:
+              - SQL injection testing
+              - XSS testing
+              - Authentication bypass attempts
+              - CSRF testing
+      - type: heading
+        level: 4
+        text: Dependency Scanning
+      - type: definition
+        items:
+          - term: Tools
+            description: Snyk, Dependabot, npm audit
+          - term: Scan trigger
+            description: Daily scan of dependencies
+      - type: fields
+        subject: Actions
+        entries:
+          - label: High risk
+            value: Auto-create PR with dependency update
+          - label: Medium risk
+            value: Create ticket for review
+          - label: Low risk
+            value: Log for quarterly review
+      - type: fields
+        subject: Container Security
+        entries:
+          - label: Tools
+            value: Trivy, Clair, Anchore
+          - label: Scan trigger
+            value: Before pushing to container registry
+          - label: Scan targets
+            value:
+              - Base image vulnerabilities
+              - Application layer vulnerabilities
+              - Misconfigurations in Dockerfile
+          - label: Enforcement
+            value:
+              - Block push if critical vulnerabilities
+              - Require security approval for high vulnerabilities
+      - type: heading
+        level: 3
+        text: 'Month 12: Detection as Code'
+      - type: definition
+        items:
+          - term: Goal
+            description: Implement detection engineering as code with CI/CD
+      - type: heading
+        level: 4
+        text: Detection Rules as Code
+      - type: definition
+        items:
+          - term: Format
+            description: Sigma rules (vendor-agnostic YAML)
+      - type: code
+        lang: text
+        caption: >-
+          Repository structure
+        text: |
+          detection-rules/
+            rules/
+              authentication/
+                brute_force.yml
+                impossible_travel.yml
+              malware/
+                mimikatz.yml
+                cobalt_strike.yml
+              network/
+                c2_beaconing.yml
+                dns_tunneling.yml
+            tests/
+              test_brute_force.py
+              test_impossible_travel.py
+            .github/
+              workflows/
+                test_and_deploy.yml
+      - type: heading
+        level: 4
+        text: CI/CD Pipeline
+      - type: fields
+        subject: On Commit
+        entries:
+          - label: 'Step 1: Validation'
+            value:
+              - Validate Sigma rule syntax
+              - Check required fields present
+              - Lint YAML format
+          - label: 'Step 2: Testing'
+            value:
+              - Run unit tests against known good/bad samples
+              - Verify true positive detection
+              - Verify false positive handling
+          - label: 'Step 3: Conversion'
+            value:
+              - Convert Sigma to SIEM-specific format (Splunk SPL, Elastic KQL)
+              - Validate converted queries
+          - label: 'Step 4: Deployment to test'
+            value:
+              - Deploy to test SIEM environment
+              - Run against historical data
+              - Measure false positive rate
+      - type: fields
+        subject: On Merge to Main
+        entries:
+          - label: 'Step 5: Production deployment'
+            value:
+              - Deploy to production SIEM
+              - Enable alerting
+              - Update documentation
+              - Notify SOC team of new detection
+      - type: heading
+        level: 4
+        text: Testing Framework
+      - type: heading
+        level: 5
+        text: Test Data Management
+      - type: list
+        style: bullet
+        items:
+          - Maintain library of known malicious samples
+          - Maintain library of benign samples
+          - Update test data when detections fail
+      - type: heading
+        level: 5
+        text: Automated Testing
+      - type: list
+        style: bullet
+        items:
+          - Every detection rule has test cases
+          - Tests run on every commit
+          - Tests verify detection logic and thresholds
+      - type: code
+        lang: python
+        caption: >-
+          Example test
+        text: |
+          def test_brute_force_detection():
+              # Known bad: 10 failed logins in 5 minutes
+              events = generate_failed_logins(count=10, timespan=300)
+              result = run_detection(brute_force_rule, events)
+              assert result.alert_triggered == True
+
+              # Known good: 3 failed logins in 5 minutes
+              events = generate_failed_logins(count=3, timespan=300)
+              result = run_detection(brute_force_rule, events)
+              assert result.alert_triggered == False
+      - type: heading
+        level: 4
+        text: Version Control Benefits
+      - type: list
+        style: bullet
+        items:
+          - Track all changes to detection rules
+          - Roll back problematic rules instantly
+          - Peer review all rule changes
+          - Audit trail of rule evolution

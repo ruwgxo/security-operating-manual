@@ -1,0 +1,342 @@
+# section_04_12_ir_metrics_and_kpis.yaml
+
+---
+title: IR Metrics and KPIs
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 12
+  section_code: '0412'
+  source_chapter: '4.3'
+  source_key: incident_response.ir_metrics_and_kpis
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations measuring IR effectiveness
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          IR metrics demonstrate program value and identify improvement opportunities. This section addresses
+          key performance indicators, metric collection, and data-driven optimization.
+  - heading: Core Metrics
+    id: core_metrics
+    blocks:
+      - type: heading
+        level: 3
+        text: Detection Metrics
+      - type: heading
+        level: 4
+        text: Mean Time to Detect
+      - type: definition
+        items:
+          - term: Definition
+            description: Time from initial compromise to detection
+          - term: Formula
+            description: Detection timestamp - Compromise timestamp
+      - type: fields
+        subject: Targets
+        entries:
+          - label: Level 1
+            value: <7 days
+          - label: Level 2
+            value: <24 hours
+          - label: Level 3
+            value: <4 hours
+          - label: Level 4
+            value: <1 hour
+      - type: heading
+        level: 5
+        text: Improvement Levers
+      - type: list
+        style: bullet
+        items:
+          - Better detection rules
+          - Threat intelligence integration
+          - Proactive threat hunting
+          - Reduced alert fatigue (fewer false positives)
+      - type: heading
+        level: 4
+        text: Detection Source Distribution
+      - type: definition
+        items:
+          - term: Metric
+            description: Percentage of incidents by detection source
+      - type: fields
+        subject: Ideal Distribution
+        entries:
+          - label: Internal detection
+            value: '>80% (proactive)'
+          - label: User reports
+            value: 10-15% (acceptable)
+          - label: External notification
+            value: <10% (reactive, needs improvement)
+      - type: definition
+        items:
+          - term: Interpretation
+            description: High external notification rate indicates detection gaps
+      - type: heading
+        level: 3
+        text: Response Metrics
+      - type: fields
+        subject: Mean Time to Acknowledge
+        entries:
+          - label: Definition
+            value: Time from alert to analyst acknowledgment
+          - label: Formula
+            value: Acknowledgment timestamp - Alert timestamp
+          - label: Target
+            value: <15 minutes for P1, <1 hour for P2
+      - type: heading
+        level: 4
+        text: Mean Time to Respond
+      - type: definition
+        items:
+          - term: Definition
+            description: Time from detection to first response action
+          - term: Formula
+            description: First action timestamp - Detection timestamp
+      - type: fields
+        subject: Targets
+        entries:
+          - label: Level 1
+            value: <24 hours
+          - label: Level 2
+            value: <4 hours
+          - label: Level 3
+            value: <1 hour
+      - type: heading
+        level: 5
+        text: Improvement Levers
+      - type: list
+        style: bullet
+        items:
+          - Clear playbooks
+          - Automated enrichment
+          - On-call effectiveness
+      - type: heading
+        level: 4
+        text: Mean Time to Contain
+      - type: definition
+        items:
+          - term: Definition
+            description: Time from detection to containment complete
+          - term: Formula
+            description: Containment timestamp - Detection timestamp
+      - type: fields
+        subject: Targets
+        entries:
+          - label: Level 1
+            value: <1 week
+          - label: Level 2
+            value: <24 hours
+          - label: Level 3
+            value: <4 hours
+      - type: heading
+        level: 5
+        text: Improvement Levers
+      - type: list
+        style: bullet
+        items:
+          - Rapid decision-making
+          - Automated containment
+          - Clear authority
+      - type: heading
+        level: 4
+        text: Mean Time to Recover
+      - type: definition
+        items:
+          - term: Definition
+            description: Time from detection to normal operations restored
+          - term: Formula
+            description: Recovery timestamp - Detection timestamp
+      - type: fields
+        subject: Targets
+        entries:
+          - label: Level 1
+            value: <1 month
+          - label: Level 2
+            value: <1 week
+          - label: Level 3
+            value: <48 hours
+      - type: heading
+        level: 5
+        text: Improvement Levers
+      - type: list
+        style: bullet
+        items:
+          - Good backups
+          - Automated recovery
+          - Thorough eradication (prevents reinfection)
+      - type: heading
+        level: 3
+        text: Program Effectiveness Metrics
+      - type: heading
+        level: 4
+        text: Incident Volume Trends
+      - type: definition
+        items:
+          - term: Metric
+            description: Incidents per month, by severity
+      - type: fields
+        subject: Interpretation
+        entries:
+          - label: Increasing
+            value: Growing attack surface or detection improvement (investigate)
+          - label: Decreasing
+            value: Prevention working or detection degrading (validate)
+          - label: Stable
+            value: Baseline established
+      - type: fields
+        subject: Incident Recurrence Rate
+        entries:
+          - label: Definition
+            value: Percentage of incidents that are repeat of previous incident type
+          - label: Formula
+            value: (Repeat incidents / Total incidents) × 100
+          - label: Target
+            value: <10%
+          - label: Interpretation
+            value: High recurrence indicates failure to learn from incidents
+      - type: fields
+        subject: Action Item Completion Rate
+        entries:
+          - label: Definition
+            value: Percentage of post-incident action items completed on time
+          - label: Formula
+            value: (Completed on time / Total action items) × 100
+          - label: Target
+            value: '>90%'
+          - label: Interpretation
+            value: Low completion indicates improvement not happening
+      - type: fields
+        subject: Exercise Participation Rate
+        entries:
+          - label: Definition
+            value: Percentage of IR team participating in quarterly exercises
+          - label: Formula
+            value: (Participants / IR team size) × 100
+          - label: Target
+            value: 100% annually, >80% per exercise
+      - type: heading
+        level: 3
+        text: Business Impact Metrics
+      - type: fields
+        subject: Financial Impact per Incident
+        entries:
+          - label: Components
+            value:
+              - Response costs (internal hours, external consultants)
+              - Business disruption (downtime, lost productivity)
+              - Recovery costs (restoration, remediation)
+              - Fines and legal costs
+          - label: Calculation
+            value: Sum of all cost components
+          - label: Trend
+            value: Decreasing over time as program matures
+      - type: fields
+        subject: Prevented Incidents
+        entries:
+          - label: Metric
+            value: Incidents prevented through proactive measures
+          - label: Examples
+            value:
+              - Vulnerabilities patched before exploitation
+              - Threat hunting discoveries before impact
+              - User-reported phishing before credential theft
+          - label: Challenge
+            value: Difficult to quantify (didn't happen)
+          - label: Approach
+            value: Estimate based on threat intelligence and detection
+  - heading: Metrics Dashboard
+    id: metrics_dashboard
+    blocks:
+      - type: fields
+        subject: Executive Dashboard
+        entries:
+          - label: Audience
+            value: CISO, CIO, executives
+          - label: Refresh rate
+            value: Monthly
+          - label: Metrics
+            value:
+              - Incident volume by severity (trend)
+              - Mean time to contain (trend)
+              - Major incident summaries
+              - Program maturity score
+              - Comparison to industry benchmarks
+          - label: Format
+            value: High-level, charts and trends, minimal technical detail
+      - type: fields
+        subject: Operational Dashboard
+        entries:
+          - label: Audience
+            value: IR team, SOC analysts
+          - label: Refresh rate
+            value: Real-time
+          - label: Metrics
+            value:
+              - Active incidents and status
+              - Open action items by owner
+              - Detection source breakdown
+              - Response time metrics (today, this week, this month)
+          - label: Format
+            value: Detailed, actionable, drill-down capability
+      - type: fields
+        subject: Program Health Dashboard
+        entries:
+          - label: Audience
+            value: IR manager, security leadership
+          - label: Refresh rate
+            value: Weekly
+          - label: Metrics
+            value:
+              - All core metrics with trends
+              - Playbook coverage and usage
+              - Exercise schedule and completion
+              - Team training and certifications
+              - Tool health and integration status
+          - label: Format
+            value: Comprehensive view for program management
+  - heading: Benchmarking
+    id: benchmarking
+    blocks:
+      - type: fields
+        subject: Industry Comparisons
+        entries:
+          - label: Sources
+            value:
+              - Ponemon Institute breach cost studies
+              - Verizon Data Breach Investigations Report (DBIR)
+              - IBM Cost of a Data Breach Report
+              - SANS IR surveys
+          - label: Metrics to compare
+            value:
+              - Mean time to detect
+              - Mean time to contain
+              - Cost per incident
+              - Detection source distribution
+          - label: Interpretation
+            value:
+              - Better than industry = strength to maintain
+              - Worse than industry = improvement opportunity
+              - Account for organization size and industry differences
+      - type: fields
+        subject: Internal Benchmarking
+        entries:
+          - label: Comparison
+            value: Current quarter vs previous quarters
+          - label: Focus
+            value: Improvement trends over time
+          - label: Targets
+            value: Year-over-year improvement in key metrics

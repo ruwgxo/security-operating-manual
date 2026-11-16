@@ -1,0 +1,231 @@
+# section_03_08_infrastructure_as_code_security.yaml
+
+---
+title: Infrastructure as Code Security
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 8
+  section_code: 0308
+  source_chapter: '4.1'
+  source_key: security_automation.infrastructure_as_code_security
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations using IaC for cloud infrastructure
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Infrastructure-as-code security embeds security controls in infrastructure provisioning. Security
+          becomes automated, consistent, and shift-left. This section addresses IaC security scanning,
+          policy enforcement, and secure infrastructure patterns.
+  - heading: IaC Security Scanning
+    id: iac_security_scanning
+    blocks:
+      - type: fields
+        subject: Pre-Commit Scanning
+        entries:
+          - label: Tools
+            value: tfsec, Checkov (local dev machine)
+          - label: Timing
+            value: Before code committed to Git
+          - label: Purpose
+            value: Catch issues before they reach CI/CD
+          - label: Developer experience
+            value: Immediate feedback, fix before commit
+      - type: heading
+        level: 3
+        text: Ci Pipeline Scanning
+      - type: definition
+        items:
+          - term: Tools
+            description: Checkov, tfsec, Terrascan
+          - term: Timing
+            description: On pull request
+      - type: fields
+        subject: Enforcement
+        entries:
+          - label: Critical issues
+            value: Block merge
+          - label: High issues
+            value: Require security review
+          - label: Medium low
+            value: Warning, allow merge
+      - type: definition
+        items:
+          - term: Reporting
+            description: Comment on PR with findings
+      - type: fields
+        subject: Pre-Deployment Scanning
+        entries:
+          - label: Tools
+            value: Cloud provider security checks (AWS Config Rules, Azure Policy)
+          - label: Timing
+            value: Before terraform apply
+          - label: Enforcement
+            value:
+              - Validate against security policies
+              - Block deployment if violations
+              - Generate compliance report
+  - heading: Policy as Code
+    id: policy_as_code
+    blocks:
+      - type: heading
+        level: 3
+        text: Open Policy Agent
+      - type: definition
+        items:
+          - term: Concept
+            description: Define security policies as code (Rego language)
+      - type: heading
+        level: 4
+        text: Use Cases
+      - type: list
+        style: bullet
+        items:
+          - Kubernetes admission control
+          - Terraform plan validation
+          - Service mesh authorization
+      - type: code
+        lang: rego
+        caption: >-
+          Example policy
+        text: |
+          package terraform.policies.s3_encryption
+
+          deny[msg] {
+              resource := input.resource_changes[_]
+              resource.type == "aws_s3_bucket"
+              not resource.change.after.server_side_encryption_configuration
+              msg := sprintf("S3 bucket '%s' must have encryption enabled", [resource.address])
+          }
+      - type: fields
+        subject: AWS Config Rules
+        entries:
+          - label: Concept
+            value: AWS-native compliance checks
+          - label: Implementation
+            value:
+              - Define required security configurations
+              - AWS Config evaluates resources
+              - Non-compliant resources flagged
+              - Automated remediation possible
+          - label: Example rules
+            value:
+              - s3-bucket-server-side-encryption-enabled
+              - ec2-instance-no-public-ip
+              - iam-policy-no-statements-with-admin-access
+      - type: heading
+        level: 3
+        text: Azure Policy
+      - type: definition
+        items:
+          - term: Concept
+            description: Azure-native governance
+      - type: fields
+        subject: Enforcement Modes
+        entries:
+          - label: Audit
+            value: Report non-compliance, allow deployment
+          - label: Deny
+            value: Block non-compliant deployments
+          - label: DeployIfNotExists
+            value: Auto-remediate non-compliant resources
+  - heading: Secure IaC Patterns
+    id: secure_iac_patterns
+    blocks:
+      - type: heading
+        level: 3
+        text: Encryption by Default
+      - type: code
+        lang: hcl
+        caption: >-
+          Terraform example
+        text: |
+          resource "aws_s3_bucket" "secure_bucket" {
+            bucket = "my-secure-bucket"
+
+            server_side_encryption_configuration {
+              rule {
+                apply_server_side_encryption_by_default {
+                  sse_algorithm = "AES256"
+                }
+              }
+            }
+
+            versioning {
+              enabled = true
+            }
+
+            logging {
+              target_bucket = aws_s3_bucket.log_bucket.id
+              target_prefix = "log/"
+            }
+
+            public_access_block {
+              block_public_acls       = true
+              block_public_policy     = true
+              ignore_public_acls      = true
+              restrict_public_buckets = true
+            }
+          }
+      - type: heading
+        level: 3
+        text: Least Privilege IAM
+      - type: definition
+        items:
+          - term: Principle
+            description: Grant minimum permissions required
+      - type: code
+        lang: hcl
+        caption: >-
+          Terraform example
+        text: |
+          resource "aws_iam_role_policy" "app_policy" {
+            name = "app-policy"
+            role = aws_iam_role.app_role.id
+
+            policy = jsonencode({
+              Version = "2012-10-17"
+              Statement = [
+                {
+                  Effect = "Allow"
+                  Action = [
+                    "s3:GetObject",
+                    "s3:PutObject"
+                  ]
+                  Resource = "${aws_s3_bucket.app_bucket.arn}/*"
+                },
+                {
+                  Effect = "Allow"
+                  Action = "dynamodb:Query"
+                  Resource = aws_dynamodb_table.app_table.arn
+                }
+              ]
+            })
+          }
+      - type: fields
+        subject: Network Security
+        entries:
+          - label: VPC design
+            value:
+              - Private subnets for application workloads
+              - Public subnets only for load balancers
+              - No default routes to internet from private subnets
+              - NAT gateway for outbound internet (patch updates)
+          - label: Security groups
+            value:
+              - Deny by default
+              - Allow only required traffic
+              - No 0.0.0.0/0 for inbound

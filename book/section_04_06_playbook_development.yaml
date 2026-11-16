@@ -1,0 +1,216 @@
+# section_04_06_playbook_development.yaml
+
+---
+title: Playbook Development
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 6
+  section_code: '0406'
+  source_chapter: '4.3'
+  source_key: incident_response.playbook_development
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 1+ organizations documenting response procedures
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Playbooks codify institutional knowledge and enable consistent response. This section addresses
+          advanced playbook development, cloud-specific scenarios, and emerging threat response patterns.
+  - heading: Advanced Playbook Scenarios
+    id: advanced_playbook_scenarios
+    blocks:
+      - type: heading
+        level: 3
+        text: Advanced Persistent Threat
+      - type: heading
+        level: 4
+        text: Characteristics
+      - type: list
+        style: bullet
+        items:
+          - Sophisticated adversary with clear objective
+          - Long-term presence in environment (weeks to months)
+          - Custom malware and tools
+          - Focus on data theft and espionage
+      - type: heading
+        level: 4
+        text: Detection Indicators
+      - type: list
+        style: bullet
+        items:
+          - Unusual lateral movement patterns
+          - Data staging and exfiltration over extended period
+          - Living-off-the-land techniques (using legitimate tools)
+          - Multiple persistence mechanisms
+      - type: heading
+        level: 4
+        text: Response Approach
+      - type: fields
+        subject: Intelligence Gathering
+        entries:
+          - label: Items
+            value:
+              - Do NOT immediately contain (alerts adversary)
+              - Monitor and document adversary activity
+              - Identify adversary objectives and TTPs
+              - Map compromised systems and accounts
+          - label: Duration
+            value: 1-7 days of observation
+      - type: fields
+        subject: Coordinated Remediation
+        entries:
+          - label: Items
+            value:
+              - Plan coordinated remediation across all compromised systems
+              - Execute remediation simultaneously (prevent adversary pivot)
+              - Rotate all credentials
+              - Deploy enhanced monitoring
+          - label: Timing
+            value: Execute during planned window
+      - type: heading
+        level: 5
+        text: Post-Remediation
+      - type: list
+        style: bullet
+        items:
+          - Monitor for adversary return attempts
+          - Threat hunt for additional compromise
+          - Update defenses based on observed TTPs
+          - Consider attribution and threat intelligence sharing
+      - type: definition
+        items:
+          - term: External support
+            description: Strongly recommend engaging external IR firm with APT expertise
+      - type: fields
+        subject: Zero Day Exploitation
+        entries:
+          - label: Scenario
+            value: Active exploitation of unknown vulnerability
+          - label: Immediate actions
+            value:
+              - Identify affected systems and applications
+              - Isolate affected systems if feasible
+              - Capture network traffic and system artifacts
+              - Contact vendor for emergency patch
+          - label: Investigation
+            value:
+              - Reverse engineer exploit if possible
+              - Identify indicators of exploitation
+              - Search for exploitation across environment
+              - Assess if vulnerability weaponized or targeted
+          - label: Mitigation without patch
+            value:
+              - Deploy WAF rules if web vulnerability
+              - Block exploit signatures at IDS/IPS
+              - Disable vulnerable feature if possible
+              - Network segmentation to limit exploitation
+          - label: Long term response
+            value:
+              - Apply patch immediately when available
+              - Develop detection for exploitation attempts
+              - Assess if vulnerability in other products
+              - Consider contributing to CVE process
+      - type: fields
+        subject: Supply Chain Attack
+        entries:
+          - label: Scenario
+            value: Trusted software or vendor compromised, affecting customers
+          - label: Discovery methods
+            value:
+              - Vendor notification of compromise
+              - Detection of unusual behavior from trusted software
+              - Threat intelligence reporting campaign
+          - label: Assessment phase
+            value:
+              - Identify all systems using compromised vendor/software
+              - Determine timeline of compromise
+              - Assess if malicious code executed in environment
+              - Contact vendor for details and guidance
+          - label: Containment
+            value:
+              - Isolate systems running compromised software
+              - Block C2 infrastructure if identified
+              - Disable compromised software update mechanism
+              - Deploy compensating controls
+          - label: Recovery
+            value:
+              - Await vendor guidance on clean version
+              - Verify clean version before deployment
+              - Consider alternative vendors if breach severe
+              - Enhanced monitoring of supply chain going forward
+          - label: Communication
+            value:
+              - Inform customers if you are the compromised vendor
+              - Coordinate with other affected organizations
+              - Share IOCs and TTPs with community
+      - type: fields
+        subject: Cloud Cryptojacking
+        entries:
+          - label: Scenario
+            value: Unauthorized cryptocurrency mining in cloud environment
+          - label: Indicators
+            value:
+              - Unexpected increase in compute costs
+              - High CPU utilization on instances
+              - Unusual process execution
+              - Connections to mining pools
+          - label: Investigation
+            value:
+              - Review CloudTrail/Activity Logs for unauthorized resource creation
+              - Identify compromised credentials or vulnerable services
+              - Assess scale of unauthorized resource usage
+              - Calculate financial impact
+          - label: Containment
+            value:
+              - Terminate unauthorized instances
+              - Rotate compromised credentials
+              - Patch or disable exploited service
+              - Implement resource limits and alerts
+          - label: Prevention
+            value:
+              - Restrict instance types that can be launched
+              - Alert on unusual resource provisioning
+              - Regular cloud security posture assessment
+              - Principle of least privilege for cloud IAM
+      - type: fields
+        subject: Kubernetes Container Breakout
+        entries:
+          - label: Scenario
+            value: Attacker escapes container, accesses underlying host or cluster
+          - label: Indicators
+            value:
+              - Container attempting to access host filesystem
+              - Unusual syscalls or privileged operations
+              - Container accessing Kubernetes API without authorization
+              - Lateral movement between containers/nodes
+          - label: Investigation
+            value:
+              - Review container runtime logs
+              - Analyze Kubernetes audit logs
+              - Identify compromised container and vulnerability
+              - Assess blast radius (what was accessed)
+          - label: Containment
+            value:
+              - Delete compromised pods
+              - Isolate affected nodes
+              - Rotate service account tokens
+              - Deploy network policies to prevent lateral movement
+          - label: Remediation
+            value:
+              - Patch container escape vulnerability
+              - Implement pod security policies/standards
+              - Remove unnecessary container privileges
+              - Deploy runtime security monitoring

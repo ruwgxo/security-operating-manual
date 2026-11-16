@@ -1,0 +1,271 @@
+# section_02_08_identity_federation.yaml
+
+---
+title: Identity Federation
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 8
+  section_code: 0208
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.identity_federation
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations integrating multiple identity systems
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Identity federation enables users to authenticate once and access resources across organizational
+          boundaries. B2B collaboration, mergers and acquisitions, and multi-cloud environments require
+          federation to avoid duplicate accounts and manage external identities. This section addresses
+          federation protocols, trust relationships, and cross-organization identity management.
+  - heading: Federation Use Cases
+    id: federation_use_cases
+    blocks:
+      - type: fields
+        subject: B2B Collaboration
+        entries:
+          - label: Scenario
+            value: Partner employees need access to your applications
+          - label: Traditional approach
+            value: Create guest accounts in your directory, manage lifecycle manually
+          - label: Federated approach
+            value: Partner users authenticate with their own identity provider, federated to your resources
+          - label: Benefits
+            value:
+              - No duplicate accounts to manage
+              - Partner manages their user lifecycle
+              - Automatic deprovisioning when partner employee leaves
+      - type: fields
+        subject: Merger Acquisition
+        entries:
+          - label: Scenario
+            value: Acquired company has separate identity infrastructure
+          - label: Challenge
+            value: Two directories, need unified access
+          - label: Federation approach
+            value:
+              - Establish trust between identity providers
+              - Users authenticate with their original IDP
+              - Access resources across both organizations
+              - Gradual migration to consolidated identity
+      - type: fields
+        subject: Multi-Cloud Identity
+        entries:
+          - label: Scenario
+            value: Resources in AWS, Azure, GCP with separate identity systems
+          - label: Challenge
+            value: Users need access across all clouds
+          - label: Federation approach
+            value:
+              - Corporate IDP as source of truth
+              - Federate to AWS (SAML, OIDC)
+              - Federate to Azure (Azure AD Connect, federation)
+              - Federate to GCP (Google Cloud Identity federation)
+              - Single identity, multiple cloud access
+  - heading: Federation Protocols
+    id: federation_protocols
+    blocks:
+      - type: heading
+        level: 3
+        text: SAML Federation
+      - type: fields
+        subject: Trust Establishment
+        entries:
+          - label: Step 1
+            value: Exchange metadata between identity providers
+          - label: Step 2
+            value: Configure trust (certificate validation, attribute mapping)
+          - label: Step 3
+            value: Test authentication flow
+      - type: fields
+        subject: Authentication Flow
+        entries:
+          - label: Step 1
+            value: User accesses resource at Service Provider (SP)
+          - label: Step 2
+            value: SP redirects to user's Identity Provider (IDP)
+          - label: Step 3
+            value: User authenticates at their IDP
+          - label: Step 4
+            value: IDP returns SAML assertion with user attributes
+          - label: Step 5
+            value: SP validates assertion and grants access
+      - type: heading
+        level: 4
+        text: Attribute Mapping
+      - type: definition
+        items:
+          - term: Problem
+            description: Different organizations use different attribute names
+          - term: Solution
+            description: Map attributes during federation
+      - type: fields
+        subject: Example
+        entries:
+          - label: Source IdP
+            value: employeeID
+          - label: Target SP
+            value: user_id
+          - label: Mapping
+            value: employeeID → user_id
+      - type: heading
+        level: 3
+        text: OIDC Federation
+      - type: heading
+        level: 4
+        text: Trust Establishment
+      - type: list
+        style: bullet
+        items:
+          - Register client application with identity provider
+          - Receive client ID and client secret
+          - Configure redirect URIs
+      - type: fields
+        subject: Authentication Flow
+        entries:
+          - label: Step 1
+            value: Application redirects user to identity provider
+          - label: Step 2
+            value: User authenticates
+          - label: Step 3
+            value: IDP redirects back with authorization code
+          - label: Step 4
+            value: Application exchanges code for ID token and access token
+          - label: Step 5
+            value: Application validates ID token, grants access
+      - type: fields
+        subject: Token Types
+        entries:
+          - label: ID token
+            value: JWT containing user identity and attributes
+          - label: Access token
+            value: Bearer token for API access
+          - label: Refresh token
+            value: Long-lived token to obtain new access tokens
+      - type: heading
+        level: 3
+        text: Federation Trust Models
+      - type: fields
+        subject: Hub and Spoke
+        entries:
+          - label: Structure
+            value: Central IDP federates to multiple service providers
+          - label: Example
+            value: Corporate Azure AD federates to AWS, GCP, SaaS apps
+          - label: Pros
+            value:
+              - Central identity management
+              - Consistent policies
+          - label: Cons
+            value:
+              - Single point of failure
+              - Central IDP must support all required protocols
+      - type: fields
+        subject: Mesh
+        entries:
+          - label: Structure
+            value: Multiple IDPs trust each other directly
+          - label: Example
+            value: Company A IDP ← trust → Company B IDP
+          - label: Pros
+            value:
+              - No central dependency
+              - Each org maintains autonomy
+          - label: Cons
+            value:
+              - Complex trust relationships at scale
+              - Difficult to manage many-to-many trusts
+      - type: fields
+        subject: Broker
+        entries:
+          - label: Structure
+            value: Federation broker intermediates between IDPs
+          - label: Example
+            value: Company IDPs → Federation broker → Service providers
+          - label: Pros
+            value:
+              - Abstracts complexity
+              - Protocol translation (SAML ↔ OIDC)
+              - Centralized policy enforcement
+          - label: Cons
+            value:
+              - Additional infrastructure
+              - Broker becomes critical path
+  - heading: Guest User Management
+    id: guest_user_management
+    blocks:
+      - type: heading
+        level: 3
+        text: Guest Account Lifecycle
+      - type: fields
+        subject: Invitation
+        entries:
+          - label: Step 1
+            value: Internal user invites external partner
+          - label: Step 2
+            value: System sends invitation email to partner
+          - label: Step 3
+            value: Partner accepts invitation
+          - label: Step 4
+            value: Guest account created (federated or local)
+      - type: heading
+        level: 4
+        text: Access Provisioning
+      - type: list
+        style: bullet
+        items:
+          - Grant least privilege access
+          - Time-bound access (30-90 days typical)
+          - Require MFA for guest access
+          - Limit to specific resources (no broad network access)
+      - type: fields
+        subject: Access Review
+        entries:
+          - label: Frequency
+            value: Quarterly review of guest accounts
+          - label: Process
+            value:
+              - System notifies internal sponsor
+              - Sponsor attests guest still needs access
+              - Accounts without attestation automatically disabled
+      - type: fields
+        subject: Deprovisioning
+        entries:
+          - label: Triggers
+            value:
+              - Access expiration reached
+              - Sponsor revokes access
+              - Partner relationship ends
+          - label: Action
+            value: Disable account, revoke all access immediately
+      - type: fields
+        subject: Guest Access Restrictions
+        entries:
+          - label: Resource limitations
+            value:
+              - Access to shared resources only (not internal systems)
+              - Cannot invite additional guests (prevent lateral expansion)
+              - Cannot access user directory (privacy protection)
+          - label: Authentication requirements
+            value:
+              - MFA required for all guest access
+              - Conditional access policies (managed device preferred)
+              - More frequent re-authentication (every 2 hours vs 8 hours for employees)
+          - label: Monitoring
+            value:
+              - Enhanced logging for guest activity
+              - Alerts on unusual guest behavior
+              - Guest access analytics dashboard

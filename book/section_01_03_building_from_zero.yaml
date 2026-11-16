@@ -1,0 +1,770 @@
+# section_01_03_building_from_zero.yaml
+
+---
+title: Building from Zero
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 3
+  section_code: '0103'
+  source_chapter: '2.4'
+  source_key: detection_engineering.building_from_zero
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Maturity Level 0-1 organizations
+  - heading: Scenario
+    id: scenario
+    blocks:
+      - type: prose
+        text: >-
+          Greenfield detection deployment: new CISO, startup security program, post-incident rebuilding,
+          or organization recognizing detection gap during audit or breach. This section provides 12-month
+          roadmap from zero detection capability to mature reactive detection program.
+  - heading: Prerequisites
+    id: prerequisites
+    blocks:
+      - type: definition
+        items:
+          - term: Budget
+            description: Estimated $100K-$500K first year (SIEM, tools, staff)
+          - term: Team
+            description: Minimum 1 detection engineer or security analyst with scripting skills
+          - term: Executive support
+            description: CISO or security leadership sponsorship for program
+          - term: Technical access
+            description: Ability to collect logs from critical systems
+  - heading: 'Phase 1: Foundation'
+    id: phase_1_foundation
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 1-3
+          - term: Objective
+            description: Establish visibility and quick wins
+          - term: Maturity progression
+            description: Level 0 → Level 1
+      - type: heading
+        level: 3
+        text: 'Month 1: Assessment'
+      - type: definition
+        items:
+          - term: Goal
+            description: Understand current state and identify quick wins
+      - type: heading
+        level: 4
+        text: Activities
+      - type: fields
+        subject: Inventory Logging
+        entries:
+          - label: Task
+            value: Document all existing log sources
+          - label: Method
+            value:
+              - Survey IT teams about system logging capabilities
+              - Identify critical assets requiring monitoring
+              - Assess log retention periods and storage capacity
+          - label: Output
+            value: Logging inventory spreadsheet with gaps identified
+      - type: fields
+        subject: Identify Crown Jewels
+        entries:
+          - label: Task
+            value: Prioritize assets by business criticality
+          - label: Method
+            value:
+              - Interview business owners about critical systems
+              - Map data flows for sensitive information
+              - Identify single points of failure
+          - label: Output
+            value: Asset criticality matrix (P0, P1, P2 classification)
+      - type: fields
+        subject: Review Incidents
+        entries:
+          - label: Task
+            value: Analyze recent security incidents
+          - label: Method
+            value:
+              - Review past 12 months of security events
+              - Identify attack techniques that succeeded
+              - Document detection gaps that enabled attacks
+          - label: Output
+            value: Incident lessons learned and detection priorities
+      - type: fields
+        subject: Assess Team
+        entries:
+          - label: Task
+            value: Evaluate detection engineering capability
+          - label: Method
+            value:
+              - Survey team skills (SIEM, scripting, detection logic)
+              - Identify training needs
+              - Determine hiring requirements
+          - label: Output
+            value: Team capability assessment and hiring plan
+      - type: heading
+        level: 5
+        text: Estimate Budget
+      - type: definition
+        items:
+          - term: Task
+            description: Calculate detection program costs
+      - type: fields
+        subject: Components
+        entries:
+          - label: SIEM platform
+            value: $50K-$300K annually (depending on scale)
+          - label: Endpoint agents
+            value: $20-$50 per endpoint annually
+          - label: Network monitoring
+            value: $25K-$100K annually
+          - label: Threat intelligence
+            value: $10K-$50K annually
+          - label: Staff
+            value: $100K-$150K per detection engineer
+      - type: definition
+        items:
+          - term: Output
+            description: Budget proposal for 12-month detection program
+      - type: heading
+        level: 3
+        text: 'Month 2: Quick Wins'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy high-ROI detections requiring minimal infrastructure
+      - type: fields
+        subject: Authentication Monitoring
+        entries:
+          - label: Rationale
+            value: Compromised credentials = most common initial access
+          - label: Implementation
+            value:
+              - Centralize authentication logs (AD, SSO, VPN, cloud services)
+              - Deploy failed login detection (>10 failures in 5 minutes)
+              - Implement impossible travel detection (logins from 2 countries <4 hours)
+              - Alert on after-hours administrative access
+          - label: Estimated effort
+            value: 2-3 weeks
+          - label: Estimated cost
+            value: $5K-$10K (log aggregation tool if needed)
+          - label: Expected detections
+            value: Brute force attacks, credential stuffing, compromised accounts
+      - type: fields
+        subject: Critical System Changes
+        entries:
+          - label: Rationale
+            value: Unauthorized changes to critical systems indicate compromise
+          - label: Implementation
+            value:
+              - Monitor configuration changes on critical servers
+              - Alert on new scheduled tasks or cron jobs
+              - Detect new user account creation on production systems
+              - Monitor privileged group membership changes
+          - label: Estimated effort
+            value: 1-2 weeks
+          - label: Estimated cost
+            value: Minimal (uses existing system logs)
+          - label: Expected detections
+            value: Persistence mechanisms, privilege escalation
+      - type: fields
+        subject: External Threat Intel
+        entries:
+          - label: Rationale
+            value: Known-bad IPs and domains provide immediate detection value
+          - label: Implementation
+            value:
+              - 'Subscribe to threat intelligence feeds (free: abuse.ch, paid: vendor feeds)'
+              - Block/alert on connections to known malicious IPs
+              - Monitor DNS queries to recently registered domains
+              - Alert on file hashes matching known malware
+          - label: Estimated effort
+            value: 1 week
+          - label: Estimated cost
+            value: $0-$10K (free feeds available, paid feeds optional)
+          - label: Expected detections
+            value: Command and control, malware beaconing
+      - type: heading
+        level: 3
+        text: 'Month 3: Visibility'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy endpoint and network monitoring for comprehensive visibility
+      - type: heading
+        level: 4
+        text: Endpoint Agent Deployment
+      - type: definition
+        items:
+          - term: Rationale
+            description: Cannot detect what you cannot see on endpoints
+      - type: fields
+        subject: Tool Options
+        entries:
+          - label: Commercial
+            value:
+              - CrowdStrike Falcon
+              - Carbon Black
+              - Microsoft Defender for Endpoint
+          - label: Open source
+            value:
+              - Wazuh
+              - OSQuery
+      - type: heading
+        level: 5
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Deploy endpoint agent to 100% of workstations and servers
+          - Enable process execution logging
+          - Configure file integrity monitoring for critical directories
+          - Set up command-line logging for suspicious activity
+      - type: definition
+        items:
+          - term: Estimated effort
+            description: 3-4 weeks
+          - term: Estimated cost
+            description: $20-$50 per endpoint annually
+          - term: Expected detections
+            description: Malware execution, suspicious processes, persistence
+      - type: heading
+        level: 4
+        text: Network Visibility
+      - type: definition
+        items:
+          - term: Rationale
+            description: Network traffic analysis reveals lateral movement and data exfiltration
+      - type: fields
+        subject: Tool Options
+        entries:
+          - label: Flow logs
+            value:
+              - VPC Flow Logs
+              - NetFlow
+              - sFlow
+          - label: Ids IPs
+            value:
+              - Suricata
+              - Zeek
+              - Snort
+      - type: heading
+        level: 5
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Enable VPC/network flow logs for all networks
+          - Deploy network IDS at key egress points
+          - Configure DNS query logging
+          - Set up TLS certificate monitoring
+      - type: definition
+        items:
+          - term: Estimated effort
+            description: 2-3 weeks
+          - term: Estimated cost
+            description: $25K-$75K annually (depending on traffic volume)
+          - term: Expected detections
+            description: Network scanning, data exfiltration, lateral movement
+  - heading: 'Phase 2: SIEM Deployment'
+    id: phase_2_siem_deployment
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 4-6
+          - term: Objective
+            description: Centralize logs and enable correlation
+          - term: Maturity progression
+            description: Level 1 → Level 2
+      - type: heading
+        level: 3
+        text: 'Month 4: SIEM Selection'
+      - type: definition
+        items:
+          - term: Goal
+            description: Choose SIEM platform aligned with requirements and budget
+      - type: fields
+        subject: Requirements Gathering
+        entries:
+          - label: Log volume
+            value: Estimate daily log ingestion (GB/day or events/day)
+          - label: Retention
+            value: Define log retention requirements (compliance, investigation needs)
+          - label: Users
+            value: Identify analysts requiring SIEM access
+          - label: Integrations
+            value: List systems requiring SIEM integration
+          - label: Budget
+            value: Determine available budget for SIEM platform
+      - type: heading
+        level: 4
+        text: Vendor Evaluation
+      - type: heading
+        level: 5
+        text: Commercial SIEM
+      - type: fields
+        subject: Splunk
+        entries:
+          - label: Pros
+            value: Market leader, extensive integrations, powerful search
+          - label: Cons
+            value: Expensive at scale, complex licensing
+          - label: Cost
+            value: $150-$300 per GB ingested daily
+          - label: Best for
+            value: Large enterprises with budget, complex use cases
+      - type: fields
+        subject: Elastic Security
+        entries:
+          - label: Pros
+            value: Good value, scalable, open source core
+          - label: Cons
+            value: Requires more configuration than Splunk
+          - label: Cost
+            value: $50-$100 per GB ingested daily
+          - label: Best for
+            value: Mid-size organizations, cost-conscious deployments
+      - type: fields
+        subject: Microsoft Sentinel
+        entries:
+          - label: Pros
+            value: Cloud-native, Azure integration, pay-per-use
+          - label: Cons
+            value: Limited on-premise support, newer platform
+          - label: Cost
+            value: $2-$3 per GB ingested
+          - label: Best for
+            value: Microsoft-centric environments, cloud-first
+      - type: fields
+        subject: Chronicle
+        entries:
+          - label: Pros
+            value: Google-scale architecture, unlimited retention
+          - label: Cons
+            value: Limited ecosystem compared to Splunk
+          - label: Cost
+            value: Flat annual fee based on data sources
+          - label: Best for
+            value: Large-scale deployments, predictable budget
+      - type: heading
+        level: 5
+        text: Open Source SIEM
+      - type: fields
+        subject: ELK Stack
+        entries:
+          - label: Pros
+            value: Free core, highly customizable, large community
+          - label: Cons
+            value: Requires expertise to deploy and maintain
+          - label: Cost
+            value: Infrastructure only (~$20K-$50K annually)
+          - label: Best for
+            value: Strong technical team, budget constraints
+      - type: fields
+        subject: Wazuh
+        entries:
+          - label: Pros
+            value: Free, endpoint focus, good for compliance
+          - label: Cons
+            value: Limited enterprise features
+          - label: Cost
+            value: Free (infrastructure costs only)
+          - label: Best for
+            value: Small organizations, compliance-driven
+      - type: heading
+        level: 4
+        text: Decision Framework
+      - type: fields
+        subject: Budget Driven
+        entries:
+          - label: High budget
+            value: Splunk (comprehensive features, vendor support)
+          - label: Medium budget
+            value: Elastic or Sentinel (good balance)
+          - label: Low budget
+            value: Open source ELK or Wazuh
+      - type: fields
+        subject: Skill Driven
+        entries:
+          - label: Strong team
+            value: Open source (customization, lower cost)
+          - label: Moderate team
+            value: Commercial with training
+          - label: Limited team
+            value: Managed SIEM service
+      - type: fields
+        subject: Timeline Driven
+        entries:
+          - label: Urgent
+            value: Cloud SIEM (fast deployment)
+          - label: Moderate
+            value: Commercial on-premise or cloud
+          - label: Patient
+            value: Open source (build from scratch)
+      - type: heading
+        level: 3
+        text: 'Month 5: SIEM Implementation'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy SIEM and ingest critical log sources
+      - type: heading
+        level: 4
+        text: Deployment Priorities
+      - type: fields
+        subject: 'Phase 1: Critical Logs'
+        entries:
+          - label: Priority
+            value: P0 - Deploy first
+          - label: Log sources
+            value:
+              - Authentication systems (AD, SSO, VPN)
+              - Endpoint agents (process execution, file events)
+              - Network flow logs
+              - Critical server logs (database, web, application)
+          - label: Rationale
+            value: Highest detection value, most attack visibility
+          - label: Timeline
+            value: Week 1-2
+      - type: fields
+        subject: 'Phase 2: Infrastructure Logs'
+        entries:
+          - label: Priority
+            value: P1 - Deploy second
+          - label: Log sources
+            value:
+              - Firewall and proxy logs
+              - DNS query logs
+              - Cloud platform logs (AWS CloudTrail, Azure Activity)
+              - Load balancer and API gateway logs
+          - label: Rationale
+            value: Enables network-based detection, cloud visibility
+          - label: Timeline
+            value: Week 3
+      - type: fields
+        subject: 'Phase 3: Application Logs'
+        entries:
+          - label: Priority
+            value: P2 - Deploy last
+          - label: Log sources
+            value:
+              - Application logs (business logic, errors)
+              - Development tools (CI/CD, code repositories)
+              - Productivity tools (email, collaboration)
+          - label: Rationale
+            value: Lower detection priority, higher noise potential
+          - label: Timeline
+            value: Week 4
+      - type: heading
+        level: 4
+        text: Configuration
+      - type: heading
+        level: 5
+        text: Log Parsing
+      - type: list
+        style: bullet
+        items:
+          - Configure parsers for each log source type
+          - Normalize fields (source_ip, dest_ip, user, action)
+          - Extract relevant fields for detection logic
+      - type: heading
+        level: 5
+        text: Data Enrichment
+      - type: list
+        style: bullet
+        items:
+          - Add asset criticality tags from inventory
+          - Enrich with user context (department, role)
+          - Integrate threat intelligence feeds
+      - type: fields
+        subject: Retention Policy
+        entries:
+          - label: Hot storage
+            value: 90 days (fast search, high cost)
+          - label: Warm storage
+            value: 365 days (slower search, lower cost)
+          - label: Cold storage
+            value: 7 years (compliance, archive)
+      - type: heading
+        level: 3
+        text: 'Month 6: Initial Detections'
+      - type: definition
+        items:
+          - term: Goal
+            description: Deploy 10-15 high-fidelity detection rules
+      - type: heading
+        level: 4
+        text: Rule Selection Criteria
+      - type: list
+        style: bullet
+        items:
+          - High true positive rate (>70%)
+          - Addresses common attack techniques
+          - Aligns with MITRE ATT&CK framework
+          - Actionable by SOC analysts
+          - Minimal configuration required
+      - type: fields
+        subject: Initial Rule Set
+        entries:
+          - label: Authentication attacks
+            value:
+              - Brute force authentication (>10 failures in 5 minutes)
+              - Impossible travel (login from 2 locations <4 hours)
+              - Successful login after multiple failures
+              - Authentication to rarely accessed system
+          - label: Lateral movement
+            value:
+              - RDP or SSH from workstation to server
+              - Multiple failed authentication attempts across systems
+              - Unusual network connections between servers
+          - label: Privilege escalation
+            value:
+              - New local administrator account creation
+              - Privileged group membership change
+              - Suspicious scheduled task creation
+          - label: Persistence
+            value:
+              - Startup item modification
+              - New Windows service installation
+              - Registry run key modification
+          - label: Data exfiltration
+            value:
+              - Large outbound data transfer to uncommon destination
+              - Unusual database query volume
+              - File downloads exceeding normal baseline
+      - type: heading
+        level: 4
+        text: Testing Before Production
+      - type: list
+        style: bullet
+        items:
+          - Test rules against 30-90 days historical data
+          - Measure false positive rate
+          - Adjust thresholds to reduce noise
+          - Document expected alert volume
+  - heading: 'Phase 3: Optimization'
+    id: phase_3_optimization
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 7-9
+          - term: Objective
+            description: Reduce false positives and improve coverage
+          - term: Maturity progression
+            description: Level 2 optimization
+      - type: heading
+        level: 3
+        text: False Positive Reduction
+      - type: heading
+        level: 4
+        text: Measurement
+      - type: list
+        style: bullet
+        items:
+          - Track true positive rate per detection rule
+          - Identify highest-noise rules (>50 alerts/day, <10% true positive)
+          - Measure analyst time spent on false positives
+      - type: fields
+        subject: Tuning Strategies
+        entries:
+          - label: Whitelisting
+            value:
+              - Exclude known-good activity (automated scripts, admin tools)
+              - Suppress alerts for maintenance windows
+              - Filter benign user behavior patterns
+          - label: Threshold adjustment
+            value:
+              - Increase failure count for brute force detection
+              - Extend time windows for rate-based rules
+              - Adjust anomaly detection sensitivity
+          - label: Context addition
+            value:
+              - Add asset criticality to reduce noise on dev systems
+              - Include time-of-day awareness (business hours vs after-hours)
+              - Factor in user role (admin vs regular user)
+      - type: fields
+        subject: Rule Retirement
+        entries:
+          - label: Criteria for removal
+            value:
+              - True positive rate <10% after tuning attempts
+              - No true positives in 90 days
+              - Duplicate coverage with better-performing rule
+          - label: Process
+            value:
+              - Disable rule for 30 days (monitor for missed detections)
+              - Document reason for retirement
+              - Remove from production if no value demonstrated
+      - type: fields
+        subject: Coverage Expansion
+        entries:
+          - label: MITRE ATT&CK mapping
+            value:
+              - Map existing detections to ATT&CK techniques
+              - Identify top 10 coverage gaps
+              - Prioritize gaps by adversary usage and impact
+          - label: Detection development
+            value:
+              - Deploy 1-2 new high-quality detections weekly
+              - Focus on gaps in current coverage
+              - Use Sigma rules from community when available
+          - label: Behavioral analytics introduction
+            value:
+              - Implement basic user behavior baselining
+              - Deploy anomaly detection for privileged accounts
+              - Create watchlists for high-value assets
+  - heading: 'Phase 4: Maturation'
+    id: phase_4_maturation
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 10-12
+          - term: Objective
+            description: Establish detection-as-code and continuous improvement
+          - term: Maturity progression
+            description: Level 2 → Level 3
+      - type: fields
+        subject: Detection as Code Workflow
+        entries:
+          - label: Version control
+            value:
+              - Migrate all detection rules to Git repository
+              - Document rule logic, data sources, expected behavior
+              - Establish branching strategy (main, develop, feature)
+          - label: Peer review
+            value:
+              - Require pull request approval for rule changes
+              - Establish review checklist (logic, false positive risk, testing)
+              - Document decision-making in PR discussions
+          - label: CI/CD pipeline
+            value:
+              - Automate rule testing against historical data
+              - Deploy rules to staging SIEM before production
+              - Monitor new rules for 48 hours before full rollout
+      - type: fields
+        subject: Metrics and Reporting
+        entries:
+          - label: Detection program KPIs
+            value:
+              - MITRE ATT&CK coverage percentage
+              - Mean time to detect (MTTD) by severity
+              - True positive rate per detection rule
+              - Alert volume per analyst
+              - Detection rule count (with trend)
+          - label: Executive reporting
+            value:
+              - Monthly detection program dashboard
+              - Quarterly coverage assessment
+              - Incident detection success stories
+              - Budget and resource utilization
+      - type: fields
+        subject: Team Development
+        entries:
+          - label: Training
+            value:
+              - SIEM platform deep dive (vendor training)
+              - Detection engineering fundamentals
+              - MITRE ATT&CK framework
+              - Threat intelligence analysis
+          - label: Hiring
+            value:
+              - Hire additional detection engineers as budget permits
+              - Balance junior analysts with senior expertise
+              - Consider threat hunting specialist
+  - heading: Success Criteria
+    id: success_criteria
+    blocks:
+      - type: fields
+        subject: End of Year 1 Targets
+        entries:
+          - label: Visibility
+            value:
+              - 90%+ of critical assets logging to SIEM
+              - Comprehensive endpoint and network visibility
+          - label: Detection capability
+            value:
+              - 20-30 production detection rules deployed
+              - MITRE ATT&CK coverage >40%
+              - True positive rate >50%
+          - label: Operational metrics
+            value:
+              - Mean time to detect <24 hours for critical incidents
+              - Alert volume <100/day for SOC team
+              - Monthly detection program reports to leadership
+          - label: Program maturity
+            value:
+              - Detection-as-code workflow established
+              - Quarterly coverage gap assessments
+              - Documented detection engineering processes
+      - type: heading
+        level: 3
+        text: Transition to Next Phase
+      - type: list
+        style: bullet
+        items:
+          - Program ready to follow detection_strategy section
+          - Foundation established for behavioral analytics
+          - Team capable of advanced detection development
+  - heading: Lessons from Greenfield Deployments
+    id: lessons_from_greenfield_deployments
+    blocks:
+      - type: fields
+        subject: Start Small Scale Fast
+        entries:
+          - label: Lesson
+            value: Deploy 10 high-quality detections before 50 noisy ones
+          - label: Rationale
+            value: "Organizations often deploy hundreds of vendor-provided rules immediately, \ncreating\
+              \ alert fatigue before program matures. Start with handful of \nhigh-fidelity rules, prove\
+              \ value, then expand systematically."
+      - type: fields
+        subject: Buy Time with Quick Wins
+        entries:
+          - label: Lesson
+            value: Show executive results within 90 days
+          - label: Rationale
+            value: "Detection programs require sustained investment. Quick wins (authentication \nmonitoring,\
+              \ threat intel integration) prove value and secure continued funding \nwhile building mature\
+              \ capability."
+      - type: fields
+        subject: Steal Shamelessly
+        entries:
+          - label: Lesson
+            value: Use community detection content before building custom
+          - label: Rationale
+            value: "Sigma rules, vendor content packs, and open source detections provide \nimmediate\
+              \ value. Customize community content for your environment rather \nthan building from scratch."
+          - label: Resources
+            value:
+              - 'Sigma HQ: github.com/SigmaHQ/sigma'
+              - 'Elastic Detection Rules: github.com/elastic/detection-rules'
+              - 'Splunk Security Content: github.com/splunk/security_content'
+      - type: fields
+        subject: Hire for Gaps Early
+        entries:
+          - label: Lesson
+            value: Identify skill gaps in month 1, hire by month 6
+          - label: Rationale
+            value: "Detection engineering requires specific skills (SIEM, scripting, threat analysis).\
+              \ \nHiring delays extend timeline. Identify gaps early, recruit aggressively."
+      - type: fields
+        subject: Avoid Analysis Paralysis
+        entries:
+          - label: Lesson
+            value: Good enough now beats perfect later
+          - label: Rationale
+            value: "Organizations delay detection deployment seeking perfect SIEM selection or \nperfect\
+              \ rule logic. Deploy functional capability quickly, iterate based on \noperational experience."

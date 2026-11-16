@@ -1,0 +1,367 @@
+# section_03_02_maturity_model.yaml
+
+---
+title: Maturity Model
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 2
+  section_code: '0302'
+  source_chapter: '4.1'
+  source_key: security_automation.maturity_model
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Purpose
+    id: purpose
+    blocks:
+      - type: prose
+        text: >-
+          Automation maturity determines operational efficiency and security scalability. This model enables
+          assessment of current automation capability, identification of opportunities, and roadmap development.
+          Use self-assessment to determine automation priorities for your organization.
+  - heading: Maturity Levels
+    id: maturity_levels
+    blocks:
+      - type: heading
+        level: 3
+        text: 'Level 0: Manual Everything'
+      - type: definition
+        items:
+          - term: Name
+            description: Manual Everything
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Alert handling
+            value: Manual copy-paste from SIEM to ticket system
+          - label: Enrichment
+            value: Analyst manually looks up IPs, users, threat intel
+          - label: Response
+            value: Manual execution of response actions
+          - label: Reporting
+            value: Manual data gathering and spreadsheet creation
+          - label: Deployment
+            value: Manual configuration changes via GUI
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Analysts spend >70% time on repetitive tasks
+          - No scripts or automation in use
+          - Mean time to respond measured in hours or days
+          - Analysts complain of burnout and tedious work
+          - Security team cannot scale with business growth
+      - type: definition
+        items:
+          - term: Risk level
+            description: Critical - team overwhelmed, cannot scale, high burnout
+          - term: Next steps
+            description: Identify highest-pain repetitive tasks, build first scripts
+          - term: Estimated timeline
+            description: 3-6 months to reach Level 1
+      - type: heading
+        level: 3
+        text: 'Level 1: Scripts and Tools'
+      - type: definition
+        items:
+          - term: Name
+            description: Scripts and Tools
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Alert handling
+            value: Some automated ticket creation
+          - label: Enrichment
+            value: Scripts for common lookups (IP, user, domain)
+          - label: Response
+            value: Individual scripts for response actions
+          - label: Reporting
+            value: Automated data collection for reports
+          - label: Deployment
+            value: Mix of manual and scripted changes
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Team has collection of Python/PowerShell scripts
+          - Scripts solve specific pain points
+          - No centralized automation platform
+          - Scripts maintained by individual analysts
+          - Some time savings but inconsistent
+      - type: definition
+        items:
+          - term: Risk level
+            description: High - better than manual but not scalable
+          - term: Next steps
+            description: Centralize scripts, adopt SOAR platform, standardize playbooks
+          - term: Estimated timeline
+            description: 6-12 months to reach Level 2
+      - type: heading
+        level: 3
+        text: 'Level 2: SOAR and Playbooks'
+      - type: definition
+        items:
+          - term: Name
+            description: SOAR and Playbooks
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Alert handling
+            value: Automated triage and enrichment
+          - label: Enrichment
+            value: Automated multi-source enrichment
+          - label: Response
+            value: Documented playbooks, semi-automated response
+          - label: Reporting
+            value: Automated metrics dashboards
+          - label: Deployment
+            value: Infrastructure-as-code for security controls
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - SOAR platform deployed and integrated
+          - 20+ automated playbooks in production
+          - Analysts spend <50% time on repetitive tasks
+          - Mean time to respond reduced by 50%+
+          - Security controls deployed via code
+      - type: definition
+        items:
+          - term: Risk level
+            description: Medium - good automation foundation, optimization opportunities
+          - term: Next steps
+            description: Full detection-as-code, advanced orchestration, ML-driven automation
+          - term: Estimated timeline
+            description: 12-18 months to reach Level 3
+      - type: heading
+        level: 3
+        text: 'Level 3: Advanced Orchestration'
+      - type: definition
+        items:
+          - term: Name
+            description: Advanced Orchestration
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Alert handling
+            value: Fully automated triage, human intervention only for complex cases
+          - label: Enrichment
+            value: Real-time multi-source enrichment with ML
+          - label: Response
+            value: Automated response for high-confidence scenarios
+          - label: Reporting
+            value: Self-service analytics, automated executive reporting
+          - label: Deployment
+            value: Full security-as-code with automated testing
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - 50+ automated playbooks covering major scenarios
+          - Detection rules as code with CI/CD
+          - Automated response for 60%+ of incidents
+          - Analysts focus on threat hunting and detection engineering
+          - Security scales with business without headcount growth
+      - type: definition
+        items:
+          - term: Risk level
+            description: Low - mature automation, continuous improvement
+          - term: Next steps
+            description: AI-driven automation, self-healing security, autonomous response
+          - term: Estimated timeline
+            description: 12-24 months to reach Level 4
+      - type: heading
+        level: 3
+        text: 'Level 4: Autonomous Security'
+      - type: definition
+        items:
+          - term: Name
+            description: Autonomous Security Operations
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Alert handling
+            value: AI-driven alert correlation and prioritization
+          - label: Enrichment
+            value: Predictive threat intelligence integration
+          - label: Response
+            value: Autonomous response with self-healing capabilities
+          - label: Reporting
+            value: Predictive analytics and proactive risk reporting
+          - label: Deployment
+            value: Self-adapting security controls
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - AI/ML models driving automation decisions
+          - 90%+ of incidents auto-resolved without human intervention
+          - Security operations team focused on strategy and architecture
+          - Automated threat hunting and proactive defense
+          - Industry-leading mean time to detect and respond
+      - type: definition
+        items:
+          - term: Risk level
+            description: Very Low - advanced automation, proactive security posture
+          - term: Next steps
+            description: Innovation, research, industry thought leadership
+  - heading: Self-Assessment
+    id: self_assessment
+    blocks:
+      - type: heading
+        level: 3
+        text: Instructions
+      - type: prose
+        text: >-
+          Answer the following questions about your current automation capability. Score: 1 point for
+          each YES answer. Total score determines maturity level.
+      - type: heading
+        level: 3
+        text: Questions
+      - type: fields
+        subject: Q1
+        entries:
+          - label: Question
+            value: Do you have scripts automating common security tasks?
+          - label: Level indicator
+            value: Level 0 → Level 1
+      - type: fields
+        subject: Q2
+        entries:
+          - label: Question
+            value: Do you have automated alert enrichment?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q3
+        entries:
+          - label: Question
+            value: Do you have SOAR platform deployed?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q4
+        entries:
+          - label: Question
+            value: Do you have 10+ documented playbooks?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q5
+        entries:
+          - label: Question
+            value: Do you use infrastructure-as-code for security controls?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q6
+        entries:
+          - label: Question
+            value: Do you have detection rules as code with version control?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q7
+        entries:
+          - label: Question
+            value: Do you have automated response for common incidents?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q8
+        entries:
+          - label: Question
+            value: Do you have security automation in CI/CD pipelines?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q9
+        entries:
+          - label: Question
+            value: Do you measure automation effectiveness with metrics?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q10
+        entries:
+          - label: Question
+            value: Do you have 50+ automated playbooks covering major scenarios?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: fields
+        subject: Q11
+        entries:
+          - label: Question
+            value: Do you use ML/AI for automation decisions?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: fields
+        subject: Q12
+        entries:
+          - label: Question
+            value: Do you auto-resolve >60% of incidents without human intervention?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: heading
+        level: 3
+        text: Scoring
+      - type: fields
+        subject: Score 0 1
+        entries:
+          - label: Level
+            value: 'Level 0: Manual Everything'
+          - label: Next section
+            value: building_from_zero
+          - label: Priority
+            value: Build first automation scripts for highest-pain tasks
+      - type: fields
+        subject: Score 2 4
+        entries:
+          - label: Level
+            value: 'Level 1: Scripts and Tools'
+          - label: Next section
+            value: 'building_from_zero (Phase 2: SOAR deployment)'
+          - label: Priority
+            value: Deploy SOAR platform and standardize playbooks
+      - type: fields
+        subject: Score 5 7
+        entries:
+          - label: Level
+            value: 'Level 2: SOAR and Playbooks'
+          - label: Next section
+            value: automation_strategy, detection_as_code
+          - label: Priority
+            value: Advanced orchestration and security-as-code
+      - type: fields
+        subject: Score 8 10
+        entries:
+          - label: Level
+            value: 'Level 3: Advanced Orchestration'
+          - label: Next section
+            value: All sections for optimization
+          - label: Priority
+            value: AI/ML automation, autonomous response
+      - type: fields
+        subject: Score 11 12
+        entries:
+          - label: Level
+            value: 'Level 4: Autonomous Security'
+          - label: Next section
+            value: Innovation and continuous improvement
+          - label: Priority
+            value: Industry leadership and research

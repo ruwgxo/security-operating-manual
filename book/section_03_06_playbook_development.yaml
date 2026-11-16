@@ -1,0 +1,343 @@
+# section_03_06_playbook_development.yaml
+
+---
+title: Playbook Development
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 6
+  section_code: '0306'
+  source_chapter: '4.1'
+  source_key: security_automation.playbook_development
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations building response playbooks
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Playbooks codify security response procedures as executable workflows. This section addresses
+          playbook design, development methodology, testing, and operational best practices for building
+          high-quality automation.
+  - heading: Playbook Design Principles
+    id: playbook_design_principles
+    blocks:
+      - type: fields
+        subject: Single Responsibility
+        entries:
+          - label: Principle
+            value: Each playbook should do one thing well
+          - label: Good
+            value: Phishing email enrichment playbook
+          - label: Bad
+            value: Phishing enrichment + user notification + email deletion + IOC extraction
+          - label: Rationale
+            value: Smaller playbooks are easier to test, debug, reuse
+      - type: fields
+        subject: Composability
+        entries:
+          - label: Principle
+            value: Build complex workflows by chaining simple playbooks
+          - label: Implementation
+            value:
+              - Phishing enrichment playbook
+              - Calls IOC extraction playbook
+              - Calls threat intelligence playbook
+              - Calls email deletion playbook
+          - label: Advantages
+            value: Reusable components, easier maintenance
+      - type: fields
+        subject: Idempotence
+        entries:
+          - label: Principle
+            value: Safe to run multiple times
+          - label: Implementation
+            value:
+              - Check if action already completed
+              - Use 'create or update' operations
+              - Log all actions for troubleshooting
+      - type: fields
+        subject: Graceful Degradation
+        entries:
+          - label: Principle
+            value: Partial failures don't stop entire playbook
+          - label: Implementation
+            value:
+              - Continue on error with best-effort results
+              - Log errors for review
+              - Mark playbook as partially successful
+  - heading: Playbook Development Methodology
+    id: playbook_development_methodology
+    blocks:
+      - type: heading
+        level: 3
+        text: 'Step 1: Manual Procedure Documentation'
+      - type: definition
+        items:
+          - term: Goal
+            description: Document manual steps before automating
+      - type: fields
+        subject: Template
+        entries:
+          - label: Trigger
+            value: What event starts this procedure?
+          - label: Objective
+            value: What are we trying to accomplish?
+          - label: Prerequisites
+            value: What information/access needed?
+          - label: Steps
+            value: Numbered list of manual steps
+          - label: Decision points
+            value: Where does human judgment matter?
+          - label: Success criteria
+            value: How do we know we succeeded?
+      - type: heading
+        level: 3
+        text: 'Step 2: Automation Feasibility'
+      - type: fields
+        subject: Assessment
+        entries:
+          - label: Fully automatable
+            value: All steps can be automated
+          - label: Semi-automatable
+            value: Some steps require human judgment
+          - label: Not automatable
+            value: Primarily human judgment required
+      - type: definition
+        items:
+          - term: Decision
+            description: Proceed if >70% of steps automatable
+      - type: heading
+        level: 3
+        text: 'Step 3: Playbook Design'
+      - type: fields
+        subject: Design Document
+        entries:
+          - label: Inputs
+            value: What data does playbook need?
+          - label: Outputs
+            value: What results does playbook produce?
+          - label: Actions
+            value: What actions will playbook take?
+          - label: Integrations
+            value: What tools will playbook interact with?
+          - label: Error handling
+            value: What happens when things fail?
+          - label: Approval gates
+            value: Where do humans need to approve?
+      - type: fields
+        subject: 'Step 4: Development'
+        entries:
+          - label: Build incrementally
+            value:
+              - Start with simplest version (happy path)
+              - Add error handling
+              - Add edge cases
+              - Add approval gates for high-risk actions
+          - label: Code review
+            value:
+              - Peer review playbook logic
+              - Security review for sensitive actions
+              - Operations review for production impact
+      - type: fields
+        subject: 'Step 5: Testing'
+        entries:
+          - label: Unit testing
+            value: Test individual playbook actions
+          - label: Integration testing
+            value: Test complete playbook workflow
+          - label: Production testing
+            value: Canary deployment with real alerts
+      - type: fields
+        subject: 'Step 6: Documentation'
+        entries:
+          - label: Playbook readme
+            value:
+              - Purpose and use cases
+              - Inputs and outputs
+              - Actions taken
+              - Approval requirements
+              - Troubleshooting guide
+      - type: fields
+        subject: 'Step 7: Operations'
+        entries:
+          - label: Monitoring
+            value: Track execution metrics and errors
+          - label: Maintenance
+            value: Update as tools and processes change
+          - label: Optimization
+            value: Improve based on performance data
+  - heading: Example Playbooks
+    id: example_playbooks
+    blocks:
+      - type: heading
+        level: 3
+        text: Phishing Investigation
+      - type: definition
+        items:
+          - term: Trigger
+            description: User reports suspicious email
+      - type: heading
+        level: 4
+        text: Inputs
+      - type: list
+        style: bullet
+        items:
+          - Email sender, subject, body
+          - Attachments and links
+          - Reporting user
+      - type: heading
+        level: 4
+        text: Actions
+      - type: heading
+        level: 5
+        text: 'Step 1: Enrichment'
+      - type: list
+        style: bullet
+        items:
+          - Extract URLs and domains
+          - Extract email addresses
+          - Extract attachment hashes
+      - type: heading
+        level: 5
+        text: 'Step 2: Threat Intel'
+      - type: list
+        style: bullet
+        items:
+          - Check URLs against threat intelligence
+          - Check domains against reputation services
+          - Check hashes against malware databases
+      - type: heading
+        level: 5
+        text: 'Step 3: Scope'
+      - type: list
+        style: bullet
+        items:
+          - Search mailboxes for same email
+          - Count recipients
+          - Identify if VIPs received email
+      - type: heading
+        level: 5
+        text: 'Step 4: Decision'
+      - type: fields
+        subject: Malicious
+        entries:
+          - label: Condition
+            value: Threat intel confirms malicious
+          - label: Action
+            value: Proceed to remediation
+      - type: fields
+        subject: Suspicious
+        entries:
+          - label: Condition
+            value: No definitive intel but suspicious
+          - label: Action
+            value: Request human review
+      - type: fields
+        subject: Benign
+        entries:
+          - label: Condition
+            value: Confirmed legitimate
+          - label: Action
+            value: Close incident, notify user
+      - type: heading
+        level: 5
+        text: 'Step 5: Remediation'
+      - type: list
+        style: bullet
+        items:
+          - Delete email from all mailboxes
+          - Block sender domain
+          - Add URLs to web filter blocklist
+          - Quarantine attachments
+      - type: heading
+        level: 5
+        text: 'Step 6: Notification'
+      - type: list
+        style: bullet
+        items:
+          - Notify affected users
+          - Create incident ticket
+          - Generate investigation report
+      - type: definition
+        items:
+          - term: Time saved
+            description: 45 minutes manual → 5 minutes automated
+      - type: heading
+        level: 3
+        text: Compromised Account Response
+      - type: definition
+        items:
+          - term: Trigger
+            description: Impossible travel or anomalous authentication detected
+      - type: heading
+        level: 4
+        text: Inputs
+      - type: list
+        style: bullet
+        items:
+          - Username
+          - Suspicious authentication details
+      - type: heading
+        level: 4
+        text: Actions
+      - type: heading
+        level: 5
+        text: 'Step 1: Validation'
+      - type: list
+        style: bullet
+        items:
+          - Review recent authentication logs
+          - Check for other anomalous activity
+          - Calculate confidence score
+      - type: fields
+        subject: 'Step 2: Containment'
+        entries:
+          - label: Condition high confidence
+            value: Immediately disable account
+          - label: Condition medium confidence
+            value: Force password reset
+          - label: Condition low confidence
+            value: Monitor and alert
+      - type: heading
+        level: 5
+        text: 'Step 3: Investigation'
+      - type: list
+        style: bullet
+        items:
+          - Review account's recent activity
+          - Check data accessed
+          - Identify lateral movement attempts
+          - Search for persistence mechanisms
+      - type: heading
+        level: 5
+        text: 'Step 4: Notification'
+      - type: list
+        style: bullet
+        items:
+          - Notify user and manager
+          - Require password change and MFA re-enrollment
+          - Create incident ticket
+      - type: heading
+        level: 5
+        text: 'Step 5: Recovery'
+      - type: list
+        style: bullet
+        items:
+          - Re-enable account after security review
+          - Monitor for 48 hours post-recovery
+      - type: definition
+        items:
+          - term: Time saved
+            description: 2 hours manual → 15 minutes automated

@@ -1,0 +1,154 @@
+# chapter_04_index.yaml
+
+---
+title: 'Chapter 4: Incident Response at Scale - Index'
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  book: Security Operating Manual
+  chapter: 4
+  source_chapter: '4.3'
+  repository: https://github.com/ruwgxo/security-operating-manual
+  license: MIT
+  legacy:
+    part: 'Part IV: Operations'
+    github: github.com/ruwgxo
+    license: MIT
+    classification: Security Operating Manual
+    sections_in_this_document:
+      - overview
+      - core_principles
+      - maturity_model
+      - building_from_zero
+      - ir_framework_and_methodology
+      - incident_classification
+      - playbook_development
+      - investigation_and_forensics
+      - containment_strategies
+      - communication_and_escalation
+      - post_incident_activities
+      - tabletop_exercises
+      - ir_metrics_and_kpis
+    core_principles_covered:
+      - id: IR-P001
+        name: Preparation prevents panic
+      - id: IR-P002
+        name: Speed over perfection in containment
+      - id: IR-P003
+        name: Evidence preservation enables prosecution
+      - id: IR-P004
+        name: Communication clarity prevents chaos
+      - id: IR-P005
+        name: Learn from every incident
+      - id: IR-P006
+        name: Practice makes perfect
+    how_to_use_this_chapter:
+      step_1: Read overview and core principles
+      step_2: Complete IR maturity self-assessment
+      step_3: Jump to section matching your maturity level
+      step_4: Cross-reference with Chapters 2.4, 3.1, 4.1 for complete security operations
+chapter_overview:
+  overview: >-
+    Incident response determines whether security breach becomes minor inconvenience or catastrophic business
+    failure. The difference between ransomware that encrypts 10 systems versus 10,000 systems is effective
+    incident response. Between data breach affecting 1,000 records versus 10 million records is incident
+    response speed.
+
+
+    This chapter addresses incident response at enterprise scale: building IR capability from scratch,
+    systematic investigation methodology, containment strategies that limit blast radius, and post-incident
+    learning that strengthens defenses. Organizations with mature IR capability contain breaches in hours
+    instead of weeks, minimize business impact, and emerge stronger from incidents.
+
+
+    Incident response is not just technical procedure - it's crisis management under pressure with legal,
+    regulatory, and business implications. This chapter provides framework for systematic response that
+    balances speed, evidence preservation, stakeholder communication, and business continuity.
+sections:
+  - section_number: '4.1'
+    title: Core Principles
+    filename: section_04_01_core_principles.yaml
+  - section_number: '4.2'
+    title: Maturity Model
+    filename: section_04_02_maturity_model.yaml
+  - section_number: '4.3'
+    title: Building from Zero
+    filename: section_04_03_building_from_zero.yaml
+  - section_number: '4.4'
+    title: IR Framework and Methodology
+    filename: section_04_04_ir_framework_and_methodology.yaml
+  - section_number: '4.5'
+    title: Incident Classification
+    filename: section_04_05_incident_classification.yaml
+  - section_number: '4.6'
+    title: Playbook Development
+    filename: section_04_06_playbook_development.yaml
+  - section_number: '4.7'
+    title: Investigation and Forensics
+    filename: section_04_07_investigation_and_forensics.yaml
+  - section_number: '4.8'
+    title: Containment Strategies
+    filename: section_04_08_containment_strategies.yaml
+  - section_number: '4.9'
+    title: Communication and Escalation
+    filename: section_04_09_communication_and_escalation.yaml
+  - section_number: '4.10'
+    title: Post-Incident Activities
+    filename: section_04_10_post_incident_activities.yaml
+  - section_number: '4.11'
+    title: Tabletop Exercises
+    filename: section_04_11_tabletop_exercises.yaml
+  - section_number: '4.12'
+    title: IR Metrics and KPIs
+    filename: section_04_12_ir_metrics_and_kpis.yaml
+references:
+  ir_frameworks:
+    - 'NIST SP 800-61: Computer Security Incident Handling Guide'
+    - SANS Incident Response Process
+    - 'ISO/IEC 27035: Information Security Incident Management'
+    - 'NIST Cybersecurity Framework: Respond function'
+  forensic_tools:
+    commercial:
+      - EnCase Forensic
+      - FTK (Forensic Toolkit)
+      - Cellebrite (mobile forensics)
+      - Magnet AXIOM
+    open_source:
+      - Autopsy / Sleuth Kit
+      - Volatility (memory forensics)
+      - Wireshark
+      - GRR Rapid Response
+  threat_intelligence:
+    - MITRE ATT&CK Framework
+    - MISP (Malware Information Sharing Platform)
+    - STIX/TAXII (Structured Threat Information eXpression)
+    - AlienVault OTX, VirusTotal, AbuseIPDB
+  regulatory_guidance:
+    - GDPR Breach Notification Guidelines
+    - US State Breach Notification Laws Compilation
+    - HIPAA Breach Notification Rule
+    - PCI DSS Incident Response Requirements
+cross_references:
+  manual_chapters:
+    - chapter: '2.4'
+      title: Detection Engineering
+      relevance: Detection feeds IR, IR feedback improves detection
+    - chapter: '3.1'
+      title: IAM at Scale
+      relevance: Identity compromise response, credential management
+    - chapter: '4.1'
+      title: Security Automation
+      relevance: Automated response, playbook execution, SOAR integration
+  vault_repositories:
+    - repo: vault-incident-response
+      description: IR playbooks, templates, and runbooks
+      relevance: Implementation examples for this chapter
+    - repo: vault-detection-response
+      description: Detection rules triggering IR workflows
+      relevance: Detection-to-response integration
+    - repo: vault-automation-scripts
+      description: Automated response scripts and playbooks
+      relevance: Response automation

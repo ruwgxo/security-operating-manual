@@ -1,0 +1,172 @@
+# section_03_09_automated_response.yaml
+
+---
+title: Automated Response
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 9
+  section_code: 0309
+  source_chapter: '4.1'
+  source_key: security_automation.automated_response
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 3+ organizations implementing autonomous response
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Automated response executes containment and remediation without human intervention. This section
+          addresses response automation for common incidents, safety mechanisms, and gradual automation
+          adoption strategy.
+  - heading: Response Automation Maturity
+    id: response_automation_maturity
+    blocks:
+      - type: fields
+        subject: 'Level 1: Automated Enrichment'
+        entries:
+          - label: Automation
+            value: Gather context automatically
+          - label: Human action
+            value: Analyst reviews enrichment and takes action
+          - label: Example
+            value: Auto-enrich IP with threat intel, analyst blocks if malicious
+      - type: fields
+        subject: 'Level 2: Automated Recommendation'
+        entries:
+          - label: Automation
+            value: Propose response action
+          - label: Human action
+            value: Analyst approves or denies
+          - label: Example
+            value: System recommends blocking IP, analyst clicks approve
+      - type: fields
+        subject: 'Level 3: Automated Response Low Risk'
+        entries:
+          - label: Automation
+            value: Execute response for low-risk actions
+          - label: Human action
+            value: Notified after action taken
+          - label: Example
+            value: Auto-block known-malicious IP, notify analyst
+      - type: fields
+        subject: 'Level 4: Automated Response High Risk'
+        entries:
+          - label: Automation
+            value: Execute response for high-risk actions
+          - label: Human action
+            value: Alert on unusual actions, manual review option
+          - label: Example
+            value: Auto-disable compromised account, analyst reviews post-action
+  - heading: Automated Response Use Cases
+    id: automated_response_use_cases
+    blocks:
+      - type: fields
+        subject: Malicious IP Blocking
+        entries:
+          - label: Trigger
+            value: Connection to known-malicious IP detected
+          - label: Automated actions
+            value:
+              - Validate IP in multiple threat intelligence sources
+              - Check if IP already blocked
+              - Block IP at firewall
+              - Add IP to threat intelligence feed
+              - Create incident ticket
+              - Notify SOC
+          - label: Safety mechanisms
+            value:
+              - Whitelist critical IPs (payment processors, vendors)
+              - 'Rate limit: Max 100 IPs blocked per hour'
+              - 'Circuit breaker: Pause if >50 blocks in 10 minutes'
+          - label: Risk level
+            value: Low - false positive impact minimal
+      - type: fields
+        subject: Malware Containment
+        entries:
+          - label: Trigger
+            value: EDR detects malware on endpoint
+          - label: Automated actions
+            value:
+              - Isolate endpoint from network
+              - Kill malicious process
+              - Quarantine malicious files
+              - Extract IOCs (hashes, IPs, domains)
+              - Search for IOCs on other endpoints
+              - Block IOCs at network and endpoint
+              - Create incident ticket with timeline
+          - label: Safety mechanisms
+            value:
+              - Whitelist critical servers (no auto-isolation)
+              - Human approval for production system isolation
+          - label: Risk level
+            value: Medium - network isolation impacts productivity
+      - type: fields
+        subject: Account Compromise Response
+        entries:
+          - label: Trigger
+            value: High-confidence account compromise detected
+          - label: Automated actions
+            value:
+              - Disable user account
+              - Revoke active sessions
+              - Force password reset
+              - Require MFA re-enrollment
+              - Review recent account activity
+              - Notify user and manager
+              - Create incident ticket
+          - label: Safety mechanisms
+            value:
+              - Whitelist VIP accounts (CEO, CTO)
+              - Require security team approval for VIP account actions
+              - 'Rate limit: Max 5 accounts per hour'
+          - label: Risk level
+            value: High - false positive locks out users
+  - heading: Gradual Automation Adoption
+    id: gradual_automation_adoption
+    blocks:
+      - type: fields
+        subject: 'Phase 1: Monitor Only'
+        entries:
+          - label: Duration
+            value: 2-4 weeks
+          - label: Action
+            value: Automation logs what it would do, takes no action
+          - label: Purpose
+            value: Build confidence, identify edge cases
+      - type: fields
+        subject: 'Phase 2: Notify and Recommend'
+        entries:
+          - label: Duration
+            value: 2-4 weeks
+          - label: Action
+            value: Automation notifies analyst with recommended action
+          - label: Purpose
+            value: Measure recommendation accuracy
+      - type: fields
+        subject: 'Phase 3: Automated with Approval'
+        entries:
+          - label: Duration
+            value: 4-8 weeks
+          - label: Action
+            value: Automation executes after analyst approval
+          - label: Purpose
+            value: Reduce analyst effort while maintaining oversight
+      - type: fields
+        subject: 'Phase 4: Fully Automated'
+        entries:
+          - label: Action
+            value: Automation executes automatically
+          - label: Human role
+            value: Monitor dashboards, handle exceptions

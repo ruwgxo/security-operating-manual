@@ -1,0 +1,553 @@
+# section_01_04_siem_architecture_patterns.yaml
+
+---
+title: SIEM Architecture Patterns
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 4
+  section_code: '0104'
+  source_chapter: '2.4'
+  source_key: detection_engineering.siem_architecture_patterns
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 1-4 organizations deploying or optimizing SIEM
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          SIEM architecture determines detection program scalability, cost efficiency, and operational
+          effectiveness. This section addresses platform selection, deployment patterns, scaling strategies,
+          and architectural trade-offs for enterprise security information and event management.
+  - heading: Platform Selection
+    id: platform_selection
+    blocks:
+      - type: heading
+        level: 3
+        text: Requirements Definition
+      - type: heading
+        level: 4
+        text: Log Volume Planning
+      - type: heading
+        level: 5
+        text: Calculation Method
+      - type: list
+        style: bullet
+        items:
+          - Inventory all log sources (servers, endpoints, network devices, applications)
+          - Estimate events per second per source type
+          - Calculate daily log volume (GB or events/day)
+          - Plan for 30-50% growth annually
+      - type: fields
+        subject: Sizing Example
+        entries:
+          - label: Endpoints
+            value: 10,000 × 50 events/second = 500K EPS
+          - label: Servers
+            value: 1,000 × 100 events/second = 100K EPS
+          - label: Network devices
+            value: 100 × 500 events/second = 50K EPS
+          - label: Applications
+            value: Varies widely by application
+          - label: Total sustained
+            value: 650K events/second minimum capacity required
+          - label: Peak capacity
+            value: 1.3M EPS (2x sustained for burst handling)
+      - type: fields
+        subject: Retention Requirements
+        entries:
+          - label: Hot storage
+            value: 90 days fast search
+          - label: Warm storage
+            value: 1 year moderate speed search
+          - label: Cold storage
+            value: 7 years compliance archive
+          - label: Cost impact
+            value: Hot storage 10x more expensive than cold
+      - type: fields
+        subject: User and Use Case Planning
+        entries:
+          - label: SOC analysts
+            value: Real-time alerting and investigation
+          - label: Threat hunters
+            value: Ad-hoc queries and data exploration
+          - label: Compliance team
+            value: Report generation and audit evidence
+          - label: Incident responders
+            value: Deep forensic analysis
+          - label: Concurrent users
+            value: Plan for 20-50 depending on org size
+      - type: heading
+        level: 4
+        text: Integration Requirements
+      - type: list
+        style: bullet
+        items:
+          - SOAR platform for automated response
+          - Threat intelligence feeds
+          - Case management system
+          - Identity and asset management
+          - Visualization and dashboard tools
+      - type: heading
+        level: 3
+        text: Vendor Comparison Framework
+      - type: fields
+        subject: Splunk
+        entries:
+          - label: Strengths
+            value:
+              - Market leader with extensive feature set
+              - Mature ecosystem with thousands of integrations
+              - Powerful search processing language (SPL)
+              - Strong vendor support and training
+          - label: Weaknesses
+            value:
+              - Expensive at scale (licensing per GB ingested)
+              - Complex pricing models
+              - Performance can degrade with poor query practices
+          - label: Cost model
+            value: $150-$300 per GB ingested daily (list price, discounts available)
+          - label: Best for
+            value: Large enterprises with budget, complex use cases, mature programs
+      - type: fields
+        subject: Elastic Security
+        entries:
+          - label: Strengths
+            value:
+              - Open source core with commercial features
+              - Good performance at scale
+              - Predictable pricing
+              - Strong community and ecosystem
+          - label: Weaknesses
+            value:
+              - Requires more hands-on configuration than Splunk
+              - Less mature detection content than Splunk
+              - Smaller partner ecosystem
+          - label: Cost model
+            value: $50-$100 per GB ingested daily
+          - label: Best for
+            value: Mid-size to large orgs, cost-conscious, strong technical team
+      - type: fields
+        subject: Microsoft Sentinel
+        entries:
+          - label: Strengths
+            value:
+              - Cloud-native architecture scales automatically
+              - Tight integration with Microsoft ecosystem
+              - Pay-per-use model (no upfront commitment)
+              - Growing detection content library
+          - label: Weaknesses
+            value:
+              - Limited on-premise log collection
+              - Newer platform with evolving features
+              - Performance variability in cloud
+          - label: Cost model
+            value: $2-$3 per GB ingested
+          - label: Best for
+            value: Microsoft-centric environments, cloud-first strategy
+      - type: fields
+        subject: Chronicle
+        entries:
+          - label: Strengths
+            value:
+              - Google-scale architecture
+              - Unlimited retention included in pricing
+              - Fast search across petabytes
+              - Predictable annual pricing
+          - label: Weaknesses
+            value:
+              - Smaller ecosystem than Splunk/Elastic
+              - Fewer integrations
+              - Newer to market
+          - label: Cost model
+            value: Flat annual fee based on data sources (not volume)
+          - label: Best for
+            value: Very large scale, long retention requirements, predictable budget
+      - type: heading
+        level: 3
+        text: Decision Framework
+      - type: fields
+        subject: Budget Driven Selection
+        entries:
+          - label: High budget
+            value: Splunk (comprehensive capabilities, vendor support)
+          - label: Medium budget
+            value: Elastic or Sentinel (good balance of cost and capability)
+          - label: Low budget
+            value: Open source ELK or managed service provider
+      - type: fields
+        subject: Skill Driven Selection
+        entries:
+          - label: Strong technical team
+            value: Open source (customization, lower licensing cost)
+          - label: Moderate team
+            value: Commercial with training investment
+          - label: Limited team
+            value: Managed SIEM service or cloud-native (less operational burden)
+      - type: fields
+        subject: Timeline Driven Selection
+        entries:
+          - label: Urgent deployment
+            value: Cloud SIEM (fastest time to value)
+          - label: Moderate timeline
+            value: Commercial on-premise or cloud
+          - label: Patient approach
+            value: Open source (build from scratch)
+      - type: fields
+        subject: Scale Driven Selection
+        entries:
+          - label: Small scale
+            value: '<100 GB/day: Any platform suitable'
+          - label: Medium scale
+            value: '100-500 GB/day: Elastic, Sentinel, or Splunk'
+          - label: Large scale
+            value: '>500 GB/day: Splunk, Elastic, or Chronicle'
+          - label: Massive scale
+            value: '>5 TB/day: Chronicle or heavily optimized Elastic cluster'
+  - heading: Deployment Architecture
+    id: deployment_architecture
+    blocks:
+      - type: heading
+        level: 3
+        text: Single Instance Deployment
+      - type: definition
+        items:
+          - term: Use case
+            description: Small organizations (<50 GB/day)
+      - type: fields
+        subject: Architecture
+        entries:
+          - label: Components
+            value:
+              - Single SIEM server handling all functions
+              - Integrated search, indexing, and web interface
+              - Local storage for logs
+          - label: Diagram description
+            value: All-in-one SIEM appliance or VM
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Simple deployment and management
+          - Low operational overhead
+          - Minimal infrastructure required
+      - type: heading
+        level: 4
+        text: Disadvantages
+      - type: list
+        style: bullet
+        items:
+          - Single point of failure
+          - Limited scalability
+          - Performance bottleneck at higher volumes
+      - type: definition
+        items:
+          - term: Cost
+            description: $10K-$50K annually (hardware + licensing)
+      - type: heading
+        level: 3
+        text: Distributed Deployment
+      - type: definition
+        items:
+          - term: Use case
+            description: Medium organizations (50-500 GB/day)
+      - type: heading
+        level: 4
+        text: Architecture
+      - type: fields
+        subject: Components
+        entries:
+          - label: Search heads
+            value: User-facing search and dashboard interface
+          - label: Indexers
+            value: Data storage and search processing (2-5 nodes)
+          - label: Forwarders
+            value: Lightweight agents collecting and forwarding logs
+          - label: Management layer
+            value: Deployment and configuration management
+      - type: definition
+        items:
+          - term: Diagram description
+            description: Separate search and indexing tiers with load balancing
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Horizontal scalability (add indexers for capacity)
+          - High availability possible
+          - Performance isolation between search and indexing
+      - type: heading
+        level: 4
+        text: Disadvantages
+      - type: list
+        style: bullet
+        items:
+          - More complex to deploy and manage
+          - Requires load balancing and clustering
+          - Higher infrastructure cost
+      - type: definition
+        items:
+          - term: Cost
+            description: $100K-$500K annually
+      - type: heading
+        level: 3
+        text: Cloud Native Deployment
+      - type: definition
+        items:
+          - term: Use case
+            description: Any size, cloud-first strategy
+      - type: fields
+        subject: Architecture
+        entries:
+          - label: Components
+            value:
+              - Managed SIEM service (Sentinel, Chronicle, Splunk Cloud)
+              - Cloud-native log collection and forwarding
+              - Auto-scaling based on load
+              - Multi-region deployment for resilience
+          - label: Diagram description
+            value: Fully managed cloud service with API-driven integration
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - No infrastructure management required
+          - Automatic scaling and updates
+          - Pay-per-use pricing (variable cost)
+          - Fast deployment (days vs months)
+      - type: heading
+        level: 4
+        text: Disadvantages
+      - type: list
+        style: bullet
+        items:
+          - Less customization than on-premise
+          - Data sovereignty concerns for regulated industries
+          - Vendor lock-in risk
+          - Variable monthly costs based on usage
+      - type: definition
+        items:
+          - term: Cost
+            description: 'Variable: $50K-$1M+ annually depending on volume'
+      - type: heading
+        level: 3
+        text: Hybrid Deployment
+      - type: definition
+        items:
+          - term: Use case
+            description: Large organizations with on-premise and cloud workloads
+      - type: heading
+        level: 4
+        text: Architecture
+      - type: fields
+        subject: Components
+        entries:
+          - label: On premise indexers
+            value: Handle sensitive data that cannot leave datacenter
+          - label: Cloud indexers
+            value: Handle cloud workload logs
+          - label: Federated search
+            value: Query across on-premise and cloud data
+          - label: Centralized management
+            value: Single pane of glass for administration
+      - type: definition
+        items:
+          - term: Diagram description
+            description: Distributed SIEM with on-premise and cloud components federated
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Data locality compliance (keep sensitive data on-premise)
+          - Scalability for cloud workloads
+          - Best of both worlds (control + cloud agility)
+      - type: heading
+        level: 4
+        text: Disadvantages
+      - type: list
+        style: bullet
+        items:
+          - Most complex architecture
+          - Highest operational burden
+          - Network connectivity critical for federated search
+      - type: definition
+        items:
+          - term: Cost
+            description: $500K-$5M+ annually (enterprise scale)
+  - heading: Scaling Strategies
+    id: scaling_strategies
+    blocks:
+      - type: fields
+        subject: Vertical Scaling
+        entries:
+          - label: Approach
+            value: Add more resources to existing SIEM nodes
+          - label: Methods
+            value:
+              - Increase CPU cores and RAM
+              - Add faster storage (SSD, NVMe)
+              - Optimize queries and indexing
+          - label: Limitations
+            value:
+              - Hardware limits eventually reached
+              - Diminishing returns at high resource levels
+              - Single node still potential bottleneck
+          - label: When to use
+            value: Initial growth from small to medium scale
+      - type: fields
+        subject: Horizontal Scaling
+        entries:
+          - label: Approach
+            value: Add more SIEM nodes to distribute load
+          - label: Methods
+            value:
+              - Add indexer nodes for increased indexing capacity
+              - Add search heads for more concurrent users
+              - Partition data across indexers (time-based or source-based)
+          - label: Advantages
+            value:
+              - Nearly limitless scalability
+              - High availability through redundancy
+              - Load distribution improves performance
+          - label: Complexity
+            value:
+              - Requires clustering and load balancing
+              - Data replication overhead
+              - More complex management
+          - label: When to use
+            value: Growth beyond single-node capacity
+      - type: heading
+        level: 3
+        text: Data Tier Optimization
+      - type: fields
+        subject: Hot Tier
+        entries:
+          - label: Characteristics
+            value: Recent data, fast storage, frequent access
+          - label: Retention
+            value: 7-90 days
+          - label: Storage
+            value: SSD or NVMe
+          - label: Cost
+            value: Highest per GB
+      - type: fields
+        subject: Warm Tier
+        entries:
+          - label: Characteristics
+            value: Older data, moderate speed, occasional access
+          - label: Retention
+            value: 90 days - 2 years
+          - label: Storage
+            value: HDD or lower-tier SSD
+          - label: Cost
+            value: Medium per GB
+      - type: fields
+        subject: Cold Tier
+        entries:
+          - label: Characteristics
+            value: Archive data, slow retrieval, rare access
+          - label: Retention
+            value: 2-7+ years
+          - label: Storage
+            value: Object storage (S3, Azure Blob)
+          - label: Cost
+            value: Lowest per GB
+      - type: heading
+        level: 4
+        text: Automated Tiering
+      - type: list
+        style: bullet
+        items:
+          - Automatically move data between tiers based on age
+          - Optimize cost while maintaining search capability
+          - Compliance-driven retention in cold tier
+      - type: heading
+        level: 3
+        text: Query Optimization
+      - type: fields
+        subject: Techniques
+        entries:
+          - label: Indexed fields
+            value: Index frequently searched fields for fast retrieval
+          - label: Time based filtering
+            value: Always specify time range to limit search scope
+          - label: Field extraction
+            value: Extract fields at search time only when necessary
+          - label: Summary indexing
+            value: Pre-compute common queries and store results
+          - label: Parallel processing
+            value: Distribute queries across multiple indexers
+      - type: definition
+        items:
+          - term: Impact
+            description: 10-100x performance improvement possible with optimization
+  - heading: Cost Optimization
+    id: cost_optimization
+    blocks:
+      - type: fields
+        subject: Log Filtering
+        entries:
+          - label: Strategy
+            value: Filter non-security logs before SIEM ingestion
+          - label: Methods
+            value:
+              - Drop verbose application debugging logs
+              - Sample high-volume low-value logs
+              - Filter duplicate events
+              - Remove fields not used for detection
+          - label: Savings
+            value: 30-50% reduction in ingestion volume typical
+      - type: fields
+        subject: Compression
+        entries:
+          - label: Strategy
+            value: Compress logs before transmission and storage
+          - label: Methods
+            value:
+              - Enable log forwarder compression
+              - Use column-based compression for structured logs
+              - Compress cold tier aggressively
+          - label: Savings
+            value: 60-80% storage reduction
+      - type: fields
+        subject: Tiered Retention
+        entries:
+          - label: Strategy
+            value: Aggressive tiering based on data value and access patterns
+          - label: Implementation
+            value:
+              - Move to warm tier after 30 days (not 90)
+              - Move to cold tier after 6 months (not 1 year)
+              - Delete non-compliance logs after 2 years
+          - label: Savings
+            value: 40-60% storage cost reduction
+      - type: fields
+        subject: Reserved Capacity
+        entries:
+          - label: Strategy
+            value: Commit to annual usage for discounted rates
+          - label: Applies to
+            value: Cloud SIEM with pay-per-use pricing
+          - label: Savings
+            value: 30-50% discount vs on-demand pricing
+          - label: Risk
+            value: Must accurately forecast usage to avoid over-commitment

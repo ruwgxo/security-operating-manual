@@ -1,0 +1,50 @@
+# security_operating_manual_book_index.yaml
+
+---
+title: Security Operating Manual
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  repository: https://github.com/ruwgxo/security-operating-manual
+  license: MIT
+  language: en
+  chapter_numbering: Chapters are numbered 1-5 in reading order; source_chapter keeps each chapter's original
+    manual number.
+book_overview:
+  description: Five available chapters covering detection engineering, threat intelligence, IAM, automation,
+    and incident response.
+  built_from:
+    - Enterprise detection platforms at fleet scale
+    - Multi-cloud security architecture (AWS, Azure, GCP, IBM Cloud)
+    - Zero Trust implementations at scale
+    - eMasters in Cyber Security (IIT Kanpur)
+book_structure:
+  chapters:
+    - number: 1
+      title: Detection Engineering
+      source_chapter: '2.4'
+      index: chapter_01_index.yaml
+      sections: 10
+    - number: 2
+      title: Identity and Access Management at Scale
+      source_chapter: '3.1'
+      index: chapter_02_index.yaml
+      sections: 10
+    - number: 3
+      title: Security Automation and Orchestration
+      source_chapter: '4.1'
+      index: chapter_03_index.yaml
+      sections: 11
+    - number: 4
+      title: Incident Response at Scale
+      source_chapter: '4.3'
+      index: chapter_04_index.yaml
+      sections: 12
+    - number: 5
+      title: Threat Intelligence
+      source_chapter: '4.4'
+      index: chapter_05_index.yaml
+      sections: 10

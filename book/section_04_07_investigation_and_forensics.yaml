@@ -1,0 +1,210 @@
+# section_04_07_investigation_and_forensics.yaml
+
+---
+title: Investigation and Forensics
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 7
+  section_code: '0407'
+  source_chapter: '4.3'
+  source_key: incident_response.investigation_and_forensics
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations conducting technical investigations
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Forensic investigation determines what happened, when, how, and by whom. This section addresses
+          systematic investigation methodology, evidence collection, timeline reconstruction, and root
+          cause analysis.
+  - heading: Investigation Methodology
+    id: investigation_methodology
+    blocks:
+      - type: heading
+        level: 3
+        text: Evidence Collection
+      - type: fields
+        subject: Volatile Evidence
+        entries:
+          - label: Priority
+            value: Collect first - lost when system powered off
+          - label: Sources
+            value:
+              - Running processes and services
+              - Network connections and routing tables
+              - Logged-in users and sessions
+              - Clipboard contents
+              - RAM contents (memory dump)
+          - label: Tools
+            value: FTK Imager, Magnet RAM Capture, WinPmem
+          - label: Timing
+            value: Collect before any containment actions that power off system
+      - type: fields
+        subject: Non-Volatile Evidence
+        entries:
+          - label: Priority
+            value: Collect after volatile evidence
+          - label: Sources
+            value:
+              - Disk images (full forensic copy)
+              - File system metadata
+              - Registry (Windows)
+              - Log files
+              - Browser history and artifacts
+          - label: Tools
+            value: FTK Imager, dd, ewfacquire
+          - label: Timing
+            value: Before system remediation or reimaging
+      - type: fields
+        subject: Network Evidence
+        entries:
+          - label: Sources
+            value:
+              - Firewall logs
+              - IDS/IPS logs
+              - Proxy logs
+              - PCAP files
+              - NetFlow records
+          - label: Collection
+            value: Preserve before log rotation
+      - type: fields
+        subject: Cloud Evidence
+        entries:
+          - label: Sources
+            value:
+              - CloudTrail, Activity Logs, Cloud Audit Logs
+              - VPC Flow Logs, NSG Flow Logs
+              - Instance snapshots
+              - Container logs
+          - label: Collection
+            value: Export immediately - retention policies may delete
+      - type: fields
+        subject: Chain of Custody
+        entries:
+          - label: Requirements
+            value:
+              - Document who collected evidence
+              - Document when and where collected
+              - Document handling and transfer
+              - Maintain evidence integrity (hashes)
+          - label: Purpose
+            value: Admissible in legal proceedings
+      - type: heading
+        level: 3
+        text: Timeline Reconstruction
+      - type: definition
+        items:
+          - term: Objective
+            description: Build chronological view of attacker actions
+      - type: fields
+        subject: Timeline Components
+        entries:
+          - label: Initial access
+            value:
+              - How did attacker gain first foothold?
+              - When did initial compromise occur?
+              - What vulnerability or vector was exploited?
+          - label: Privilege escalation
+            value:
+              - How did attacker gain elevated privileges?
+              - What accounts were compromised?
+              - What privilege escalation techniques used?
+          - label: Lateral movement
+            value:
+              - What systems did attacker access?
+              - What paths did attacker use to move?
+              - Timeline of system-to-system movement
+          - label: Data access
+            value:
+              - What data did attacker access?
+              - When was data accessed?
+              - Was data exfiltrated?
+          - label: Persistence
+            value:
+              - What persistence mechanisms deployed?
+              - When were backdoors created?
+              - How would attacker regain access?
+      - type: fields
+        subject: Timeline Tools
+        entries:
+          - label: Plaso
+            value: log2timeline - automated timeline generation
+          - label: Timesketch
+            value: Timeline analysis and collaboration
+          - label: Splunk
+            value: Timeline visualization from SIEM data
+          - label: Manual
+            value: Spreadsheet timeline for smaller investigations
+      - type: heading
+        level: 4
+        text: Correlation Techniques
+      - type: list
+        style: bullet
+        items:
+          - Align timestamps across systems (account for time zones)
+          - Correlate events across multiple log sources
+          - Identify gaps in timeline (anti-forensics?)
+          - Validate timeline with network evidence
+      - type: heading
+        level: 3
+        text: Root Cause Analysis
+      - type: heading
+        level: 4
+        text: Five Whys Technique
+      - type: fields
+        subject: Example
+        entries:
+          - label: Incident
+            value: Ransomware encrypted 500 servers
+          - label: Why 1
+            value: Why did ransomware spread? → Attacker had domain admin credentials
+          - label: Why 2
+            value: Why did attacker have domain admin? → Credentials stolen from IT admin workstation
+          - label: Why 3
+            value: Why were credentials on workstation? → Admin used personal credentials to manage servers
+          - label: Why 4
+            value: Why was admin using personal credentials? → Privileged access management not deployed
+          - label: Why 5
+            value: Why was PAM not deployed? → Not prioritized in security roadmap
+          - label: Root cause
+            value: Lack of privileged access management enabled credential theft
+      - type: heading
+        level: 4
+        text: Fishbone Diagram
+      - type: fields
+        subject: Categories
+        entries:
+          - label: People
+            value: Training gaps, policy violations, malicious insiders
+          - label: Process
+            value: Inadequate procedures, missing controls, poor coordination
+          - label: Technology
+            value: Unpatched vulnerabilities, misconfigured systems, detection gaps
+          - label: External
+            value: Sophisticated adversary, zero-day exploit, supply chain compromise
+      - type: definition
+        items:
+          - term: Analysis
+            description: Identify contributing factors in each category
+      - type: fields
+        subject: Corrective Actions
+        entries:
+          - label: Immediate
+            value: Stop ongoing impact
+          - label: Short term
+            value: Address root cause (patch, deploy control)
+          - label: Long term
+            value: Prevent recurrence (process improvement, training)

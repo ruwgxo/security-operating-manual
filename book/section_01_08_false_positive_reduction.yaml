@@ -1,0 +1,226 @@
+# section_01_08_false_positive_reduction.yaml
+
+---
+title: False Positive Reduction
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 8
+  section_code: 0108
+  source_chapter: '2.4'
+  source_key: detection_engineering.false_positive_reduction
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations optimizing detection quality
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          False positives erode detection program effectiveness and analyst morale. Systematic false positive
+          reduction improves signal-to-noise ratio and enables sustainable security operations. This section
+          addresses measurement, analysis, and reduction strategies.
+  - heading: Measuring False Positives
+    id: measuring_false_positives
+    blocks:
+      - type: heading
+        level: 3
+        text: Key Metrics
+      - type: fields
+        subject: True Positive Rate
+        entries:
+          - label: Formula
+            value: TP Rate = True Positives / (True Positives + False Negatives)
+          - label: Target
+            value: '>60% for mature detection programs'
+          - label: Meaning
+            value: Percentage of real threats detected
+      - type: fields
+        subject: False Positive Rate
+        entries:
+          - label: Formula
+            value: FP Rate = False Positives / (False Positives + True Negatives)
+          - label: Target
+            value: <10% for mature detection programs
+          - label: Meaning
+            value: Percentage of benign activity incorrectly flagged
+      - type: fields
+        subject: Precision
+        entries:
+          - label: Formula
+            value: Precision = True Positives / (True Positives + False Positives)
+          - label: Target
+            value: '>70% for production rules'
+          - label: Meaning
+            value: When alert fires, probability it's real threat
+      - type: fields
+        subject: Alert Volume per Analyst
+        entries:
+          - label: Formula
+            value: Alerts Per Analyst Per Day
+          - label: Target
+            value: <50 actionable alerts per analyst per day
+          - label: Meaning
+            value: Sustainable workload for investigation
+      - type: fields
+        subject: Data Collection
+        entries:
+          - label: Alert disposition tracking
+            value:
+              - 'Analysts mark each alert: True Positive, False Positive, Not Investigated'
+              - Capture disposition reason and investigation notes
+              - Aggregate by detection rule for tuning priorities
+          - label: Automation
+            value: Build disposition tracking into SIEM or SOAR platform
+  - heading: False Positive Analysis
+    id: false_positive_analysis
+    blocks:
+      - type: heading
+        level: 3
+        text: Root Cause Categories
+      - type: fields
+        subject: Overly Broad Logic
+        entries:
+          - label: Symptom
+            value: Rule triggers on legitimate activity similar to malicious
+          - label: Example
+            value: Failed login rule triggers on user typos, not just brute force
+          - label: Solution
+            value: Increase threshold, add context (multiple failures from same source)
+      - type: fields
+        subject: Insufficient Context
+        entries:
+          - label: Symptom
+            value: Rule cannot distinguish malicious from legitimate without additional information
+          - label: Example
+            value: Process execution flagged without considering user role or system type
+          - label: Solution
+            value: Enrich with asset criticality, user role, time of day
+      - type: fields
+        subject: Environmental Noise
+        entries:
+          - label: Symptom
+            value: Specific systems or applications generate expected noisy activity
+          - label: Example
+            value: Automated scripts trigger authentication alerts
+          - label: Solution
+            value: Whitelist known-good activity, suppress alerts for specific sources
+      - type: fields
+        subject: Outdated Baseline
+        entries:
+          - label: Symptom
+            value: Behavior now normal but was unusual when rule created
+          - label: Example
+            value: Remote work adoption changed login location patterns
+          - label: Solution
+            value: Update baseline, retrain behavioral models
+  - heading: Tuning Strategies
+    id: tuning_strategies
+    blocks:
+      - type: heading
+        level: 3
+        text: Whitelist Refinement
+      - type: definition
+        items:
+          - term: Approach
+            description: Exclude known-good activity from detection
+      - type: fields
+        subject: Methods
+        entries:
+          - label: Process whitelisting
+            value: Suppress alerts for trusted executables (code-signed)
+          - label: User whitelisting
+            value: Exclude service accounts, automation users
+          - label: Source whitelisting
+            value: Suppress alerts from test environments
+      - type: definition
+        items:
+          - term: Risk
+            description: Whitelist too aggressive = miss attacks, too conservative = false positives persist
+      - type: fields
+        subject: Threshold Adjustment
+        entries:
+          - label: Approach
+            value: Increase detection thresholds to reduce noise
+          - label: Examples
+            value:
+              - 'Failed logins: 5 → 10 attempts'
+              - 'Time window: 5 minutes → 10 minutes'
+              - 'Data transfer: 100 MB → 500 MB'
+          - label: Method
+            value:
+              - Analyze distribution of alert volumes (legitimate vs malicious)
+              - Identify threshold that separates populations
+              - Validate with historical incident data
+      - type: heading
+        level: 3
+        text: Context Addition
+      - type: definition
+        items:
+          - term: Approach
+            description: Add situational context to detection logic
+      - type: fields
+        subject: Context Types
+        entries:
+          - label: Asset criticality
+            value: Alert on dev system = P3, production database = P1
+          - label: Time of day
+            value: After-hours activity warrants higher severity
+          - label: User role
+            value: Admin performing action = expected, regular user = suspicious
+          - label: Geographic location
+            value: Login from employee home country = normal, hostile nation = alert
+      - type: heading
+        level: 3
+        text: Correlation Enhancement
+      - type: definition
+        items:
+          - term: Approach
+            description: Require multiple indicators before alerting
+      - type: fields
+        subject: Example
+        entries:
+          - label: Single event
+            value: Failed login (noisy)
+          - label: Correlated event
+            value: Failed login + successful login from different IP within 1 hour (higher fidelity)
+      - type: definition
+        items:
+          - term: Benefit
+            description: Dramatically reduces false positives by requiring evidence of attack progression
+  - heading: Rule Retirement
+    id: rule_retirement
+    blocks:
+      - type: heading
+        level: 3
+        text: Retirement Criteria
+      - type: list
+        style: bullet
+        items:
+          - True positive rate <10% after multiple tuning attempts
+          - No true positives in 90 consecutive days
+          - Technique no longer relevant to threat model
+          - Replaced by higher-fidelity detection
+      - type: fields
+        subject: Retirement Process
+        entries:
+          - label: Disable rule
+            value: Turn off alerting but continue logging rule matches
+          - label: Observation period
+            value: Monitor for 30 days to confirm no missed attacks
+          - label: Documentation
+            value: Document retirement rationale
+          - label: Archive
+            value: Move rule to archive repository with context
+          - label: Coverage update
+            value: Update ATT&CK coverage matrix

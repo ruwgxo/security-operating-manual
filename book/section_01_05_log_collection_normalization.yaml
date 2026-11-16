@@ -1,0 +1,311 @@
+# section_01_05_log_collection_normalization.yaml
+
+---
+title: Log Collection Normalization
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 5
+  section_code: '0105'
+  source_chapter: '2.4'
+  source_key: detection_engineering.log_collection_normalization
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 1+ organizations implementing comprehensive logging
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Log collection and normalization determines detection visibility and fidelity. This section
+          addresses systematic log source identification, collection architecture, and normalization strategies
+          for consistent detection logic across heterogeneous environments.
+  - heading: Log Source Prioritization
+    id: log_source_prioritization
+    blocks:
+      - type: heading
+        level: 3
+        text: Critical Log Sources
+      - type: fields
+        subject: Authentication Systems
+        entries:
+          - label: Sources
+            value:
+              - Active Directory domain controllers
+              - LDAP authentication servers
+              - SSO platforms (Okta, Azure AD, Google Workspace)
+              - VPN concentrators and remote access
+          - label: Detection value
+            value: Highest - credential abuse most common initial access
+          - label: Collection priority
+            value: P0 - collect before any other source
+      - type: fields
+        subject: Endpoint Systems
+        entries:
+          - label: Sources
+            value:
+              - Windows Event Logs (Security, System, Application)
+              - Linux auditd and syslog
+              - macOS Unified Logging
+              - EDR agent telemetry (process execution, network, file events)
+          - label: Detection value
+            value: Critical - visibility into malware execution, persistence
+          - label: Collection priority
+            value: P0 - required for comprehensive detection
+      - type: fields
+        subject: Network Infrastructure
+        entries:
+          - label: Sources
+            value:
+              - Firewall allow/deny logs
+              - IDS/IPS alerts and network traffic logs
+              - DNS query logs
+              - Proxy and web gateway logs
+              - VPC Flow Logs or NetFlow
+          - label: Detection value
+            value: High - lateral movement and C2 detection
+          - label: Collection priority
+            value: P1 - collect within first 90 days
+      - type: fields
+        subject: Critical Servers
+        entries:
+          - label: Sources
+            value:
+              - Database server logs (authentication, queries)
+              - Web server access and error logs
+              - Application server logs
+              - File server access logs
+          - label: Detection value
+            value: High - target of data exfiltration
+          - label: Collection priority
+            value: P1 - prioritize based on data sensitivity
+      - type: fields
+        subject: Cloud Platforms
+        entries:
+          - label: Sources
+            value:
+              - AWS CloudTrail, VPC Flow Logs, GuardDuty
+              - Azure Activity Log, NSG Flow Logs, Security Center
+              - GCP Cloud Audit Logs, VPC Flow Logs
+          - label: Detection value
+            value: Critical for cloud workloads
+          - label: Collection priority
+            value: P0 for cloud-native organizations
+      - type: fields
+        subject: Log Source Inventory
+        entries:
+          - label: Methodology
+            value:
+              - Asset discovery to identify all systems
+              - Classify by criticality (crown jewels)
+              - Assess logging capability (native vs agent required)
+              - Estimate log volume per source
+              - Prioritize by detection value and criticality
+          - label: Output
+            value: Phased collection plan with priorities and timelines
+  - heading: Log Collection Architecture
+    id: log_collection_architecture
+    blocks:
+      - type: heading
+        level: 3
+        text: Agent Based Collection
+      - type: definition
+        items:
+          - term: Description
+            description: Install agent on endpoint/server to collect and forward logs
+      - type: heading
+        level: 4
+        text: Use Cases
+      - type: list
+        style: bullet
+        items:
+          - Endpoints and servers under direct control
+          - Requires deep visibility (process execution, file events)
+          - Agent provides local processing and buffering
+      - type: fields
+        subject: Agents
+        entries:
+          - label: Commercial
+            value: Splunk UF, Elastic Agent, Datadog Agent
+          - label: Open source
+            value: Filebeat, Fluentd, Logstash
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Rich telemetry (beyond basic system logs)
+          - Local buffering during network outages
+          - Pre-processing and filtering at source
+      - type: heading
+        level: 4
+        text: Disadvantages
+      - type: list
+        style: bullet
+        items:
+          - Agent deployment and maintenance overhead
+          - Compatibility with all operating systems
+          - Resource consumption on endpoints
+      - type: fields
+        subject: Agentless Collection
+        entries:
+          - label: Description
+            value: Collect logs remotely without installing agent
+          - label: Methods
+            value:
+              - Syslog forwarding (native)
+              - Windows Event Forwarding (WEF)
+              - API-based collection (cloud services)
+              - Network tap or SPAN port (network traffic)
+          - label: Use cases
+            value:
+              - Network devices (routers, firewalls)
+              - Cloud services (AWS, Azure, GCP)
+              - Systems where agents cannot be installed
+          - label: Advantages
+            value:
+              - No agent deployment required
+              - Works with any log source supporting syslog or API
+              - Lower operational overhead
+          - label: Disadvantages
+            value:
+              - Limited to logs system natively produces
+              - No local buffering (lose logs if network down)
+              - Potential network bottleneck at high volumes
+      - type: heading
+        level: 3
+        text: Hybrid Collection
+      - type: definition
+        items:
+          - term: Description
+            description: Combine agent-based and agentless based on source type
+      - type: fields
+        subject: Architecture
+        entries:
+          - label: Endpoints servers
+            value: Agent-based for rich telemetry
+          - label: Network devices
+            value: Agentless syslog
+          - label: Cloud services
+            value: API-based collection
+      - type: definition
+        items:
+          - term: Advantages
+            description: Optimize collection method per source type
+  - heading: Log Normalization
+    id: log_normalization
+    blocks:
+      - type: definition
+        items:
+          - term: Purpose
+            description: Transform diverse log formats into consistent schema for detection
+      - type: fields
+        subject: Normalization Challenges
+        entries:
+          - label: Format diversity
+            value:
+              - Windows Event Logs (XML)
+              - Linux syslog (plain text)
+              - JSON (APIs, cloud services)
+              - CEF, LEEF (security product formats)
+              - CSV, KV (custom applications)
+          - label: Field naming inconsistency
+            value:
+              - source_ip vs src_ip vs sourceAddress
+              - username vs user vs user_name
+              - timestamp formats vary (Unix epoch, ISO8601, custom)
+          - label: Semantic differences
+            value:
+              - Success vs Succeeded vs OK
+              - Severity levels (Critical, High, 1-5, etc)
+      - type: heading
+        level: 3
+        text: Normalization Strategies
+      - type: fields
+        subject: Elastic Common Schema
+        entries:
+          - label: Description
+            value: Standard field naming across all log sources
+          - label: Core fields
+            value:
+              - source.ip, destination.ip (network)
+              - user.name, user.id (identity)
+              - event.action, event.outcome (what happened)
+              - process.name, process.command_line (execution)
+          - label: Adoption
+            value: Use ECS even if not using Elastic (vendor-neutral)
+      - type: fields
+        subject: Splunk Common Information Model
+        entries:
+          - label: Description
+            value: Splunk's normalization framework
+          - label: Data models
+            value:
+              - Authentication (login events)
+              - Network Traffic (connections)
+              - Endpoint (process, file, registry)
+          - label: Field naming
+            value: Consistent across all sources feeding data model
+      - type: fields
+        subject: Custom Normalization
+        entries:
+          - label: When to use
+            value: Existing schema insufficient or vendor lock-in concerns
+          - label: Requirements
+            value:
+              - Document schema clearly
+              - Version control schema definitions
+              - Provide examples for each source type
+          - label: Maintenance burden
+            value: High - must maintain parsers for every log source
+      - type: heading
+        level: 3
+        text: Field Extraction
+      - type: fields
+        subject: Parsing Methods
+        entries:
+          - label: Regex based
+            value: Pattern matching to extract fields from unstructured logs
+          - label: XML JSON parsing
+            value: Native parsers for structured formats
+          - label: Grok patterns
+            value: Pre-defined regex patterns for common log formats
+          - label: Delimiter based
+            value: CSV, TSV parsing
+      - type: fields
+        subject: Extraction Performance
+        entries:
+          - label: Parse at ingestion
+            value: Fast search, higher storage cost (extracted fields indexed)
+          - label: Parse at search
+            value: Lower storage cost, slower search (extract on-demand)
+          - label: Hybrid approach
+            value: Index frequently searched fields, extract others at search time
+      - type: fields
+        subject: Data Enrichment
+        entries:
+          - label: Asset context
+            value:
+              - Add asset criticality (production, development, test)
+              - Add asset owner and business unit
+              - Add geographic location
+          - label: User context
+            value:
+              - Add department, role, manager
+              - Flag privileged accounts
+          - label: Threat intelligence
+            value:
+              - Enrich IP addresses with reputation scores
+              - Flag known malicious domains
+              - Add geolocation data

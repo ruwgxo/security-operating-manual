@@ -1,0 +1,342 @@
+# section_05_07_intelligence_sharing.yaml
+
+---
+title: Intelligence Sharing
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 5
+  section: 7
+  section_code: '0507'
+  source_chapter: '4.4'
+  source_key: threat_intelligence_operations.intelligence_sharing
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Intelligence sharing multiplies defensive capability through collective knowledge. This section
+          addresses sharing mechanisms, sanitization, legal considerations, and building sharing relationships.
+  - heading: Sharing Frameworks
+    id: sharing_frameworks
+    blocks:
+      - type: heading
+        level: 3
+        text: Traffic Light Protocol
+      - type: definition
+        items:
+          - term: Overview
+            description: Standard for information sharing sensitivity marking
+      - type: fields
+        subject: TLP Red
+        entries:
+          - label: Definition
+            value: Not for disclosure, restricted to specific individuals
+          - label: Use case
+            value: Highly sensitive information that could cause harm if shared
+          - label: Sharing
+            value: Only named recipients, no further distribution
+          - label: Example
+            value: Active incident details, victim-specific data
+      - type: fields
+        subject: TLP Amber
+        entries:
+          - label: Definition
+            value: Limited disclosure, restricted to organization
+          - label: Use case
+            value: Information requiring action within organization but not for public
+          - label: Sharing
+            value: Within organization and with clients/customers on need-to-know
+          - label: Example
+            value: Incident details affecting multiple departments
+      - type: fields
+        subject: TLP Green
+        entries:
+          - label: Definition
+            value: Community sharing, not for public
+          - label: Use case
+            value: Information useful to broader community but not public
+          - label: Sharing
+            value: Within community (ISAC, industry peers)
+          - label: Example
+            value: IOCs, TTPs from incidents (sanitized)
+      - type: fields
+        subject: TLP White
+        entries:
+          - label: Definition
+            value: Unlimited disclosure, public sharing
+          - label: Use case
+            value: Information with no confidentiality concerns
+          - label: Sharing
+            value: Public (blogs, social media, conferences)
+          - label: Example
+            value: General threat advisories, public malware analysis
+      - type: heading
+        level: 3
+        text: STIX TAXII Sharing
+      - type: fields
+        subject: STIX
+        entries:
+          - label: Definition
+            value: Structured Threat Information eXpression - standardized format
+          - label: Version
+            value: STIX 2.1 (current)
+          - label: Benefits
+            value:
+              - Machine-readable, automated consumption
+              - Rich data model (campaigns, threat actors, TTPs, IOCs)
+              - Standardized across vendors and tools
+          - label: Objects
+            value:
+              - Indicator (IOC)
+              - Malware
+              - Attack Pattern (TTP)
+              - Threat Actor
+              - Campaign
+              - Course of Action (mitigation)
+      - type: fields
+        subject: TAXII
+        entries:
+          - label: Definition
+            value: Trusted Automated eXchange of Intelligence Information - transport
+          - label: Version
+            value: TAXII 2.1 (current)
+          - label: Benefits
+            value:
+              - Standardized API for intelligence sharing
+              - Pull (client requests) and push (server sends) models
+              - Authentication and access control
+          - label: Use cases
+            value:
+              - Automated feed distribution
+              - Peer-to-peer intelligence sharing
+              - ISAC intelligence distribution
+      - type: fields
+        subject: MISP Sharing
+        entries:
+          - label: Concept
+            value: Open-source TIP with built-in sharing
+          - label: Sharing model
+            value:
+              - Events (incidents, campaigns) shared between MISP instances
+              - Synchronization between trusted MISP servers
+              - Granular sharing controls (TLP, communities)
+          - label: Benefits
+            value:
+              - Free and open-source
+              - Strong community
+              - Flexible sharing policies
+          - label: Use cases
+            value:
+              - Industry sharing communities
+              - Regional sharing (European banking MISP)
+              - Bilateral peer sharing
+  - heading: Sanitization and Anonymization
+    id: sanitization_and_anonymization
+    blocks:
+      - type: heading
+        level: 3
+        text: What to Sanitize
+      - type: fields
+        subject: Remove Victim Identification
+        entries:
+          - label: Items
+            value:
+              - Company names
+              - Specific employee names (except public figures)
+              - Internal IP addresses and hostnames
+              - Email addresses and phone numbers
+          - label: Replacement
+            value:
+              - Victim Company → Financial Institution in Northeast US
+              - john.smith@victim.com → user@victim.com or <redacted>
+              - 10.0.1.50 → <internal IP>
+      - type: heading
+        level: 4
+        text: Remove Proprietary Business Information
+      - type: list
+        style: bullet
+        items:
+          - Financial data, revenue figures
+          - Customer lists, business relationships
+          - Proprietary processes or trade secrets
+          - Strategic plans
+      - type: fields
+        subject: Remove Internal Security Details
+        entries:
+          - label: Items
+            value:
+              - Specific security tool names and versions (when possible)
+              - Network architecture diagrams
+              - Security control specifics that could aid attackers
+          - label: Replacement
+            value:
+              - CrowdStrike Falcon → EDR platform
+              - Detailed network diagram → High-level architecture
+      - type: fields
+        subject: What to Share
+        entries:
+          - label: IOCs
+            value:
+              - External IPs, domains, URLs, file hashes
+              - Publicly routable infrastructure
+              - Malware samples (uploaded to VirusTotal, malware repos)
+          - label: TTPs
+            value:
+              - Adversary tools and techniques (MITRE ATT&CK mapped)
+              - Attack chains and kill chain progression
+              - Operational patterns
+          - label: Detection rules
+            value:
+              - Sigma rules, YARA rules
+              - SIEM queries (generic, not revealing internal log sources)
+              - Network signatures (Snort, Suricata)
+          - label: Lessons learned
+            value:
+              - What worked well in response
+              - What could improve
+              - Recommendations for community
+      - type: fields
+        subject: Sanitization Process
+        entries:
+          - label: 'Step 1: Identify sensitive data'
+            value:
+              - Review content for victim identification
+              - Identify proprietary information
+              - Flag internal architecture details
+          - label: 'Step 2: Redact or generalize'
+            value:
+              - Remove/redact specific identifiers
+              - Generalize details (specific product → category)
+              - Maintain intelligence value while protecting confidentiality
+          - label: 'Step 3: Legal review'
+            value:
+              - Have legal counsel review (especially for high-profile incidents)
+              - Ensure compliance with data protection laws (GDPR)
+              - Verify no violation of confidentiality agreements
+          - label: 'Step 4: Apply TLP marking'
+            value:
+              - Determine appropriate TLP level
+              - Mark document clearly
+              - Communicate handling restrictions to recipients
+  - heading: Building Sharing Relationships
+    id: building_sharing_relationships
+    blocks:
+      - type: heading
+        level: 3
+        text: Internal Sharing
+      - type: fields
+        subject: Cross-Team Intelligence Sharing
+        entries:
+          - label: Participants
+            value:
+              - Threat intelligence team
+              - SOC
+              - Incident response
+              - Vulnerability management
+              - Security architecture
+          - label: Mechanism
+            value:
+              - Weekly intelligence briefing
+              - Shared intelligence portal/wiki
+              - Real-time alerts via Slack/Teams
+          - label: Benefits
+            value:
+              - Intelligence informs all security functions
+              - Feedback loop (IR findings → intelligence)
+              - Coordinated response
+      - type: heading
+        level: 3
+        text: External Sharing
+      - type: fields
+        subject: ISAC Participation
+        entries:
+          - label: Approach
+            value:
+              - Join industry ISAC
+              - Actively participate (don't just consume)
+              - Contribute IOCs and analysis from incidents
+              - Attend meetings and working groups
+          - label: Benefits
+            value:
+              - Industry-specific intelligence
+              - Early warning of campaigns
+              - Trusted peer network
+      - type: fields
+        subject: Peer Bilateral Sharing
+        entries:
+          - label: Approach
+            value:
+              - Identify peer organizations (similar industry, size)
+              - Establish relationship (conferences, ISACs)
+              - Start with low-sensitivity sharing, build trust
+              - Formalize with MOU if needed
+          - label: Benefits
+            value:
+              - More targeted intelligence than broad feeds
+              - Direct communication channel
+              - Reciprocal value
+      - type: fields
+        subject: Vendor and Researcher Relationships
+        entries:
+          - label: Approach
+            value:
+              - Build relationships with security vendors
+              - Engage with independent researchers
+              - Participate in vendor intelligence programs
+          - label: Benefits
+            value:
+              - Early access to vendor intelligence
+              - Researcher findings shared privately before public
+              - Collaborative analysis
+  - heading: Legal and Regulatory Considerations
+    id: legal_and_regulatory_considerations
+    blocks:
+      - type: heading
+        level: 3
+        text: Data Protection Compliance
+      - type: heading
+        level: 4
+        text: GDPR Considerations
+      - type: list
+        style: bullet
+        items:
+          - Sharing personal data requires legal basis
+          - Anonymize personal data in intelligence sharing
+          - Document legitimate interest for sharing (security defense)
+      - type: fields
+        subject: Sector Specific Regulations
+        entries:
+          - label: Financial services
+            value: GLBA - sharing financial data restrictions
+          - label: Healthcare
+            value: HIPAA - patient data confidentiality
+      - type: heading
+        level: 3
+        text: Liability Concerns
+      - type: fields
+        subject: Sharing False Positives
+        entries:
+          - label: Risk
+            value: Sharing incorrect intelligence harms innocent parties
+          - label: Mitigation
+            value:
+              - Validate intelligence before sharing
+              - Clearly mark confidence levels
+              - Retract and correct if errors discovered
+      - type: fields
+        subject: Defamation Risk
+        entries:
+          - label: Risk
+            value: False attribution or accusation
+          - label: Mitigation
+            value:
+              - Fact-based, evidence-supported analysis only
+              - Avoid speculation and accusation
+              - Legal review for high-profile attribution
