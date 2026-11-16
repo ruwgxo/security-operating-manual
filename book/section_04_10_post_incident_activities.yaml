@@ -1,0 +1,196 @@
+# section_04_10_post_incident_activities.yaml
+
+---
+title: Post-Incident Activities
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 10
+  section_code: '0410'
+  source_chapter: '4.3'
+  source_key: incident_response.post_incident_activities
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          All levels - learning and improvement
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Post-incident activities transform incidents from failures into organizational learning. This
+          section addresses lessons learned process, improvement tracking, and knowledge sharing.
+  - heading: Post-Incident Review
+    id: post_incident_review
+    blocks:
+      - type: definition
+        items:
+          - term: Timing
+            description: Within 1 week of incident closure
+      - type: fields
+        subject: Participants
+        entries:
+          - label: Required
+            value:
+              - Incident response team
+              - IT operations
+              - Affected business unit representatives
+          - label: Optional
+            value:
+              - Executive sponsor
+              - External IR consultants (if engaged)
+      - type: heading
+        level: 3
+        text: Agenda
+      - type: heading
+        level: 4
+        text: Incident Overview
+      - type: list
+        style: bullet
+        items:
+          - Timeline of events
+          - Attack vector and attacker TTPs
+          - Systems and data affected
+          - Business impact
+      - type: fields
+        subject: What Went Well
+        entries:
+          - label: Focus
+            value: Strengths to maintain and build upon
+          - label: Examples
+            value:
+              - Rapid initial detection
+              - Effective team coordination
+              - Good stakeholder communication
+          - label: Tone
+            value: Celebrate successes, recognize team effort
+      - type: fields
+        subject: What Could Improve
+        entries:
+          - label: Focus
+            value: Opportunities for improvement (not blame)
+          - label: Examples
+            value:
+              - Detection gap that allowed initial access
+              - Playbook steps that were unclear
+              - Tools or access that were missing
+          - label: Tone
+            value: Blameless, focus on process not people
+      - type: heading
+        level: 4
+        text: Root Cause Analysis
+      - type: list
+        style: bullet
+        items:
+          - Technical root cause (what vulnerability or gap)
+          - Process root cause (why did gap exist)
+          - Organizational root cause (why not prioritized)
+      - type: heading
+        level: 4
+        text: Action Items
+      - type: fields
+        subject: Categories
+        entries:
+          - label: Detection
+            value: Add detection rules, improve visibility
+          - label: Prevention
+            value: Patch vulnerabilities, deploy controls
+          - label: Response
+            value: Update playbooks, improve procedures
+          - label: Tools
+            value: Acquire new tools or capabilities
+      - type: heading
+        level: 5
+        text: Requirements
+      - type: list
+        style: bullet
+        items:
+          - Each action has owner
+          - Each action has due date
+          - Each action has success criteria
+  - heading: Improvement Tracking
+    id: improvement_tracking
+    blocks:
+      - type: fields
+        subject: Action Item Management
+        entries:
+          - label: Tracking system
+            value: Jira, ServiceNow, or dedicated IR tracking tool
+          - label: Workflow
+            value:
+              - Action created with owner and due date
+              - Weekly review of open actions
+              - Owner provides progress updates
+              - Closure requires validation
+          - label: Escalation
+            value:
+              - Past due items escalated to management
+              - Monthly executive report on completion rate
+      - type: fields
+        subject: Validation of Improvements
+        entries:
+          - label: Detection improvements
+            value:
+              - New detection rule tested against historical data
+              - Rule validated in next tabletop exercise
+          - label: Process improvements
+            value:
+              - Updated playbook tested in exercise
+              - Team trained on new procedures
+          - label: Tool improvements
+            value:
+              - New tool deployed and integrated
+              - Team trained on tool usage
+  - heading: Knowledge Management
+    id: knowledge_management
+    blocks:
+      - type: fields
+        subject: Incident Database
+        entries:
+          - label: Purpose
+            value: Historical record of incidents and responses
+          - label: Contents
+            value:
+              - Incident summary and timeline
+              - IOCs and TTPs
+              - Response actions taken
+              - Lessons learned
+              - Post-incident review findings
+          - label: Benefits
+            value:
+              - Reference for future similar incidents
+              - Training material for new team members
+              - Evidence of due diligence
+      - type: fields
+        subject: Runbook Updates
+        entries:
+          - label: Trigger
+            value: Action item from post-incident review
+          - label: Process
+            value:
+              - Update playbook based on learnings
+              - Peer review changes
+              - Version control and change documentation
+              - Communicate updates to team
+      - type: fields
+        subject: Knowledge Sharing
+        entries:
+          - label: Internal
+            value:
+              - Monthly security newsletter with incident highlights (sanitized)
+              - Quarterly all-hands security update
+              - IR team retrospectives
+          - label: External
+            value:
+              - Sanitized IOCs shared with ISAC
+              - Anonymized case studies presented at conferences
+              - Contribution to open-source detection rules

@@ -1,0 +1,137 @@
+# chapter_02_index.yaml
+
+---
+title: 'Chapter 2: Identity and Access Management at Scale - Index'
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  book: Security Operating Manual
+  chapter: 2
+  source_chapter: '3.1'
+  repository: https://github.com/ruwgxo/security-operating-manual
+  license: MIT
+  legacy:
+    github: github.com/ruwgxo
+    license: MIT
+    classification: Security Operating Manual
+    part: 'Part III: Implementation'
+    sections_in_this_document:
+      - overview
+      - core_principles
+      - maturity_model
+      - building_from_zero
+      - iam_strategy
+      - authentication_architecture
+      - authorization_patterns
+      - privilege_management
+      - service_account_governance
+      - zero_trust_identity
+      - identity_federation
+      - identity_lifecycle_management
+      - identity_threat_detection
+    core_principles_covered:
+      - id: IAM-P001
+        name: Identity is the perimeter
+      - id: IAM-P002
+        name: Least privilege by default
+      - id: IAM-P003
+        name: Zero trust, always verify
+      - id: IAM-P004
+        name: Automate identity lifecycle
+      - id: IAM-P005
+        name: Ephemeral over persistent
+      - id: IAM-P006
+        name: Visibility enables security
+    how_to_use_this_chapter:
+      step_1: Read overview and core principles
+      step_2: Complete IAM maturity self-assessment
+      step_3: Jump to section matching your maturity level
+      step_4: Cross-reference with Chapter 2.4 for identity threat detection
+chapter_overview:
+  overview: >-
+    Identity and Access Management (IAM) is the foundation of modern security architecture. In traditional
+    perimeter-based security, the network boundary defined trust. In cloud-native and remote-work environments,
+    identity has become the perimeter. Every access decision—to applications, data, infrastructure— depends
+    on robust identity verification and authorization.
+
+
+    This chapter addresses IAM at enterprise scale: managing thousands of users, hundreds of thousands
+    of service accounts, complex authorization policies, and zero-trust identity architectures. IAM done
+    right prevents the credential compromise and privilege escalation that detection engineering (Chapter
+    2.4) is designed to catch.
+
+
+    Use the maturity model to assess current IAM capability and follow the appropriate implementation
+    path. This chapter serves organizations from basic Active Directory deployments to sophisticated zero-trust
+    identity architectures with continuous authentication and risk-based access control.
+sections:
+  - section_number: '2.1'
+    title: Core Principles
+    filename: section_02_01_core_principles.yaml
+  - section_number: '2.2'
+    title: Maturity Model
+    filename: section_02_02_maturity_model.yaml
+  - section_number: '2.3'
+    title: Building from Zero
+    filename: section_02_03_building_from_zero.yaml
+  - section_number: '2.4'
+    title: IAM Strategy
+    filename: section_02_04_iam_strategy.yaml
+  - section_number: '2.5'
+    title: Privilege Management
+    filename: section_02_05_privilege_management.yaml
+  - section_number: '2.6'
+    title: Service Account Governance
+    filename: section_02_06_service_account_governance.yaml
+  - section_number: '2.7'
+    title: Zero Trust Identity
+    filename: section_02_07_zero_trust_identity.yaml
+  - section_number: '2.8'
+    title: Identity Federation
+    filename: section_02_08_identity_federation.yaml
+  - section_number: '2.9'
+    title: Identity Lifecycle Management
+    filename: section_02_09_identity_lifecycle_management.yaml
+  - section_number: '2.10'
+    title: Identity Threat Detection
+    filename: section_02_10_identity_threat_detection.yaml
+references:
+  mitre_attack_identity_tactics:
+    - 'TA0006: Credential Access'
+    - 'TA0004: Privilege Escalation'
+    - 'TA0003: Persistence (via identity)'
+  industry_standards:
+    - 'NIST SP 800-63: Digital Identity Guidelines'
+    - 'NIST SP 800-162: Attribute Based Access Control'
+    - 'ISO 27001: Identity and Access Management controls'
+    - 'CIS Controls: Identity and Access Management'
+  protocols_and_standards:
+    - 'SAML 2.0: Security Assertion Markup Language'
+    - 'OpenID Connect: Identity layer on OAuth 2.0'
+    - 'OAuth 2.0: Authorization framework'
+    - 'SCIM 2.0: System for Cross-domain Identity Management'
+    - 'FIDO2/WebAuthn: Passwordless authentication'
+cross_references:
+  manual_chapters:
+    - chapter: '2.1'
+      title: Zero Trust Architecture
+      relevance: Zero trust network architecture complements zero trust identity
+    - chapter: '2.4'
+      title: Detection Engineering
+      relevance: Identity threat detection integrates with detection program
+    - chapter: '4.1'
+      title: Security Automation
+      relevance: Automated identity lifecycle and response
+    - chapter: '4.3'
+      title: Incident Response
+      relevance: Responding to identity compromise incidents
+  vault_repositories:
+    - repo: vault-identity-access
+      description: IAM policies, configurations, and automation scripts
+      relevance: Implementation examples for this chapter
+    - repo: vault-detection-response
+      description: Identity threat detection rules
+      relevance: SIEM rules for identity monitoring

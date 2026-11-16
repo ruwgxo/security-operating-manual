@@ -1,0 +1,224 @@
+# section_02_05_privilege_management.yaml
+
+---
+title: Privilege Management
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 5
+  section_code: '0205'
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.privilege_management
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations implementing privilege controls
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Privileged accounts are highest-value targets for attackers. Compromise of administrative credentials
+          enables lateral movement, data exfiltration, and persistent access. Privilege management addresses
+          protection of high-value accounts through isolation, monitoring, and just-in-time access.
+  - heading: Privileged Account Types
+    id: privileged_account_types
+    blocks:
+      - type: fields
+        subject: Domain Administrators
+        entries:
+          - label: Scope
+            value: Full control over directory and domain-joined systems
+          - label: Risk
+            value: Compromise enables persistent access to entire environment
+          - label: Examples
+            value: Active Directory Domain Admins, Azure AD Global Admin
+      - type: fields
+        subject: Cloud Administrators
+        entries:
+          - label: Scope
+            value: Full control over cloud infrastructure
+          - label: Risk
+            value: Compromise enables resource creation, data access, cost abuse
+          - label: Examples
+            value: AWS root account, GCP Owner, Azure Subscription Owner
+      - type: fields
+        subject: Database Administrators
+        entries:
+          - label: Scope
+            value: Full access to databases and data
+          - label: Risk
+            value: Compromise enables data exfiltration, modification, deletion
+          - label: Examples
+            value: MySQL root, PostgreSQL superuser, SQL Server sa
+      - type: fields
+        subject: Application Administrators
+        entries:
+          - label: Scope
+            value: Administrative functions within application
+          - label: Risk
+            value: Compromise enables unauthorized actions, data access
+          - label: Examples
+            value: SaaS admin accounts, application super users
+      - type: fields
+        subject: Emergency Access
+        entries:
+          - label: Scope
+            value: Break-glass accounts for disaster recovery
+          - label: Risk
+            value: Highest privilege, should never be used in normal operations
+          - label: Examples
+            value: Emergency admin accounts, root accounts
+  - heading: Privileged Access Management
+    id: privileged_access_management
+    blocks:
+      - type: heading
+        level: 3
+        text: Password Vaulting
+      - type: definition
+        items:
+          - term: Concept
+            description: Store privileged credentials in encrypted vault, control access
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: Credential storage
+            value:
+              - Privileged passwords stored in vault, not known to users
+              - Strong encryption at rest
+              - Access requires authentication and authorization
+          - label: Check out check in
+            value:
+              - User requests access to privileged account
+              - Approval workflow (automatic or manual)
+              - Vault provides credentials for time-limited session
+              - Session recorded for audit
+              - Credentials rotated after check-in
+          - label: Password rotation
+            value:
+              - Automatic password rotation on schedule (daily/weekly)
+              - Rotation after each use
+              - Verification that rotation succeeded
+      - type: fields
+        subject: PAM Solutions
+        entries:
+          - label: Commercial
+            value: CyberArk, BeyondTrust, Delinea
+          - label: Open source
+            value: HashiCorp Vault, Teleport
+      - type: heading
+        level: 3
+        text: Session Management
+      - type: fields
+        subject: Session Recording
+        entries:
+          - label: What
+            value: Record all privileged session activity (keystrokes, commands, screen)
+          - label: Why
+            value: Audit trail, incident investigation, compliance
+          - label: Implementation
+            value:
+              - PAM solution acts as proxy between user and target system
+              - All activity recorded and stored
+              - Searchable by user, time, system, commands
+      - type: fields
+        subject: Session Monitoring
+        entries:
+          - label: What
+            value: Real-time monitoring of privileged sessions
+          - label: Why
+            value: Detect malicious activity during session
+          - label: Implementation
+            value:
+              - Anomaly detection on commands executed
+              - Alert on suspicious activity (mass deletion, credential dumping)
+              - Ability to terminate session if malicious
+      - type: heading
+        level: 3
+        text: Just in Time Access
+      - type: definition
+        items:
+          - term: Concept
+            description: Grant privileged access only when needed, automatically revoke
+      - type: heading
+        level: 4
+        text: Implementation
+      - type: fields
+        subject: Request Workflow
+        entries:
+          - label: Step 1
+            value: User requests elevated access via self-service portal
+          - label: Step 2
+            value: Specify resource, permission level, duration, business justification
+          - label: Step 3
+            value: Approval (automatic based on rules or manual by manager/security)
+          - label: Step 4
+            value: Temporary access granted (1-8 hours typical)
+          - label: Step 5
+            value: Access automatically revoked after expiration
+          - label: Step 6
+            value: All activity logged and auditable
+      - type: fields
+        subject: Approval Automation
+        entries:
+          - label: Low risk
+            value: Auto-approve for pre-authorized scenarios
+          - label: Medium risk
+            value: Manager approval required
+          - label: High risk
+            value: Security team approval required
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Reduces standing privileges (smaller attack surface)
+          - Limits blast radius (time-bound access)
+          - Improves auditability (access tied to business justification)
+          - Enforces least privilege principle
+      - type: heading
+        level: 3
+        text: Privilege Analytics
+      - type: fields
+        subject: Dormant Accounts
+        entries:
+          - label: Detection
+            value: Privileged accounts with no activity in >90 days
+          - label: Action
+            value: Disable or delete after review
+      - type: fields
+        subject: Excessive Privileges
+        entries:
+          - label: Detection
+            value: Users with admin rights who never use them
+          - label: Action
+            value: Revoke unnecessary privileges
+      - type: fields
+        subject: Privilege Creep
+        entries:
+          - label: Detection
+            value: Users accumulating permissions over time
+          - label: Action
+            value: Regular access reviews and cleanup
+      - type: fields
+        subject: Anomalous Usage
+        entries:
+          - label: Detection
+            value: Privileged account activity outside normal patterns
+          - label: Examples
+            value:
+              - Admin login from unusual location
+              - Commands never executed before
+              - Access to systems not normally accessed
+          - label: Action
+            value: Alert security team, potentially block

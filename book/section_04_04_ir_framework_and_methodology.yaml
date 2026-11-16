@@ -1,0 +1,321 @@
+# section_04_04_ir_framework_and_methodology.yaml
+
+---
+title: IR Framework and Methodology
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 4
+  section_code: '0404'
+  source_chapter: '4.3'
+  source_key: incident_response.ir_framework_and_methodology
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 1+ organizations establishing systematic IR approach
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          IR frameworks provide systematic approach to incident handling. This section addresses industry-standard
+          frameworks (NIST, SANS), phase-by-phase methodology, and decision frameworks for complex scenarios.
+  - heading: NIST Incident Response Lifecycle
+    id: nist_incident_response_lifecycle
+    blocks:
+      - type: definition
+        items:
+          - term: Overview
+            description: 'NIST SP 800-61: Computer Security Incident Handling Guide'
+      - type: fields
+        subject: 'Phase 1: Preparation'
+        entries:
+          - label: Objective
+            value: Establish capability and readiness before incidents
+          - label: Activities
+            value:
+              - Develop and document IR policies and procedures
+              - Establish IR team with defined roles
+              - Acquire tools and resources
+              - Establish communication channels
+              - Conduct training and exercises
+          - label: Success metrics
+            value:
+              - IR plan documented and accessible
+              - Team trained and equipped
+              - Exercises conducted regularly
+      - type: heading
+        level: 3
+        text: 'Phase 2: Detection and Analysis'
+      - type: definition
+        items:
+          - term: Objective
+            description: Identify security incidents and determine scope
+      - type: fields
+        subject: Activities
+        entries:
+          - label: Indicators of compromise
+            value:
+              - SIEM alerts and correlation
+              - EDR detections
+              - User reports of suspicious activity
+              - Threat intelligence matches
+          - label: Initial analysis
+            value:
+              - Validate alert is true positive
+              - Determine incident type and severity
+              - Identify affected systems and data
+              - Begin evidence collection
+          - label: Documentation
+            value:
+              - Create incident ticket
+              - Document timeline
+              - Preserve initial evidence
+      - type: heading
+        level: 4
+        text: Success Metrics
+      - type: list
+        style: bullet
+        items:
+          - Mean time to detect <24 hours (Level 1), <4 hours (Level 2)
+          - False positive rate <20%
+          - Complete initial assessment within 1 hour
+      - type: heading
+        level: 3
+        text: 'Phase 3: Containment Eradication Recovery'
+      - type: fields
+        subject: Containment
+        entries:
+          - label: Objective
+            value: Limit damage and prevent further compromise
+          - label: Short term containment
+            value:
+              - Isolate affected systems
+              - Disable compromised accounts
+              - Block malicious infrastructure
+              - Stop active data exfiltration
+          - label: Long term containment
+            value:
+              - Apply temporary fixes
+              - Deploy additional monitoring
+              - Prepare for recovery
+          - label: Considerations
+            value:
+              - Balance containment speed vs evidence preservation
+              - Consider business impact of containment actions
+              - Document all containment actions
+      - type: fields
+        subject: Eradication
+        entries:
+          - label: Objective
+            value: Remove threat from environment
+          - label: Activities
+            value:
+              - Delete malware and malicious artifacts
+              - Remove attacker persistence mechanisms
+              - Patch exploited vulnerabilities
+              - Reset compromised credentials
+          - label: Validation
+            value:
+              - Scan for remaining threats
+              - Verify attacker access revoked
+              - Test that vulnerability patched
+      - type: fields
+        subject: Recovery
+        entries:
+          - label: Objective
+            value: Restore systems to normal operation
+          - label: Activities
+            value:
+              - Restore from clean backups
+              - Rebuild compromised systems
+              - Restore services incrementally
+              - Monitor for reinfection
+          - label: Verification
+            value:
+              - Confirm system integrity
+              - Verify business functionality
+              - Increased monitoring for 48-72 hours
+      - type: fields
+        subject: 'Phase 4: Post-Incident Activity'
+        entries:
+          - label: Objective
+            value: Learn from incident and improve defenses
+          - label: Activities
+            value:
+              - Conduct post-incident review meeting
+              - Document lessons learned
+              - Identify improvement opportunities
+              - Update playbooks and procedures
+              - Track remediation completion
+          - label: Success metrics
+            value:
+              - Post-incident review completed within 1 week
+              - Action items tracked to completion
+              - Similar incidents prevented
+  - heading: SANS Incident Response Process
+    id: sans_incident_response_process
+    blocks:
+      - type: definition
+        items:
+          - term: Overview
+            description: SANS Institute Six-Step Incident Response Process
+      - type: heading
+        level: 3
+        text: Steps
+      - type: fields
+        subject: 'Step 1: Preparation'
+        entries:
+          - label: Activities
+            value: Same as NIST Preparation
+      - type: fields
+        subject: 'Step 2: Identification'
+        entries:
+          - label: Activities
+            value: Detect and validate incident
+          - label: Focus
+            value: Reduce false positives, rapid triage
+      - type: fields
+        subject: 'Step 3: Containment'
+        entries:
+          - label: Activities
+            value: Stop damage progression
+          - label: Focus
+            value: Speed and minimizing business impact
+      - type: fields
+        subject: 'Step 4: Eradication'
+        entries:
+          - label: Activities
+            value: Remove threat completely
+          - label: Focus
+            value: Thorough removal, prevent reinfection
+      - type: fields
+        subject: 'Step 5: Recovery'
+        entries:
+          - label: Activities
+            value: Restore normal operations
+          - label: Focus
+            value: Verify clean, monitor for issues
+      - type: fields
+        subject: 'Step 6: Lessons Learned'
+        entries:
+          - label: Activities
+            value: Review and improve
+          - label: Focus
+            value: Continuous improvement culture
+  - heading: Decision Frameworks
+    id: decision_frameworks
+    blocks:
+      - type: heading
+        level: 3
+        text: To Pay or not Ransomware
+      - type: heading
+        level: 4
+        text: Factors Against Paying
+      - type: list
+        style: bullet
+        items:
+          - No guarantee of data recovery
+          - Funds support criminal enterprise
+          - May violate sanctions (OFAC)
+          - Encourages future attacks
+          - Reputational risk
+      - type: heading
+        level: 4
+        text: Factors for Paying
+      - type: list
+        style: bullet
+        items:
+          - No viable backups
+          - Critical business operations down
+          - Recovery time exceeds business tolerance
+          - Data exfiltration threatened
+      - type: fields
+        subject: Decision Process
+        entries:
+          - label: Step 1
+            value: Assess backup availability and recovery time
+          - label: Step 2
+            value: Calculate business impact of downtime
+          - label: Step 3
+            value: Consult legal (sanctions, reporting)
+          - label: Step 4
+            value: Consult cyber insurance
+          - label: Step 5
+            value: Executive decision with full context
+      - type: definition
+        items:
+          - term: Recommendation
+            description: Default to not paying, pay only as last resort
+      - type: heading
+        level: 3
+        text: Public Disclosure Timing
+      - type: heading
+        level: 4
+        text: Factors for Immediate Disclosure
+      - type: list
+        style: bullet
+        items:
+          - Customer data compromised requiring notification
+          - Public disclosure legally required
+          - Media already aware
+          - Transparency benefits brand
+      - type: heading
+        level: 4
+        text: Factors for Delayed Disclosure
+      - type: list
+        style: bullet
+        items:
+          - Investigation incomplete
+          - Premature disclosure alerts attacker
+          - Regulatory notification windows allow delay
+          - Need time to prepare customer support
+      - type: fields
+        subject: Decision Framework
+        entries:
+          - label: Legal requirements
+            value: Consult legal on notification timelines
+          - label: Business impact
+            value: Assess customer and brand impact
+          - label: Investigation needs
+            value: Balance with investigation requirements
+      - type: heading
+        level: 3
+        text: Law Enforcement Engagement
+      - type: heading
+        level: 4
+        text: Factors for Engagement
+      - type: list
+        style: bullet
+        items:
+          - Nation-state adversary
+          - Critical infrastructure targeting
+          - Ransom payment consideration (FBI wants to know)
+          - Broader threat to industry
+      - type: heading
+        level: 4
+        text: Factors Against Engagement
+      - type: list
+        style: bullet
+        items:
+          - Concerns about investigation delays
+          - Publicity risks
+          - Limited law enforcement resources for lower-tier incidents
+      - type: fields
+        subject: When to Engage
+        entries:
+          - label: Immediate
+            value: Active threat to life, critical infrastructure
+          - label: Early
+            value: Major ransomware, nation-state, significant theft
+          - label: After containment
+            value: Lower-severity incidents

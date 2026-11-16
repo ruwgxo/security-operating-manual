@@ -1,0 +1,275 @@
+# section_03_04_automation_strategy.yaml
+
+---
+title: Automation Strategy
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 4
+  section_code: '0304'
+  source_chapter: '4.1'
+  source_key: security_automation.automation_strategy
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations scaling automation
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Automation strategy determines what to automate, in what order, and how to measure success.
+          This section addresses strategic decision-making for automation investment, prioritization frameworks,
+          and organizational adoption.
+  - heading: Automation Opportunity Identification
+    id: automation_opportunity_identification
+    blocks:
+      - type: heading
+        level: 3
+        text: Task Analysis Framework
+      - type: heading
+        level: 4
+        text: Automation Suitability Assessment
+      - type: fields
+        subject: High Automation Candidates
+        entries:
+          - label: Characteristics
+            value:
+              - High frequency (daily or more)
+              - Well-defined steps (documented procedure)
+              - Low complexity (minimal judgment required)
+              - High volume (many executions)
+              - Time-consuming (>5 minutes per execution)
+          - label: Examples
+            value:
+              - Alert enrichment with threat intelligence
+              - User account lockout investigation
+              - File hash reputation lookup
+              - Network IOC blocking
+      - type: fields
+        subject: Medium Automation Candidates
+        entries:
+          - label: Characteristics
+            value:
+              - Moderate frequency (weekly)
+              - Some judgment required but mostly procedural
+              - Medium complexity
+              - Moderate time consumption
+          - label: Examples
+            value:
+              - Phishing email investigation
+              - Privilege escalation investigation
+              - Vulnerability prioritization
+      - type: fields
+        subject: Low Automation Candidates
+        entries:
+          - label: Characteristics
+            value:
+              - Low frequency (monthly or less)
+              - High complexity requiring expert judgment
+              - Unstructured process
+              - Strategic decision-making
+          - label: Examples
+            value:
+              - Advanced persistent threat investigation
+              - Security architecture design
+              - Threat modeling
+      - type: heading
+        level: 4
+        text: ROI Calculation
+      - type: definition
+        items:
+          - term: Formula
+            description: ROI = (Time Saved × Cost per Hour - Automation Cost) / Automation Cost
+      - type: fields
+        subject: Example
+        entries:
+          - label: Task
+            value: IP reputation lookup
+          - label: Frequency
+            value: 100 times per day
+          - label: Manual time
+            value: 5 minutes
+          - label: Automated time
+            value: 30 seconds
+          - label: Time saved
+            value: 4.5 minutes × 100 = 450 minutes (7.5 hours) daily
+          - label: Analyst cost
+            value: $100 per hour
+          - label: Daily savings
+            value: $750
+          - label: Annual savings
+            value: $750 × 250 work days = $187,500
+          - label: Automation cost
+            value: $10,000 to build + $5,000 annual maintenance
+          - label: ROI
+            value: ($187,500 - $15,000) / $15,000 = 1,150% ROI
+  - heading: Automation Architecture Patterns
+    id: automation_architecture_patterns
+    blocks:
+      - type: fields
+        subject: Event Driven Automation
+        entries:
+          - label: Concept
+            value: Automation triggers on security events
+          - label: Architecture
+            value:
+              - SIEM generates alert
+              - Alert published to message queue
+              - Automation platform consumes alert
+              - Playbook executes automatically
+              - Results written back to SIEM
+          - label: Advantages
+            value:
+              - Real-time response
+              - No human intervention required
+              - Scales automatically with alert volume
+          - label: Use cases
+            value:
+              - Automated alert enrichment
+              - Automated threat blocking
+              - Automated ticket creation
+      - type: fields
+        subject: Scheduled Automation
+        entries:
+          - label: Concept
+            value: Automation runs on schedule
+          - label: Architecture
+            value:
+              - Cron job or scheduled task
+              - Automation executes periodically
+              - Results aggregated and reported
+          - label: Advantages
+            value:
+              - Proactive vs reactive
+              - Consistent execution timing
+              - Predictable resource usage
+          - label: Use cases
+            value:
+              - Daily threat hunting queries
+              - Weekly access reviews
+              - Monthly compliance reporting
+      - type: fields
+        subject: API Driven Automation
+        entries:
+          - label: Concept
+            value: Automation exposed as API endpoints
+          - label: Architecture
+            value:
+              - Automation platform exposes REST API
+              - External systems call automation via API
+              - Results returned synchronously or asynchronously
+          - label: Advantages
+            value:
+              - Flexible integration
+              - Reusable automation across tools
+              - Self-service for approved users
+          - label: Use cases
+            value:
+              - On-demand enrichment from other tools
+              - Developer self-service security scans
+              - Chatbot-triggered security actions
+      - type: fields
+        subject: Human in the Loop
+        entries:
+          - label: Concept
+            value: Automation proposes action, human approves
+          - label: Architecture
+            value:
+              - Automation analyzes alert
+              - Proposes response action
+              - Sends approval request to analyst
+              - Executes if approved, cancels if denied
+          - label: Advantages
+            value:
+              - Safety net for high-impact actions
+              - Builds analyst confidence in automation
+              - Learns from analyst decisions over time
+          - label: Use cases
+            value:
+              - Account disabling
+              - Network blocking of business-critical services
+              - Data deletion or quarantine
+  - heading: Automation Governance
+    id: automation_governance
+    blocks:
+      - type: heading
+        level: 3
+        text: Change Management
+      - type: heading
+        level: 4
+        text: Automation as Code
+      - type: list
+        style: bullet
+        items:
+          - All automation stored in Git
+          - Pull request for changes
+          - Peer review required
+          - Automated testing before merge
+      - type: fields
+        subject: Deployment Process
+        entries:
+          - label: Development
+            value: Build and test in dev environment
+          - label: Staging
+            value: Deploy to staging, test with realistic data
+          - label: Production
+            value: Canary deployment (10% traffic), then full rollout
+      - type: heading
+        level: 4
+        text: Rollback Procedure
+      - type: list
+        style: bullet
+        items:
+          - Git revert to previous version
+          - Automated rollback if error rate spikes
+          - Manual rollback for critical issues
+      - type: heading
+        level: 3
+        text: Risk Management
+      - type: heading
+        level: 4
+        text: Blast Radius Limitation
+      - type: definition
+        items:
+          - term: Concept
+            description: Limit scope of automation failure
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: Rate limiting
+            value: Max 10 actions per minute
+          - label: Scope limiting
+            value: Only affect non-production initially
+          - label: Circuit breakers
+            value: Pause after 5 consecutive failures
+      - type: fields
+        subject: Approval Requirements
+        entries:
+          - label: Low risk
+            value: Auto-execute (alert enrichment, log queries)
+          - label: Medium risk
+            value: Auto-execute with notification (create tickets)
+          - label: High risk
+            value: Human approval required (block IPs, disable accounts)
+          - label: Critical risk
+            value: Multi-person approval (delete data, modify production)
+      - type: heading
+        level: 4
+        text: Audit Logging
+      - type: list
+        style: bullet
+        items:
+          - Log every automation execution
+          - Log all actions taken
+          - Log approval/denial decisions
+          - Retain logs for compliance (typically 7 years)

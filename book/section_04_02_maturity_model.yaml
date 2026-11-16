@@ -1,0 +1,381 @@
+# section_04_02_maturity_model.yaml
+
+---
+title: Maturity Model
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 2
+  section_code: '0402'
+  source_chapter: '4.3'
+  source_key: incident_response.maturity_model
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Purpose
+    id: purpose
+    blocks:
+      - type: prose
+        text: >-
+          IR maturity determines organizational resilience when breaches occur. This model enables assessment
+          of current IR capability, identification of gaps, and roadmap development. Use self-assessment
+          to determine IR priorities.
+  - heading: Maturity Levels
+    id: maturity_levels
+    blocks:
+      - type: heading
+        level: 3
+        text: 'Level 0: Reactive Chaos'
+      - type: definition
+        items:
+          - term: Name
+            description: Reactive Chaos
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Preparation
+            value: No documented IR procedures
+          - label: Detection
+            value: Incidents discovered by accident or external notification
+          - label: Response
+            value: Ad-hoc decisions, no clear roles
+          - label: Communication
+            value: Chaotic, inconsistent messaging
+          - label: Learning
+            value: No post-incident review
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - No IR plan documented
+          - No designated IR team
+          - Incidents discovered by customers or media
+          - Mean time to contain measured in weeks
+          - Same incidents repeat
+      - type: definition
+        items:
+          - term: Risk level
+            description: Critical - incidents cause catastrophic business impact
+          - term: Next steps
+            description: Document basic IR plan, designate IR team, establish detection capability
+          - term: Estimated timeline
+            description: 6-12 months to reach Level 1
+      - type: heading
+        level: 3
+        text: 'Level 1: Documented Procedures'
+      - type: definition
+        items:
+          - term: Name
+            description: Documented Procedures
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Preparation
+            value: Basic IR plan documented
+          - label: Detection
+            value: Some detection capability (SIEM alerts)
+          - label: Response
+            value: Documented procedures, designated responders
+          - label: Communication
+            value: Basic escalation paths defined
+          - label: Learning
+            value: Informal lessons learned
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - IR plan exists and is accessible
+          - IR team designated with contact information
+          - Basic playbooks for common scenarios (3-5)
+          - Mean time to contain measured in days
+          - Some post-incident discussion
+      - type: definition
+        items:
+          - term: Risk level
+            description: High - procedures exist but untested and incomplete
+          - term: Next steps
+            description: Expand playbook coverage, conduct tabletop exercises, improve detection
+          - term: Estimated timeline
+            description: 6-12 months to reach Level 2
+      - type: heading
+        level: 3
+        text: 'Level 2: Practiced Response'
+      - type: definition
+        items:
+          - term: Name
+            description: Practiced Response
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Preparation
+            value: Comprehensive playbooks, regular exercises
+          - label: Detection
+            value: Proactive detection and monitoring
+          - label: Response
+            value: Practiced procedures, clear roles
+          - label: Communication
+            value: Defined communication plan and templates
+          - label: Learning
+            value: Formal post-incident reviews with action tracking
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - 10+ documented playbooks
+          - Quarterly tabletop exercises
+          - IR team trained and practiced
+          - Mean time to contain measured in hours
+          - Post-incident reviews mandatory with tracked improvements
+      - type: definition
+        items:
+          - term: Risk level
+            description: Medium - capable response but improvement opportunities exist
+          - term: Next steps
+            description: Advanced forensics, automation, threat intelligence integration
+          - term: Estimated timeline
+            description: 12-18 months to reach Level 3
+      - type: heading
+        level: 3
+        text: 'Level 3: Optimized Response'
+      - type: definition
+        items:
+          - term: Name
+            description: Optimized Response
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Preparation
+            value: Comprehensive playbooks with automation
+          - label: Detection
+            value: Advanced detection with threat intelligence
+          - label: Response
+            value: Automated response for common scenarios
+          - label: Communication
+            value: Seamless stakeholder coordination
+          - label: Learning
+            value: Continuous improvement culture, proactive threat hunting
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - 20+ playbooks with automation integration
+          - Mean time to detect <4 hours, contain <2 hours
+          - Automated response for 50%+ of incidents
+          - Regular red team exercises
+          - Threat intelligence driving proactive defense
+      - type: definition
+        items:
+          - term: Risk level
+            description: Low - mature capability, continuous improvement
+          - term: Next steps
+            description: Industry leadership, threat intelligence sharing, advanced simulations
+          - term: Estimated timeline
+            description: Ongoing optimization
+      - type: heading
+        level: 3
+        text: 'Level 4: Proactive Defense'
+      - type: definition
+        items:
+          - term: Name
+            description: Proactive Defense
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Preparation
+            value: Predictive threat modeling and proactive defense
+          - label: Detection
+            value: AI-driven detection, predictive analytics
+          - label: Response
+            value: Autonomous response with human oversight
+          - label: Communication
+            value: Crisis management excellence
+          - label: Learning
+            value: Industry thought leadership, intelligence sharing
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Proactive threat hunting identifies threats before impact
+          - AI-driven automation handles majority of incidents
+          - Mean time to detect <1 hour, contain <30 minutes
+          - Industry recognition for IR capability
+          - Contributing to community threat intelligence
+      - type: definition
+        items:
+          - term: Risk level
+            description: Very Low - industry-leading capability
+          - term: Next steps
+            description: Innovation, research, mentoring other organizations
+  - heading: Self-Assessment
+    id: self_assessment
+    blocks:
+      - type: heading
+        level: 3
+        text: Instructions
+      - type: prose
+        text: >-
+          Answer the following questions about your current IR capability. Score: 1 point for each YES
+          answer. Total score determines maturity level.
+      - type: heading
+        level: 3
+        text: Questions
+      - type: fields
+        subject: Q1
+        entries:
+          - label: Question
+            value: Do you have a documented incident response plan?
+          - label: Level indicator
+            value: Level 0 → Level 1
+      - type: fields
+        subject: Q2
+        entries:
+          - label: Question
+            value: Do you have a designated incident response team with defined roles?
+          - label: Level indicator
+            value: Level 0 → Level 1
+      - type: fields
+        subject: Q3
+        entries:
+          - label: Question
+            value: Do you have documented playbooks for common incidents?
+          - label: Level indicator
+            value: Level 0 → Level 1
+      - type: fields
+        subject: Q4
+        entries:
+          - label: Question
+            value: Do you conduct regular incident response exercises?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q5
+        entries:
+          - label: Question
+            value: Do you have mean time to contain under 24 hours?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q6
+        entries:
+          - label: Question
+            value: Do you conduct formal post-incident reviews for all incidents?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q7
+        entries:
+          - label: Question
+            value: Do you have 10+ documented incident response playbooks?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q8
+        entries:
+          - label: Question
+            value: Do you have automated response for common incident types?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q9
+        entries:
+          - label: Question
+            value: Do you have mean time to contain under 4 hours?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q10
+        entries:
+          - label: Question
+            value: Do you conduct tabletop exercises at least quarterly?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q11
+        entries:
+          - label: Question
+            value: Do you have threat intelligence integrated with IR workflows?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q12
+        entries:
+          - label: Question
+            value: Do you have mean time to detect under 4 hours?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: fields
+        subject: Q13
+        entries:
+          - label: Question
+            value: Do you conduct proactive threat hunting?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: fields
+        subject: Q14
+        entries:
+          - label: Question
+            value: Do you have AI-driven detection and response?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: heading
+        level: 3
+        text: Scoring
+      - type: fields
+        subject: Score 0 2
+        entries:
+          - label: Level
+            value: 'Level 0: Reactive Chaos'
+          - label: Next section
+            value: building_from_zero
+          - label: Priority
+            value: Document IR plan, designate team, establish detection
+      - type: fields
+        subject: Score 3 5
+        entries:
+          - label: Level
+            value: 'Level 1: Documented Procedures'
+          - label: Next section
+            value: building_from_zero (Phase 2-3)
+          - label: Priority
+            value: Expand playbooks, conduct exercises, improve detection
+      - type: fields
+        subject: Score 6 8
+        entries:
+          - label: Level
+            value: 'Level 2: Practiced Response'
+          - label: Next section
+            value: Advanced playbooks, automation, threat intelligence
+          - label: Priority
+            value: Optimize response time, automate common scenarios
+      - type: fields
+        subject: Score 9 11
+        entries:
+          - label: Level
+            value: 'Level 3: Optimized Response'
+          - label: Next section
+            value: All sections for continuous improvement
+          - label: Priority
+            value: Proactive hunting, advanced automation, intelligence sharing
+      - type: fields
+        subject: Score 12 14
+        entries:
+          - label: Level
+            value: 'Level 4: Proactive Defense'
+          - label: Next section
+            value: Innovation and industry leadership
+          - label: Priority
+            value: Research, community contribution, mentoring

@@ -1,0 +1,579 @@
+# section_05_09_building_threat_intel_program.yaml
+
+---
+title: Building Threat Intel Program
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 5
+  section: 9
+  section_code: 0509
+  source_chapter: '4.4'
+  source_key: threat_intelligence_operations.building_threat_intel_program
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Building threat intelligence from zero requires systematic approach: defining requirements,
+          establishing processes, selecting tools, hiring talent. This section provides 12-month roadmap
+          from no intelligence capability to mature program with measurable impact.
+  - heading: Prerequisites
+    id: prerequisites
+    blocks:
+      - type: fields
+        subject: Executive Sponsorship
+        entries:
+          - label: Requirement
+            value: CISO or security leadership sponsorship
+          - label: Rationale
+            value: Intelligence requires investment and cross-functional support
+          - label: Deliverable
+            value: Executive sponsor committed to program success
+      - type: heading
+        level: 3
+        text: Budget
+      - type: definition
+        items:
+          - term: Year 1
+            description: $200K-$500K (depends on organization size)
+      - type: fields
+        subject: Breakdown
+        entries:
+          - label: Personnel
+            value: $100K-$300K (1-2 analysts or contractors)
+          - label: Technology
+            value: $50K-$150K (TIP, feeds, tools)
+          - label: Training
+            value: $25K-$50K
+          - label: Contingency
+            value: $25K
+      - type: fields
+        subject: Stakeholder Alignment
+        entries:
+          - label: Requirement
+            value: Identify intelligence consumers and their needs
+          - label: Stakeholders
+            value:
+              - SOC (tactical intelligence)
+              - Incident response (operational intelligence)
+              - Security architecture (operational/strategic intelligence)
+              - Executives (strategic intelligence)
+          - label: Deliverable
+            value: Stakeholder map with intelligence requirements
+  - heading: 'Phase 1: Foundation'
+    id: phase_1_foundation
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 1-3
+          - term: Objective
+            description: Establish basic intelligence capability
+          - term: Maturity progression
+            description: None → Level 1 (Ad-hoc)
+      - type: heading
+        level: 3
+        text: 'Month 1: Requirements and Planning'
+      - type: fields
+        subject: Define PIRs
+        entries:
+          - label: Process
+            value:
+              - Interview stakeholders about intelligence needs
+              - Review past incidents - what intelligence would have helped?
+              - Research threat landscape for industry
+          - label: Output
+            value: 5-10 Priority Intelligence Requirements
+          - label: Examples
+            value:
+              - What ransomware groups target our industry?
+              - What vulnerabilities are being exploited against our technology stack?
+              - What are current phishing themes targeting financial services?
+      - type: heading
+        level: 4
+        text: Source Identification
+      - type: fields
+        subject: Free Sources to Start
+        entries:
+          - label: OSINT
+            value:
+              - Security researcher blogs and Twitter
+              - CISA alerts and bulletins
+              - Industry ISAC (join if available)
+              - VirusTotal, AbuseIPDB (free tiers)
+          - label: Internal
+            value:
+              - SIEM and EDR alerts
+              - Incident investigation findings
+      - type: heading
+        level: 5
+        text: Commercial Sources Evaluation
+      - type: list
+        style: bullet
+        items:
+          - Request trials from 2-3 vendors
+          - Evaluate against PIRs
+          - Assess integration capabilities
+      - type: heading
+        level: 4
+        text: Tool Selection
+      - type: heading
+        level: 5
+        text: Threat Intelligence Platform
+      - type: fields
+        subject: Options
+        entries:
+          - label: Option 1 MISP
+            value: Free, self-hosted, requires technical setup
+          - label: Option 2 commercial TIP
+            value: Anomali, ThreatConnect ($50K+)
+          - label: Option 3 start simple
+            value: Spreadsheet + manual process (temporarily)
+      - type: definition
+        items:
+          - term: Recommendation year 1
+            description: MISP (free) or simple tracking system, upgrade later
+      - type: fields
+        subject: Enrichment Tools
+        entries:
+          - label: Free tools
+            value:
+              - VirusTotal API (free tier)
+              - AbuseIPDB API (free tier)
+              - WHOIS lookups
+      - type: fields
+        subject: Hire or Assign Analyst
+        entries:
+          - label: Option 1 hire
+            value: Dedicated threat intelligence analyst
+          - label: Option 2 assign
+            value: Security analyst with 50% time on intelligence
+          - label: Option 3 contractor
+            value: Part-time intelligence contractor
+          - label: Recommendation
+            value: Start with assigned/contractor, hire dedicated when value proven
+      - type: heading
+        level: 3
+        text: 'Month 2: Process Development'
+      - type: heading
+        level: 4
+        text: Document Intelligence Workflow
+      - type: fields
+        subject: Template
+        entries:
+          - label: Collection
+            value: How and when do we collect intelligence?
+          - label: Processing
+            value: How do we normalize and enrich?
+          - label: Analysis
+            value: What analysis techniques do we use?
+          - label: Dissemination
+            value: How do we distribute intelligence?
+      - type: definition
+        items:
+          - term: Deliverable
+            description: Intelligence operations SOP (10-20 pages)
+      - type: fields
+        subject: Establish Dissemination Channels
+        entries:
+          - label: Tactical intelligence
+            value:
+              - IOC feed to SIEM (CSV or API)
+              - Slack channel for urgent alerts
+          - label: Operational intelligence
+            value:
+              - Email distribution list for campaign reports
+              - Wiki or SharePoint for intelligence repository
+          - label: Strategic intelligence
+            value:
+              - Quarterly executive briefing (in-person or deck)
+      - type: fields
+        subject: Create Initial Adversary Profiles
+        entries:
+          - label: Target
+            value: 3-5 adversaries most relevant to organization
+          - label: Sources
+            value: Vendor reports, MITRE ATT&CK, public research
+          - label: Template
+            value: Use adversary profile template from earlier section
+      - type: heading
+        level: 3
+        text: 'Month 3: Operationalization'
+      - type: heading
+        level: 4
+        text: First Intelligence Products
+      - type: fields
+        subject: Tactical
+        entries:
+          - label: Deliverable
+            value: IOC feed with 100+ high-confidence indicators
+          - label: Source
+            value: Aggregated from free feeds + internal incidents
+          - label: Dissemination
+            value: Pushed to SIEM for correlation
+      - type: fields
+        subject: Operational
+        entries:
+          - label: Deliverable
+            value: Campaign report on recent threat targeting industry
+          - label: Example
+            value: Emotet Targeting Financial Services - Operational Brief
+          - label: Dissemination
+            value: Email to SOC and IR teams
+      - type: fields
+        subject: Strategic
+        entries:
+          - label: Deliverable
+            value: Threat landscape overview for leadership
+          - label: Example
+            value: 'Q1 Threat Landscape: Financial Services'
+          - label: Dissemination
+            value: Presented to CISO and security leadership
+      - type: fields
+        subject: First Threat Hunt
+        entries:
+          - label: Based on
+            value: Intelligence from campaign report
+          - label: Hypothesis
+            value: Organization may be targeted by campaign X
+          - label: Execution
+            value: Hunt for IOCs and TTPs in environment
+          - label: Outcome
+            value: Document findings (even if negative - proves value)
+      - type: fields
+        subject: Metrics Baseline
+        entries:
+          - label: Establish
+            value:
+              - Current MTTD for threats
+              - SOC alert false positive rate
+              - Detection coverage (MITRE ATT&CK)
+          - label: Purpose
+            value: Baseline to measure intelligence impact
+  - heading: 'Phase 2: Capability Building'
+    id: phase_2_capability_building
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 4-6
+          - term: Objective
+            description: Expand sources, improve analysis, demonstrate value
+          - term: Maturity progression
+            description: Level 1 → Level 2 (Structured)
+      - type: heading
+        level: 3
+        text: 'Month 4: Source Expansion'
+      - type: fields
+        subject: Commercial Feed Procurement
+        entries:
+          - label: Decision criteria
+            value:
+              - Trial results from month 1-3
+              - Budget approval
+              - Integration capabilities
+          - label: Recommendation
+            value: Select 1-2 commercial feeds aligned with PIRs
+          - label: Budget
+            value: $50K-$100K annually
+      - type: fields
+        subject: ISAC Engagement
+        entries:
+          - label: If not member
+            value: Join industry ISAC
+          - label: If member
+            value: Increase participation (attend meetings, contribute)
+      - type: fields
+        subject: Peer Sharing Initiation
+        entries:
+          - label: Identify
+            value: 2-3 peer organizations for bilateral sharing
+          - label: Approach
+            value: Conference networking, ISAC connections
+          - label: Start
+            value: Low-sensitivity sharing, build trust
+      - type: heading
+        level: 3
+        text: 'Month 5: Analysis Improvement'
+      - type: fields
+        subject: Analyst Training
+        entries:
+          - label: Certifications
+            value:
+              - 'SANS FOR578: Cyber Threat Intelligence'
+              - GIAC Cyber Threat Intelligence (GCTI)
+          - label: Conferences
+            value:
+              - SANS Threat Hunting Summit
+              - Industry conferences (FS-ISAC, etc)
+          - label: Budget
+            value: $5K-$10K
+      - type: fields
+        subject: Advanced Analysis Techniques
+        entries:
+          - label: Implement
+            value:
+              - Diamond Model for adversary analysis
+              - MITRE ATT&CK mapping for all intelligence
+              - Pivot analysis using Maltego or similar
+          - label: Training
+            value: On-the-job learning + online resources
+      - type: fields
+        subject: Automation Initial
+        entries:
+          - label: Automate
+            value:
+              - IOC enrichment (API calls to VirusTotal, etc)
+              - STIX/TAXII feed ingestion
+          - label: Tools
+            value: Python scripts or SOAR playbooks
+      - type: heading
+        level: 3
+        text: 'Month 6: Integration and Impact'
+      - type: fields
+        subject: SIEM Integration Enhancement
+        entries:
+          - label: Current state
+            value: Manual IOC feed updates
+          - label: Target state
+            value: Automated IOC feed with correlation rules
+          - label: Implementation
+            value:
+              - Automate IOC feed to SIEM (API or scheduled job)
+              - Build correlation rules for high-confidence IOCs
+              - Alert enrichment with intelligence context
+      - type: fields
+        subject: Detection Rule Development
+        entries:
+          - label: Based on
+            value: Intelligence on prevalent adversary TTPs
+          - label: Target
+            value: 5-10 new detection rules
+          - label: Process
+            value:
+              - Identify TTPs from intelligence
+              - Map to MITRE ATT&CK
+              - Write Sigma rules
+              - Test and deploy
+          - label: Cross-reference
+            value: Chapter 2.4 Detection Engineering
+      - type: fields
+        subject: First Success Story
+        entries:
+          - label: Goal
+            value: Document measurable intelligence impact
+          - label: Examples
+            value:
+              - Threat hunt discovered APT before data loss
+              - Proactive blocking prevented ransomware
+              - Vulnerability patched before exploit
+          - label: Deliverable
+            value: Case study for executive presentation
+  - heading: 'Phase 3: Operational Maturity'
+    id: phase_3_operational_maturity
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 7-9
+          - term: Objective
+            description: Establish regular cadence, measure effectiveness, scale impact
+          - term: Maturity progression
+            description: Level 2 → Level 3 (Continuous)
+      - type: heading
+        level: 3
+        text: 'Month 7: Regular Operations'
+      - type: fields
+        subject: Establish Cadence
+        entries:
+          - label: Daily
+            value:
+              - Monitor threat feeds and sources
+              - Triage new intelligence
+              - Update IOC feeds
+          - label: Weekly
+            value:
+              - Publish tactical intelligence bulletin
+              - Conduct threat hunt based on intelligence
+              - Team meeting (review week, plan next)
+          - label: Monthly
+            value:
+              - Publish operational intelligence report (1-2 campaigns)
+              - Metrics review with stakeholders
+          - label: Quarterly
+            value:
+              - Strategic threat assessment
+              - Program review with leadership
+      - type: fields
+        subject: Threat Hunting Program
+        entries:
+          - label: Frequency
+            value: Weekly hunts
+          - label: Approach
+            value: Intelligence-driven hypotheses
+          - label: Tracking
+            value: Hunt log with outcomes and findings
+          - label: Target
+            value: 20%+ of hunts find something worth investigating
+      - type: heading
+        level: 3
+        text: 'Month 8: Metrics and Measurement'
+      - type: fields
+        subject: Implement Metrics Tracking
+        entries:
+          - label: Metrics to track
+            value:
+              - Intelligence to action rate
+              - Detection rule effectiveness (TP rate)
+              - Threat hunting success rate
+              - Stakeholder satisfaction (survey)
+          - label: Tools
+            value:
+              - TIP dashboards
+              - Custom tracking spreadsheet
+              - SIEM dashboards for detection performance
+      - type: fields
+        subject: First ROI Calculation
+        entries:
+          - label: Calculate
+            value:
+              - Time saved (enrichment automation)
+              - Detection improvements
+              - Threats prevented (if any)
+          - label: Present
+            value: To leadership with conservative estimates
+          - label: Request
+            value: Continued/increased budget based on demonstrated value
+      - type: heading
+        level: 3
+        text: 'Month 9: Scaling Impact'
+      - type: fields
+        subject: Expand Dissemination
+        entries:
+          - label: New audiences
+            value:
+              - IT operations (vulnerability intelligence)
+              - Risk management (strategic intelligence)
+              - Business units (industry-specific intelligence)
+          - label: Formats
+            value:
+              - Custom intelligence briefings per audience
+              - Self-service intelligence portal
+      - type: fields
+        subject: External Contribution
+        entries:
+          - label: Contribute to community
+            value:
+              - Share sanitized IOCs with ISAC
+              - Publish anonymized case study
+              - Present at local security meetup
+          - label: Benefits
+            value:
+              - Reciprocal intelligence from community
+              - Brand building (organization and personal)
+  - heading: 'Phase 4: Advanced Capabilities'
+    id: phase_4_advanced_capabilities
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 10-12
+          - term: Objective
+            description: Advanced analytics, automation, strategic influence
+          - term: Maturity progression
+            description: Level 3 optimization
+      - type: heading
+        level: 3
+        text: 'Month 10: Advanced Analytics'
+      - type: fields
+        subject: Predictive Analysis
+        entries:
+          - label: Implement
+            value:
+              - Trend analysis (attack volume, techniques, adversaries)
+              - Forecasting (seasonal patterns, geopolitical triggers)
+          - label: Tools
+            value:
+              - Data analysis (Python, pandas)
+              - Visualization (Tableau, PowerBI)
+          - label: Deliverable
+            value: Predictive threat forecast (next quarter)
+      - type: fields
+        subject: Machine Learning Exploration
+        entries:
+          - label: Use cases
+            value:
+              - IOC clustering and relationship discovery
+              - Anomaly detection in threat landscape
+              - Automated adversary attribution assistance
+          - label: Approach
+            value: Proof of concept, small scale
+      - type: heading
+        level: 3
+        text: 'Month 11: Full Automation'
+      - type: fields
+        subject: Automated Response Integration
+        entries:
+          - label: Implement
+            value:
+              - High-confidence IOCs auto-blocked at firewall
+              - Detection rules auto-deployed from intelligence
+              - Enrichment fully automated (no manual analyst steps)
+          - label: Guardrails
+            value:
+              - Human review for critical actions
+              - Circuit breakers for mass blocking
+          - label: Cross-reference
+            value: Chapter 4.1 Security Automation
+      - type: fields
+        subject: SOAR Playbook Development
+        entries:
+          - label: Playbooks
+            value:
+              - Automated IOC enrichment and dissemination
+              - Intelligence-driven threat hunt automation
+              - Incident IOC extraction and TIP upload
+      - type: heading
+        level: 3
+        text: 'Month 12: Strategic Influence'
+      - type: fields
+        subject: Threat Informed Defense
+        entries:
+          - label: Concept
+            value: Intelligence shapes security strategy and architecture
+          - label: Implementation
+            value:
+              - Security roadmap informed by threat intelligence
+              - Architecture decisions cite intelligence (zero trust, segmentation)
+              - Budget allocation prioritized by threat landscape
+          - label: Deliverable
+            value: Threat-informed security strategy document
+      - type: fields
+        subject: Year End Program Assessment
+        entries:
+          - label: Comprehensive review
+            value:
+              - Year 1 achievements and metrics
+              - ROI demonstration
+              - Maturity assessment (baseline vs current)
+              - Stakeholder satisfaction
+          - label: Deliverable
+            value: Year 1 report + Year 2 strategy
+          - label: Presentation
+            value: To CISO and executive leadership
+      - type: fields
+        subject: 'Year 2: Planning'
+        entries:
+          - label: Priorities
+            value:
+              - Expand team (if value demonstrated)
+              - Advanced tooling (premium feeds, advanced TIP)
+              - Deeper integration with security ecosystem
+              - Industry leadership (speaking, publishing)

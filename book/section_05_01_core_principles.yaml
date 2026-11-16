@@ -1,0 +1,436 @@
+# section_05_01_core_principles.yaml
+
+---
+title: Core Principles
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 5
+  section: 1
+  section_code: '0501'
+  source_chapter: '4.4'
+  source_key: threat_intelligence_operations.core_principles
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Intelligence not Data
+    id: intelligence_not_data
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: TI-P001
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Intelligence is analyzed information that enables decisions, not raw data collection
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Many organizations confuse data collection with intelligence. Collecting 10,000 IOCs from threat
+          feeds is not intelligence - it's data. Intelligence is analyzing those IOCs to determine: Which
+          IOCs target our industry? Which adversaries are most likely to attack us? What tactics will
+          they use? What should we prioritize detecting?
+
+
+          Raw data without analysis creates alert fatigue and false positives. Intelligence drives prioritized
+          action: "Based on recent campaign targeting financial services with Emotet, we should prioritize
+          detection of malicious macros and lateral movement via SMB." That's intelligence.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Every intelligence product must answer 'so what?' and 'now what?'
+          - 'IOCs must include context: adversary, campaign, targeting, confidence level'
+          - Intelligence reports must conclude with specific recommendations
+          - Measure intelligence by decisions enabled, not data collected
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Intelligence products published with clear recommendations: Target 100%'
+          - 'Detection rules created from intelligence: Track monthly'
+          - 'Security decisions influenced by intelligence: Track and document'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Collecting threat feeds without analyzing relevance
+          - Publishing IOC lists without context or prioritization
+          - Measuring intelligence team by volume of reports, not impact
+          - Intelligence team isolated from detection and response teams
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Organization subscribed to 15 threat feeds, ingesting 50K IOCs daily. Zero analysis - just bulk-blocking
+          IPs and domains. Result: Massive false positives, blocked legitimate services, SOC overwhelmed.
+          Post-incident review revealed APT28 IOCs in feeds but never prioritized or hunted. Shifted to
+          analyzed intelligence: Each week, intel analyst identifies top 5 threats relevant to organization,
+          provides context, creates hunting queries. Result: Proactively discovered targeted phishing
+          campaign before credential theft, prevented breach.
+  - heading: Context over Volume
+    id: context_over_volume
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: TI-P002
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Intelligence value comes from context and relevance, not volume of data
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          100 high-confidence, contextualized IOCs targeting your industry are infinitely more valuable
+          than 100,000 generic IOCs from bulk feeds. Context determines intelligence value: adversary
+          attribution, campaign details, targeting criteria, TTPs, confidence level, freshness. Without
+          context, IOCs are noise.
+
+
+          Organizations drowning in threat feed data but lacking actual intelligence suffer alert fatigue,
+          false positives, and missed threats. Focus on quality intelligence with rich context that enables
+          prioritized action.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - 'Every IOC must include minimum viable context: source, confidence, adversary, campaign'
+          - Prioritize intelligence sources providing analysis, not just data dumps
+          - 'Tag intelligence by relevance: industry, geography, asset type'
+          - 'Confidence scoring: High/Medium/Low based on source reliability and corroboration'
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of IOCs with full context metadata: Target >90%'
+          - 'Intelligence false positive rate: Target <10%'
+          - 'Average time saved per analyst using contextualized intel vs raw feeds: Measure improvement'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Ingesting every free threat feed without quality assessment
+          - Treating all IOCs equally regardless of confidence or relevance
+          - No metadata management - losing context when IOCs transferred between systems
+          - Intelligence analysts spending time on irrelevant threats
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          SOC received alert: Connection to IP 192.0.2.45. No context. Analyst spends 30 minutes investigating
+          - turns out to be CDN IP, false positive. Next alert: Connection to IP 198.51.100.89. Intel
+          context: "Cobalt Strike C2, APT29, targeting defense contractors, high confidence, active campaign."
+          Analyst immediately escalates to incident response, contains within 1 hour. Context transformed
+          alert triage from 30 minutes to 30 seconds.
+  - heading: Timely and Actionable
+    id: timely_and_actionable
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: TI-P003
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Timely, actionable intelligence delivered when needed trumps perfect intelligence
+              delivered late
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Intelligence has shelf life. IOCs from 6-month-old campaign have limited value - adversaries
+          rotate infrastructure. Perfect intelligence report published 2 weeks after campaign ends doesn't
+          enable defense. Speed matters more than perfection.
+
+
+          Organizations that wait for complete investigation before sharing intelligence miss opportunity
+          to prevent breaches. Early indicators, even with low confidence, enable proactive hunting. Update
+          intelligence as more details emerge. Better to warn "possible APT28 phishing targeting financial
+          services" than wait 3 weeks for perfect attribution.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - 'Establish intelligence dissemination SLAs: Critical intel within 1 hour, high priority within
+            24 hours'
+          - Publish preliminary reports with clear confidence levels, update as investigation progresses
+          - Automate tactical intelligence (IOCs) - manual analysis for strategic/operational only
+          - 'Create rapid dissemination channels: Slack, email alerts, API push'
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Time from intelligence collection to dissemination: Target <4 hours for tactical'
+          - 'Intelligence freshness: Percentage of IOCs <30 days old: Target >80%'
+          - 'Actionable intelligence rate: Percentage leading to detection/hunting/blocking: Target >60%'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Waiting for perfect attribution before publishing indicators
+          - Complex approval processes delaying intelligence distribution
+          - Weekly intelligence reports for time-sensitive threats
+          - Intelligence locked in documents instead of machine-readable formats
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Intel team identified possible ransomware campaign targeting healthcare. Attribution uncertain,
+          only 3 IOCs confirmed. Traditional approach: Wait 2 weeks for full investigation, publish comprehensive
+          report. New approach: Immediately published "Possible ransomware targeting healthcare, low confidence,
+          3 IOCs, recommend proactive hunting." Two organizations hunted based on indicators, discovered
+          ransomware staging, contained before encryption. Perfect attribution published 2 weeks later
+          was nice-to-have, but early warning prevented breaches.
+  - heading: Intelligence Drives Action
+    id: intelligence_drives_action
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: TI-P004
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Intelligence must drive concrete security actions - detection, hunting, blocking,
+              architecture changes
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Intelligence without action is academic exercise. Every intelligence product should enable specific
+          security decision: Create detection rule, hunt for compromise, block infrastructure, patch vulnerability,
+          change architecture. If intelligence doesn't drive action, it has no operational value.
+
+
+          Many intelligence teams produce beautiful reports nobody reads. Mature programs integrate intelligence
+          directly into security operations: automated IOC blocking, detection rule generation, threat
+          hunting queries, vulnerability prioritization. Intelligence becomes operational, not theoretical.
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: Automated actions
+            value:
+              - Tactical intelligence (IOCs) automatically populates blocking lists
+              - Detection rules auto-generated from intelligence with human review
+              - Threat hunting queries auto-generated from TTPs
+          - label: Manual actions
+            value:
+              - Operational intelligence informs architecture decisions
+              - Strategic intelligence drives security roadmap and budget
+          - label: Tracking
+            value:
+              - Tag intelligence with actions taken
+              - Measure percentage of intelligence leading to action
+              - Track security improvements attributed to intelligence
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of intelligence products leading to action: Target >70%'
+          - 'Detection rules created from intelligence: Track monthly'
+          - 'Threats prevented attributable to intelligence: Document case studies'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Intelligence reports filed away unread
+          - No integration between intel team and detection/response teams
+          - Intelligence measured by reports published, not actions taken
+          - Strategic intelligence ignored by leadership
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Intel team published 20-page report on APT29 TTPs. Nobody read it. Result: Zero operational
+          value. Changed approach: 1-page executive summary for leadership (strategic), detection rule
+          package for SOC (operational), IOC feed for automated blocking (tactical). Result: Leadership
+          approved budget for MFA, SOC deployed 5 new detection rules, automated blocking prevented C2
+          connections. Same intelligence, 100x impact through action-oriented delivery.
+  - heading: Share to Receive
+    id: share_to_receive
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: TI-P005
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Intelligence sharing compounds value - organizations that share receive higher-quality
+              intelligence
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Threat intelligence benefits from network effects. Adversaries attack multiple organizations
+          - sharing intelligence enables collective defense. Organizations that only consume intelligence
+          without contributing receive lowest-quality generic feeds. Organizations that share receive
+          targeted, high-confidence intelligence from peers.
+
+
+          ISACs, industry sharing groups, and peer relationships provide intelligence unavailable in commercial
+          feeds: targeted campaigns, zero-days affecting your industry, adversary TTPs specific to your
+          sector. But sharing requires giving to receive. Organizations that share generously receive
+          exponentially more value.
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: What to share
+            value:
+              - IOCs from incident investigations (sanitized)
+              - Adversary TTPs observed in your environment
+              - Detection rules (open source when possible)
+              - Lessons learned from incidents
+          - label: Where to share
+            value:
+              - Industry ISACs (FS-ISAC, H-ISAC, etc)
+              - MISP communities
+              - Vendor threat intelligence platforms
+              - Peer organizations (bilateral agreements)
+          - label: Sanitization
+            value:
+              - Remove proprietary business information
+              - Anonymize victim details
+              - Remove internal network architecture details
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Intelligence contributed to sharing communities: Track monthly'
+          - 'Intelligence received from sharing vs consumed-only: Measure quality differential'
+          - 'Peer relationships for intelligence exchange: Target 5-10 organizations'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Only consuming intelligence, never contributing
+          - Hoarding intelligence due to misguided confidentiality concerns
+          - Not sanitizing properly, leaking sensitive details
+          - Sharing low-quality intelligence that damages reputation
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Organization suffered targeted phishing campaign, investigated and collected IOCs. Kept intelligence
+          internal. 3 months later, learned 12 peer organizations suffered same campaign - could have
+          warned them. Changed approach: Shared sanitized IOCs and TTPs with FS-ISAC within 48 hours.
+          Result: Prevented 8 peer breaches, received reciprocal intelligence on 3 campaigns targeting
+          financial services before they hit. Intelligence quality improved 10x through sharing relationships.
+  - heading: Measure by Decisions
+    id: measure_by_decisions
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: TI-P006
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Measure intelligence effectiveness by security decisions enabled, not metrics
+              like IOCs collected or reports published
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Traditional intelligence metrics are vanity metrics: number of IOCs ingested, reports published,
+          threat feeds subscribed. These don't measure value. Intelligence value is decisions enabled:
+          Did we detect attack we would have missed? Did we prevent breach? Did we prioritize right security
+          investments?
+
+
+          Mature programs measure intelligence by business outcomes: threats detected, attacks prevented,
+          vulnerabilities prioritized correctly, security budget allocated effectively. Intelligence that
+          doesn't improve decisions is overhead, not value.
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: Outcome metrics
+            value:
+              - Threats detected attributable to intelligence (vs would have missed)
+              - Successful threat hunts based on intelligence
+              - Security architecture changes driven by intelligence
+              - Vulnerability patching prioritization informed by intelligence
+          - label: Process metrics
+            value:
+              - Intelligence product consumption rate (are reports being read?)
+              - Time from intelligence to action
+              - Stakeholder satisfaction with intelligence
+          - label: Impact stories
+            value:
+              - 'Document case studies: Intelligence → Action → Outcome'
+              - Present to leadership quarterly
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Threats prevented attributable to intelligence: Track case studies'
+          - 'Detection rules with intelligence attribution performing >90% precision: Count'
+          - 'Security decisions citing intelligence: Track in decision documentation'
+          - 'ROI of intelligence program: (Value of prevented breaches) / (Intelligence program cost)'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Measuring intelligence team by volume of output
+          - No tracking of intelligence consumption or action
+          - Intelligence team unaware if their products are useful
+          - Continuing intelligence activities with no demonstrated value
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Intel team measured by reports published: 50 reports/quarter. Nobody tracked if reports were
+          read or useful. Leadership questioned intelligence budget. Changed metrics: Tracked intelligence-driven
+          actions and outcomes. Q1: Intelligence enabled proactive threat hunt that discovered APT before
+          data exfiltration (prevented $5M breach). Intelligence informed vulnerability prioritization,
+          patched critical RCE before exploit in wild (prevented ransomware). Result: Demonstrated $5M+
+          value, intelligence budget increased 50%.

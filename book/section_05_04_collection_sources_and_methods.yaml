@@ -1,0 +1,283 @@
+# section_05_04_collection_sources_and_methods.yaml
+
+---
+title: Collection Sources and Methods
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 5
+  section: 4
+  section_code: '0504'
+  source_chapter: '4.4'
+  source_key: threat_intelligence_operations.collection_sources_and_methods
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Intelligence collection is art and science of gathering information from diverse sources. No
+          single source provides complete picture - mature programs leverage multiple sources for comprehensive
+          coverage and corroboration.
+  - heading: Collection Strategy
+    id: collection_strategy
+    blocks:
+      - type: fields
+        subject: Multi-Source Approach
+        entries:
+          - label: Rationale
+            value: Single source = single point of failure, limited perspective, bias risk
+          - label: Recommendation
+            value: Minimum 3-5 diverse sources covering different intelligence types
+      - type: fields
+        subject: Source Diversification Matrix
+        entries:
+          - label: Advantages
+            value:
+              - High availability
+              - Low latency for distributed teams
+              - Regional data residency compliance
+          - label: Challenges
+            value:
+              - Complex synchronization
+              - Data consistency challenges
+              - Higher operational overhead
+          - label: Best for
+            value:
+              - Global organizations with distributed SOCs
+              - Organizations with data sovereignty requirements
+  - heading: TIP Integration Patterns
+    id: tip_integration_patterns
+    blocks:
+      - type: heading
+        level: 3
+        text: SIEM Integration
+      - type: fields
+        subject: IOC Feed to SIEM
+        entries:
+          - label: Method
+            value: Push IOCs from TIP to SIEM for correlation
+          - label: Implementation
+            value:
+              - TIP exports IOC feed (CSV, STIX, JSON)
+              - SIEM ingests via API or file drop
+              - SIEM correlation rules check logs against IOCs
+          - label: Use case
+            value:
+              - Alert when user accesses known-malicious IP
+              - Alert when known-malicious hash detected
+          - label: Best practice
+            value:
+              - Filter IOCs by confidence (only high-confidence to SIEM)
+              - Set IOC expiration to avoid stale data
+      - type: fields
+        subject: Alert Enrichment from TIP
+        entries:
+          - label: Method
+            value: SIEM queries TIP for context when alert fires
+          - label: Implementation
+            value:
+              - SIEM alert contains IOC (IP, domain, hash)
+              - SIEM queries TIP API for IOC context
+              - 'TIP returns: adversary, campaign, confidence, recommended action'
+              - SIEM enriches alert with context
+          - label: Use case
+            value:
+              - Analyst sees full IOC context without leaving SIEM
+              - Auto-prioritize alerts based on TIP risk score
+          - label: Best practice
+            value:
+              - Cache TIP responses to reduce API load
+              - Graceful fallback if TIP unavailable
+      - type: heading
+        level: 3
+        text: EDR Integration
+      - type: fields
+        subject: IOC Watchlist
+        entries:
+          - label: Method
+            value: Push high-confidence IOCs to EDR for blocking/alerting
+          - label: Implementation
+            value:
+              - TIP filters IOCs (high confidence, active)
+              - TIP pushes to EDR via API
+              - EDR monitors endpoints for IOCs
+          - label: Use case
+            value:
+              - Block malicious file hashes from executing
+              - Alert on connection to C2 IP
+          - label: Best practice
+            value:
+              - Test IOCs before bulk-blocking (avoid false positives)
+              - Whitelist known-good (CDNs, Microsoft IPs)
+      - type: heading
+        level: 3
+        text: Firewall Proxy Integration
+      - type: fields
+        subject: IP Domain Blocklist
+        entries:
+          - label: Method
+            value: Push malicious IPs/domains to firewall for blocking
+          - label: Implementation
+            value:
+              - TIP exports malicious infrastructure list
+              - Firewall ingests via API or file
+              - Firewall blocks outbound connections
+          - label: Use case
+            value:
+              - Block C2 communication
+              - Block phishing domains
+          - label: Best practice
+            value:
+              - Rate limit to avoid overwhelming firewall
+              - Prioritize blocking C2 over generic malicious IPs
+              - Monitor for false positives (legitimate sites blocked)
+      - type: heading
+        level: 3
+        text: SOAR Integration
+      - type: fields
+        subject: Automated Enrichment Playbook
+        entries:
+          - label: Trigger
+            value: SIEM alert fires
+          - label: Workflow
+            value:
+              - SOAR extracts IOCs from alert
+              - SOAR queries TIP for enrichment
+              - SOAR adds enrichment to ticket
+              - SOAR routes ticket based on risk score
+          - label: Benefit
+            value:
+              - Zero analyst time for enrichment
+              - Consistent enrichment process
+      - type: fields
+        subject: Automated Response Playbook
+        entries:
+          - label: Trigger
+            value: High-confidence malicious IOC detected
+          - label: Workflow
+            value:
+              - TIP flags IOC as high-confidence threat
+              - TIP triggers SOAR playbook
+              - SOAR blocks IP at firewall, adds hash to EDR blocklist
+              - SOAR creates ticket for investigation
+          - label: Benefit
+            value:
+              - Sub-minute automated response
+              - Human-in-loop for verification after containment
+  - heading: TIP Deployment Considerations
+    id: tip_deployment_considerations
+    blocks:
+      - type: heading
+        level: 3
+        text: On Premise vs Cloud
+      - type: fields
+        subject: On Premise TIP
+        entries:
+          - label: Advantages
+            value:
+              - Full control over data and infrastructure
+              - No external dependencies
+              - Customization flexibility
+          - label: Disadvantages
+            value:
+              - Infrastructure and maintenance overhead
+              - Scalability challenges
+              - High upfront cost
+          - label: Best for
+            value:
+              - Organizations with data residency requirements
+              - Highly regulated industries
+              - Large enterprises with IT resources
+      - type: fields
+        subject: Cloud SaaS TIP
+        entries:
+          - label: Advantages
+            value:
+              - No infrastructure management
+              - Automatic updates and scaling
+              - Faster deployment
+          - label: Disadvantages
+            value:
+              - Data stored with vendor
+              - Dependency on vendor availability
+              - Limited customization
+          - label: Best for
+            value:
+              - Organizations without data residency restrictions
+              - Smaller teams without dedicated TIP admins
+              - Cloud-first organizations
+      - type: fields
+        subject: Hybrid TIP
+        entries:
+          - label: Design
+            value:
+              - Cloud TIP for management and analysis
+              - On-premise connectors for data feeds
+          - label: Advantages
+            value:
+              - Balance of control and convenience
+              - Sensitive data stays on-premise
+          - label: Best for
+            value:
+              - Organizations with mixed requirements
+      - type: heading
+        level: 3
+        text: High Availability
+      - type: fields
+        subject: Requirements
+        entries:
+          - label: Uptime target
+            value: 99.9% (critical security infrastructure)
+          - label: RTO
+            value: < 1 hour (intelligence services restored)
+          - label: RPO
+            value: < 15 minutes (intelligence data loss acceptable)
+      - type: heading
+        level: 4
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Active-passive or active-active clustering
+          - Database replication (real-time or near-real-time)
+          - Load balancing for API endpoints
+          - Geographic redundancy for disaster recovery
+      - type: heading
+        level: 3
+        text: Scalability
+      - type: heading
+        level: 4
+        text: Capacity Planning
+      - type: heading
+        level: 5
+        text: Metrics to Monitor
+      - type: list
+        style: bullet
+        items:
+          - IOCs ingested per day
+          - API query rate (queries per second)
+          - Database size and growth rate
+          - Analyst concurrent users
+      - type: fields
+        subject: Scaling Approaches
+        entries:
+          - label: Vertical
+            value: Increase CPU/RAM/storage for database and application
+          - label: Horizontal
+            value: Add worker nodes for enrichment, distribute database
+      - type: heading
+        level: 4
+        text: Performance Optimization
+      - type: list
+        style: bullet
+        items:
+          - Database indexing on frequently queried fields
+          - Caching for common API queries
+          - Batch processing for enrichment
+          - Archive old IOCs to cold storage

@@ -1,0 +1,203 @@
+# section_01_09_coverage_assessment.yaml
+
+---
+title: Coverage Assessment
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 9
+  section_code: 0109
+  source_chapter: '2.4'
+  source_key: detection_engineering.coverage_assessment
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 3+ organizations measuring program effectiveness
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Detection coverage assessment quantifies program capability and identifies gaps. Systematic
+          coverage measurement enables data-driven investment decisions and demonstrates security posture
+          to executive leadership.
+  - heading: MITRE ATT&CK Coverage Mapping
+    id: mitre_attack_coverage_mapping
+    blocks:
+      - type: heading
+        level: 3
+        text: Mapping Methodology
+      - type: fields
+        subject: 'Step 1: Rule Inventory'
+        entries:
+          - label: Action
+            value: List all active detection rules
+          - label: Data to collect
+            value:
+              - Rule name and unique ID
+              - Detection logic summary
+              - Data sources used
+              - True positive rate
+      - type: fields
+        subject: 'Step 2: Technique Tagging'
+        entries:
+          - label: Action
+            value: Map each rule to MITRE ATT&CK technique(s)
+          - label: Guidelines
+            value:
+              - Tag all techniques rule could detect (primary and secondary)
+              - Use most specific technique (sub-technique when applicable)
+              - Multiple tags acceptable for multi-purpose rules
+          - label: Tool support
+            value: MITRE ATT&CK Navigator for visualization
+      - type: heading
+        level: 4
+        text: 'Step 3: Fidelity Rating'
+      - type: definition
+        items:
+          - term: Action
+            description: Rate detection fidelity for each technique
+      - type: fields
+        subject: Rating Scale
+        entries:
+          - label: High
+            value: TP rate >70%, production-ready
+          - label: Medium
+            value: TP rate 40-70%, acceptable with tuning
+          - label: Low
+            value: TP rate <40%, requires improvement or retirement
+      - type: definition
+        items:
+          - term: Aggregation
+            description: If multiple rules cover technique, use highest fidelity
+      - type: fields
+        subject: 'Step 4: Gap Identification'
+        entries:
+          - label: Action
+            value: Identify techniques with no coverage
+          - label: Prioritization
+            value:
+              - Used by relevant adversary groups
+              - Observed in recent incidents
+              - Direct path to crown jewels
+          - label: Output
+            value: Prioritized list of coverage gaps
+      - type: heading
+        level: 3
+        text: Coverage Metrics
+      - type: heading
+        level: 4
+        text: Overall Coverage
+      - type: definition
+        items:
+          - term: Formula
+            description: Coverage % = (Techniques with Detection / Total ATT&CK Techniques) × 100
+      - type: fields
+        subject: Interpretation
+        entries:
+          - label: Excellent
+            value: '>80% coverage'
+          - label: Good
+            value: 60-80% coverage
+          - label: Developing
+            value: 40-60% coverage
+          - label: Insufficient
+            value: <40% coverage
+      - type: fields
+        subject: Tactic Coverage
+        entries:
+          - label: Rationale
+            value: Some tactics more critical than others
+          - label: High priority tactics
+            value:
+              - Initial Access (how attackers get in)
+              - Execution (code execution on systems)
+              - Persistence (maintaining access)
+              - Credential Access (stealing credentials)
+              - Lateral Movement (spreading through network)
+              - Exfiltration (stealing data)
+          - label: Goal
+            value: '>80% coverage for high-priority tactics, >60% overall'
+      - type: heading
+        level: 4
+        text: Weighted Coverage
+      - type: definition
+        items:
+          - term: Rationale
+            description: Not all techniques equally likely or impactful
+      - type: fields
+        subject: Weighting Factors
+        entries:
+          - label: Adversary usage
+            value: Techniques used by relevant threat groups (40%)
+          - label: Business impact
+            value: Techniques enabling access to crown jewels (30%)
+          - label: Detection fidelity
+            value: Quality of existing detection (20%)
+          - label: Compliance requirement
+            value: Mandated by regulation or audit (10%)
+      - type: definition
+        items:
+          - term: Formula
+            description: Weighted Coverage = Σ(Technique Weight × Detection Fidelity)
+  - heading: Coverage Reporting
+    id: coverage_reporting
+    blocks:
+      - type: fields
+        subject: Executive Dashboard
+        entries:
+          - label: Monthly metrics
+            value:
+              - Overall ATT&CK coverage percentage and trend
+              - High-priority tactic coverage
+              - New detections deployed this month
+              - Detection program health (TP rate, alert volume)
+          - label: Visualization
+            value:
+              - ATT&CK heatmap showing coverage by technique
+              - Coverage trend over time (quarterly snapshots)
+              - Comparison to industry benchmarks
+      - type: fields
+        subject: Technical Report
+        entries:
+          - label: Quarterly deep dive
+            value:
+              - Detailed coverage matrix by technique
+              - Gap analysis with prioritized backlog
+              - Detection performance metrics (per rule)
+              - Tuning activities and outcomes
+              - Validation results (red team exercises)
+  - heading: Continuous Improvement
+    id: continuous_improvement
+    blocks:
+      - type: fields
+        subject: Quarterly Assessment Cycle
+        entries:
+          - label: Q1
+            value: Baseline coverage assessment, identify top 10 gaps
+          - label: Q2
+            value: Deploy detections for Q1 gaps, reassess coverage
+          - label: Q3
+            value: Mid-year deep dive, update threat model, red team validation
+          - label: Q4
+            value: Year-end assessment, benchmark against industry, plan next year
+      - type: fields
+        subject: Coverage Goal Setting
+        entries:
+          - label: Year 1
+            value: Achieve 40% baseline coverage
+          - label: Year 2
+            value: Achieve 60% coverage, 70% for high-priority tactics
+          - label: Year 3
+            value: Achieve 80% coverage, 85% for high-priority tactics
+          - label: Year 4
+            value: Maintain >80%, focus on fidelity improvement

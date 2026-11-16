@@ -1,0 +1,397 @@
+# section_03_01_core_principles.yaml
+
+---
+title: Core Principles
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 1
+  section_code: '0301'
+  source_chapter: '4.1'
+  source_key: security_automation.core_principles
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Automate Toil Amplify Analysts
+    id: automate_toil_amplify_analysts
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: AUTO-P001
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Automate repetitive tasks, free analysts for high-value work
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Security analyst time is expensive and scarce. Spending analyst hours on repetitive tasks (copy-paste
+          enrichment, manual ticket creation, searching logs) is organizational waste. Automation handles
+          repetitive work at machine speed. Analysts focus on tasks requiring human judgment: complex
+          investigations, threat hunting, adversary analysis, security architecture.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Identify highest-volume repetitive tasks (alert enrichment, user lookups)
+          - Automate tasks requiring zero human judgment first
+          - Build automation incrementally (don't boil ocean)
+          - Measure time saved and reinvest in high-value activities
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Analyst time spent on repetitive tasks: Target <30%'
+          - 'Mean time to enrich alerts: Manual 15 min → Automated 30 sec'
+          - 'Alerts requiring human analysis: Target <50% (rest auto-closed)'
+          - 'Analyst satisfaction with workload: Track improvement'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Automating complex decision-making requiring human judgment
+          - Building automation for rare one-off tasks
+          - Automating before understanding manual process
+          - Replacing analysts instead of amplifying them
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          SOC receiving 500 alerts daily. Each alert requires 5 minutes manual enrichment (IP lookup,
+          user context, threat intel). 2,500 minutes = 42 analyst hours daily on enrichment alone. Automated
+          enrichment: 30 seconds per alert, zero analyst time. 42 hours redirected to threat hunting.
+          Result: Identified two advanced persistent threats previously undetected.
+  - heading: Code over Clicks
+    id: code_over_clicks
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: AUTO-P002
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Prefer code-based automation over GUI-driven workflows
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          GUI-based automation (visual workflow builders, no-code platforms) seems faster initially but
+          doesn't scale. Code-based automation is versioned, tested, reviewed, and maintainable. Click-based
+          workflows become impossible to manage at scale: no version control, no testing, no code review,
+          impossible to debug. Code is infrastructure. Clicks are technical debt.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Write automation as code (Python, PowerShell, Bash)
+          - Store in version control (Git)
+          - Peer review before production deployment
+          - Automated testing for automation scripts
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of automation in version control: Target 100%'
+          - 'Automation with test coverage: Target >80%'
+          - 'Automation peer review rate: Target 100%'
+          - 'Time to deploy automation change: Code <1 day, GUI 3-5 days'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Building complex workflows in GUI drag-and-drop tools
+          - No version control for automation
+          - Skipping testing because 'it's just automation'
+          - Single person understands how automation works
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Team built 50 response playbooks in SOAR GUI builder. Playbooks worked but became unmaintainable.
+          No version history. Changes broke other playbooks. Debugging required clicking through hundreds
+          of GUI elements. Migrated to code-based playbooks (Python, version controlled). Result: Deployment
+          time reduced 80%, bugs reduced 60%, team velocity increased 3x.
+  - heading: Idempotent and Reversible
+    id: idempotent_and_reversible
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: AUTO-P003
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Automation should be idempotent and reversible when possible
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Automation executes without human supervision. Bugs or unexpected conditions can cause automation
+          to run multiple times or against wrong targets. Idempotent automation produces same result regardless
+          of how many times executed. Reversible automation can undo actions if error detected. These
+          properties make automation safe to deploy and easy to debug.
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: Idempotent design
+            value:
+              - Check if action already completed before executing
+              - Use 'create or update' not 'create' (fails if exists)
+              - Design for safe re-execution
+          - label: Reversible design
+            value:
+              - Log all actions taken for potential rollback
+              - Implement undo/rollback functions
+              - Test rollback procedures regularly
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of automation that is idempotent: Target >90%'
+          - 'Automation failures requiring manual intervention: Track reduction'
+          - 'Successful automation rollbacks: Track to validate reversibility'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Automation that fails if run twice
+          - Destructive actions without confirmation or rollback
+          - No logging of actions taken
+          - Testing only happy path, not error conditions
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Automated response playbook blocks malicious IP at firewall. Bug causes playbook to execute
+          twice. Non-idempotent version: tries to create duplicate rule, fails. Idempotent version: checks
+          if rule exists, updates if present, creates if absent. Result: Automation reliable regardless
+          of execution count.
+  - heading: Fail Safe not Fail Deadly
+    id: fail_safe_not_fail_deadly
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: AUTO-P004
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Automation failures should fail safely, not catastrophically
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Automation executes at machine speed with machine scale. Bugs in automation can cause cascading
+          failures: blocking all users, deleting production data, disabling security controls. Design
+          automation to fail safely: prefer false negatives over false positives, implement circuit breakers,
+          require human approval for high-impact actions.
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: Fail safe defaults
+            value:
+              - On error, default to safe state (don't proceed with uncertainty)
+              - Alert humans on failure, don't continue blindly
+              - Implement rate limiting (max actions per hour)
+          - label: Circuit breakers
+            value:
+              - Pause automation if error rate exceeds threshold
+              - Require human intervention to resume
+              - Prevent single bug from causing mass impact
+          - label: Approval gates
+            value:
+              - High-impact actions require human approval
+              - Automation proposes action, human confirms
+              - Full automation only for low-risk, high-confidence scenarios
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Automation-caused incidents: Target = 0'
+          - 'Automation false positive impact: Track and minimize'
+          - 'Circuit breaker activations: Monitor for automation health'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Full automation of destructive actions without safeguards
+          - No rate limiting on automation execution
+          - Continuing automation despite repeated failures
+          - No kill switch for runaway automation
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Automated response playbook designed to disable compromised user accounts. Bug in detection
+          logic caused false positives. Playbook disabled 200 accounts in 10 minutes before circuit breaker
+          activated. Post-incident: Implemented rate limit (max 5 accounts/hour), approval required for
+          >3 accounts, confidence threshold increased. Similar bug now impacts maximum 5 accounts before
+          automatic pause.
+  - heading: Measure Everything
+    id: measure_everything
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: AUTO-P005
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Measure automation performance to demonstrate value and identify problems
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Cannot improve what you don't measure. Automation effectiveness must be quantified: time saved,
+          errors prevented, incidents resolved. Metrics demonstrate value to leadership (justify continued
+          investment) and identify underperforming automation (candidates for improvement or retirement).
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: Automation metrics
+            value:
+              - Execution count and success rate
+              - Time saved per execution
+              - False positive and false negative rates
+              - Mean time to execute (performance)
+          - label: Business metrics
+            value:
+              - Mean time to respond improvement
+              - Analyst time freed for high-value work
+              - Cost savings (analyst hours × hourly rate)
+              - Incidents prevented or mitigated
+      - type: heading
+        level: 3
+        text: Metrics Examples
+      - type: list
+        style: bullet
+        items:
+          - 'Alert enrichment automation: 500 executions/day, 98% success, 14 minutes saved per alert
+            = 117 hours saved/day'
+          - 'Automated response: 50 incidents/week auto-resolved, MTTR 5 minutes vs 2 hours manual = 97.5
+            hours saved/week'
+          - 'Cost savings: 200 hours/week saved × $100/hour = $1M annually'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Building automation without measuring impact
+          - Measuring only execution count, not business value
+          - No alerting on automation failures
+          - Assuming automation works without validation
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Organization built 20 automation playbooks but couldn't quantify value. Leadership questioned
+          investment. Implemented comprehensive metrics: execution count, time saved, success rate, business
+          impact. Discovered 5 playbooks provided 80% of value. Retired 10 low-value playbooks. Focused
+          investment on high-impact automation. Result: Demonstrated $2M annual cost savings, secured
+          additional automation budget.
+  - heading: Security as Code
+    id: security_as_code
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: AUTO-P006
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Security policies and controls should be codified and automated
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Manual security processes don't scale and are inconsistently applied. Security as code embeds
+          security controls in infrastructure and application code. Security policies become automated
+          checks in CI/CD. Infrastructure provisioning includes security controls by default. Result:
+          Security scales with business, consistent enforcement, shift-left detection of issues.
+      - type: fields
+        subject: Implementation
+        entries:
+          - label: Infrastructure as code security
+            value:
+              - Security checks in Terraform/CloudFormation templates
+              - Automated scanning of IaC for misconfigurations
+              - Security guardrails prevent insecure deployments
+          - label: Policy as code
+            value:
+              - Security policies defined in code (OPA, Cedar)
+              - Policies version controlled and tested
+              - Automated policy enforcement in pipelines
+          - label: Compliance as code
+            value:
+              - Compliance requirements as automated tests
+              - Continuous compliance validation
+              - Automated evidence collection
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of infrastructure deployed via IaC: Target >90%'
+          - 'Security issues detected pre-deployment: Target >80%'
+          - 'Mean time to deploy security control: Manual weeks → Automated hours'
+          - 'Compliance violations detected: Manual quarterly → Automated continuous'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Manual security reviews for every change (bottleneck)
+          - Security policies in Word documents not enforced
+          - Security as afterthought in deployment pipeline
+          - No automated security testing
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Organization required S3 buckets to be private. Manual review process: developers request bucket,
+          security reviews, approves, creates. 5-day cycle time. Implemented policy-as-code: Terraform
+          template with bucket encryption and private ACL enforced. Automated checks prevent public buckets.
+          Result: Developers self-service bucket creation in minutes, 100% compliance, zero security review
+          required for standard use case.

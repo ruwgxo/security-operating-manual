@@ -1,0 +1,310 @@
+# section_02_09_identity_lifecycle_management.yaml
+
+---
+title: Identity Lifecycle Management
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 9
+  section_code: 0209
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.identity_lifecycle_management
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations automating identity processes
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Identity lifecycle management automates user provisioning, modification, and deprovisioning
+          across organizational systems. Manual processes create security gaps and operational inefficiency.
+          This section addresses automation strategies, provisioning protocols, and lifecycle orchestration.
+  - heading: Joiner Mover Leaver
+    id: joiner_mover_leaver
+    blocks:
+      - type: heading
+        level: 3
+        text: Joiner New Hire
+      - type: definition
+        items:
+          - term: Trigger
+            description: HR system creates employee record
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: Identity creation
+            value:
+              - Create user account in directory (AD, Azure AD)
+              - Generate username following naming convention
+              - Assign employee ID as unique identifier
+              - Set default password (force change on first login)
+          - label: Group assignment
+            value:
+              - Add to department group (based on HR department field)
+              - Add to location group (based on office location)
+              - Add to employment type group (FTE, contractor, intern)
+          - label: Resource provisioning
+            value:
+              - Create email account
+              - Provision collaboration tools (Slack, Teams)
+              - Grant access to standard applications (SSO)
+              - Create home directory or file share
+          - label: Onboarding workflow
+            value:
+              - Send welcome email with account details
+              - Trigger hardware provisioning ticket
+              - Assign onboarding tasks (training, policy acceptance)
+              - Notify manager and IT
+      - type: definition
+        items:
+          - term: Timing
+            description: Complete within 4 hours of HR record creation
+      - type: heading
+        level: 3
+        text: Mover Role Change
+      - type: definition
+        items:
+          - term: Trigger
+            description: HR system updates job title, department, or manager
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: Group membership update
+            value:
+              - Remove from old department groups
+              - Add to new department groups
+              - Update manager relationships
+          - label: Access adjustment
+            value:
+              - Provision access for new role
+              - Flag old permissions for review (don't auto-remove)
+              - Trigger access review workflow for manager
+          - label: Notification
+            value:
+              - Notify old manager (reassign owned resources)
+              - Notify new manager (review access)
+              - Notify user (acknowledge role change)
+      - type: definition
+        items:
+          - term: Timing
+            description: Initiate within 24 hours of HR change
+      - type: heading
+        level: 3
+        text: Leaver Termination
+      - type: definition
+        items:
+          - term: Trigger
+            description: HR system sets termination date or disables employee
+      - type: fields
+        subject: Automated Actions
+        entries:
+          - label: Immediate actions
+            value:
+              - Disable user account (within 15 minutes)
+              - Revoke authentication sessions (force logout)
+              - Reset password (prevent re-authentication)
+              - Remove from all distribution lists
+              - Disable email forwarding
+          - label: Access revocation
+            value:
+              - Remove all group memberships
+              - Revoke SSO access to all applications
+              - Disable API keys and tokens
+              - Remove VPN access
+          - label: Data management
+            value:
+              - Convert mailbox to shared mailbox (manager access)
+              - Backup user files
+              - Transfer owned resources to manager
+              - Remove from collaboration tools
+          - label: Hardware recovery
+            value:
+              - Create ticket for device return
+              - Remote wipe mobile devices
+              - Disable hardware tokens
+          - label: Account deletion
+            value:
+              - Soft delete after 30 days (retention period)
+              - Hard delete after regulatory retention period (typically 7 years)
+      - type: definition
+        items:
+          - term: Timing
+            description: Critical - execute within 15 minutes of termination event
+  - heading: Provisioning Protocols
+    id: provisioning_protocols
+    blocks:
+      - type: heading
+        level: 3
+        text: SCIM
+      - type: definition
+        items:
+          - term: Name
+            description: System for Cross-domain Identity Management
+          - term: Purpose
+            description: Standard protocol for automated user provisioning
+      - type: fields
+        subject: Operations
+        entries:
+          - label: Create user
+            value: POST /Users
+          - label: Read user
+            value: GET /Users/{id}
+          - label: Update user
+            value: PUT /Users/{id} or PATCH /Users/{id}
+          - label: Delete user
+            value: DELETE /Users/{id}
+          - label: Search users
+            value: GET /Users?filter=...
+      - type: heading
+        level: 4
+        text: Benefits
+      - type: list
+        style: bullet
+        items:
+          - Vendor-neutral standard
+          - Supported by major SaaS applications
+          - Real-time provisioning
+          - Bi-directional sync possible
+      - type: heading
+        level: 4
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Identity provider acts as SCIM client
+          - Applications implement SCIM server API
+          - IDP pushes user changes to applications
+          - Applications provision users automatically
+      - type: fields
+        subject: LDAP Sync
+        entries:
+          - label: Method
+            value: Periodic synchronization from directory to applications
+          - label: Flow
+            value:
+              - Application periodically queries LDAP directory
+              - Application compares current users with directory
+              - Application creates/updates/deletes users to match directory
+          - label: Limitations
+            value:
+              - Batch process (not real-time)
+              - One-way sync (directory → application)
+              - Requires application LDAP integration
+      - type: fields
+        subject: API Based Provisioning
+        entries:
+          - label: Method
+            value: Custom integration using application APIs
+          - label: Approach
+            value:
+              - Identity platform calls application APIs
+              - Create/update/delete users via API
+              - Custom attribute mapping
+          - label: Use cases
+            value:
+              - Applications without SCIM support
+              - Complex provisioning logic
+              - Legacy systems with proprietary APIs
+          - label: Challenges
+            value:
+              - Requires development and maintenance
+              - API changes can break integration
+              - Rate limiting considerations
+  - heading: Provisioning Architecture
+    id: provisioning_architecture
+    blocks:
+      - type: heading
+        level: 3
+        text: Identity Governance Platform
+      - type: definition
+        items:
+          - term: Purpose
+            description: Orchestrate provisioning across all applications
+      - type: fields
+        subject: Capabilities
+        entries:
+          - label: Workflow engine
+            value:
+              - Define provisioning workflows
+              - Approval processes
+              - Exception handling
+          - label: Connector library
+            value:
+              - Pre-built integrations to common applications
+              - SCIM, LDAP, API connectors
+              - Custom connector development
+          - label: Reconciliation
+            value:
+              - Compare actual access with intended access
+              - Identify orphaned accounts
+              - Detect unauthorized changes
+          - label: Reporting analytics
+            value:
+              - Provisioning success rates
+              - Time to provision
+              - Access analytics
+              - Compliance reporting
+      - type: heading
+        level: 4
+        text: Vendors
+      - type: list
+        style: bullet
+        items:
+          - SailPoint IdentityIQ
+          - Okta Identity Governance
+          - Microsoft Identity Manager
+          - Saviynt
+      - type: heading
+        level: 3
+        text: Provisioning Challenges
+      - type: fields
+        subject: Application Sprawl
+        entries:
+          - label: Problem
+            value: Hundreds of applications, varying integration maturity
+          - label: Mitigation
+            value:
+              - Prioritize by user count and criticality
+              - Retire redundant applications
+              - Consolidate overlapping tools
+      - type: fields
+        subject: Attribute Mapping
+        entries:
+          - label: Problem
+            value: Different applications require different attributes
+          - label: Mitigation
+            value:
+              - Maintain attribute mapping dictionary
+              - Use transformation rules
+              - Validate mappings before deployment
+      - type: fields
+        subject: Timing Dependencies
+        entries:
+          - label: Problem
+            value: Application B requires account in Application A first
+          - label: Mitigation
+            value:
+              - Define provisioning order
+              - Implement dependency checks
+              - Retry logic for failures
+      - type: fields
+        subject: Partial Failures
+        entries:
+          - label: Problem
+            value: Provisioning succeeds in 5 apps, fails in 1
+          - label: Mitigation
+            value:
+              - Rollback or compensating actions
+              - Alert on partial failures
+              - Manual remediation queue

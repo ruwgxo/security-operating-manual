@@ -1,0 +1,278 @@
+# section_05_10_advanced_techniques.yaml
+
+---
+title: Advanced Techniques
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 5
+  section: 10
+  section_code: '0510'
+  source_chapter: '4.4'
+  source_key: threat_intelligence_operations.advanced_techniques
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Advanced intelligence techniques for mature programs: machine learning, deception-based intelligence,
+          custom collection, and strategic intelligence operations.
+  - heading: Machine Learning in Threat Intelligence
+    id: machine_learning_in_threat_intelligence
+    blocks:
+      - type: heading
+        level: 3
+        text: ML Use Cases
+      - type: fields
+        subject: Automated IOC Clustering
+        entries:
+          - label: Problem
+            value: Manual clustering of 10K+ IOCs is impossible
+          - label: ML approach
+            value: Unsupervised learning (clustering algorithms)
+          - label: Algorithms
+            value:
+              - K-means clustering
+              - DBSCAN (density-based clustering)
+              - Hierarchical clustering
+          - label: Features
+            value:
+              - IOC metadata (ASN, hosting provider, registration date)
+              - Temporal patterns (when IOCs observed)
+              - Behavioral patterns (malware actions)
+          - label: Output
+            value: Clusters of related IOCs (likely same campaign/adversary)
+      - type: fields
+        subject: Malware Family Classification
+        entries:
+          - label: Problem
+            value: Identify malware family from behavioral analysis
+          - label: ML approach
+            value: Supervised learning (classification)
+          - label: Algorithms
+            value:
+              - Random Forest
+              - Gradient Boosting
+              - Neural Networks
+          - label: Features
+            value:
+              - API calls
+              - File operations
+              - Network connections
+              - Registry modifications
+          - label: Training data
+            value: Labeled malware samples (VirusTotal, malware repos)
+          - label: Output
+            value: Malware family prediction with confidence score
+      - type: fields
+        subject: Adversary Attribution Assistance
+        entries:
+          - label: Problem
+            value: Attribution requires analyzing hundreds of indicators
+          - label: ML approach
+            value: Supervised learning on known adversary campaigns
+          - label: Features
+            value:
+              - TTPs (MITRE ATT&CK techniques)
+              - Infrastructure patterns
+              - Tools used
+              - Targeting (industry, geography)
+              - Temporal patterns
+          - label: Output
+            value: Likely adversary attribution with confidence score
+          - label: Caveat
+            value: ML assists, not replaces, human attribution judgment
+      - type: fields
+        subject: Phishing Detection
+        entries:
+          - label: Problem
+            value: Identify phishing emails from intelligence feeds
+          - label: ML approach
+            value: Natural language processing (NLP) + classification
+          - label: Features
+            value:
+              - Email subject and body text
+              - Sender patterns
+              - Link and attachment analysis
+              - Social engineering themes
+          - label: Output
+            value: Phishing probability score
+      - type: fields
+        subject: ML Implementation Considerations
+        entries:
+          - label: Data requirements
+            value:
+              - Significant labeled training data (thousands of samples)
+              - Clean, normalized data
+              - Ongoing data collection for model updates
+          - label: Model maintenance
+            value:
+              - Regular retraining (adversary tactics evolve)
+              - Performance monitoring (accuracy degradation)
+              - Explainability (understand why model made prediction)
+          - label: Limitations
+            value:
+              - ML is assistant, not replacement for analysts
+              - False positives/negatives still occur
+              - Adversarial ML (attackers can poison training data)
+  - heading: Deception Based Intelligence
+    id: deception_based_intelligence
+    blocks:
+      - type: heading
+        level: 3
+        text: Honeypots for Intelligence
+      - type: fields
+        subject: Deployment Strategy
+        entries:
+          - label: External honeypots
+            value:
+              - Internet-facing honeypots (attract broad attacks)
+              - Simulate vulnerable services (SSH, RDP, web apps)
+              - 'Purpose: Collect adversary tools, TTPs, infrastructure'
+          - label: Internal honeypots
+            value:
+              - Inside network to detect lateral movement
+              - Simulate high-value targets (database servers, file shares)
+              - 'Purpose: Early warning of breach'
+      - type: fields
+        subject: Intelligence Collection
+        entries:
+          - label: Artifacts collected
+            value:
+              - Attacker tools and malware
+              - Command-and-control infrastructure
+              - Attack patterns and automation
+              - Adversary mistakes and attribution clues
+          - label: Analysis
+            value:
+              - Malware reverse engineering
+              - Infrastructure pivoting
+              - TTP documentation
+      - type: fields
+        subject: Honeytokens
+        entries:
+          - label: Concept
+            value: Fake credentials, documents, or data with tracking
+          - label: Examples
+            value:
+              - Fake AWS keys that alert when used
+              - Fake documents with embedded tracking pixels
+              - Decoy database records
+          - label: Intelligence value
+            value:
+              - Early breach detection (honeytoken accessed)
+              - Adversary objective identification (what they searched for)
+              - Infrastructure discovery (where honeytoken sent)
+  - heading: Custom Collection Operations
+    id: custom_collection_operations
+    blocks:
+      - type: heading
+        level: 3
+        text: Open Source Research
+      - type: fields
+        subject: Social Media Monitoring
+        entries:
+          - label: Platforms
+            value: Twitter, LinkedIn, Telegram, Discord
+          - label: Targets
+            value:
+              - Adversary accounts and groups
+              - Security researcher accounts
+              - Vendor threat research teams
+          - label: Tools
+            value: Social media monitoring platforms, custom scrapers
+          - label: Intelligence value
+            value:
+              - Real-time adversary activity
+              - Zero-day disclosures
+              - Campaign announcements
+      - type: fields
+        subject: Dark Web Monitoring
+        entries:
+          - label: Operational security
+            value:
+              - Use VPN and Tor for anonymity
+              - Dedicated systems (not corporate network)
+              - Don't interact (passive monitoring only)
+          - label: Targets
+            value:
+              - Ransomware leak sites (victim announcements)
+              - Exploit marketplaces
+              - Credential dump sites
+              - Hacking forums
+          - label: Intelligence value
+            value:
+              - Breach early warning (credentials leaked)
+              - Zero-day exploit availability
+              - Adversary discussions and planning
+      - type: heading
+        level: 3
+        text: Adversary Infrastructure Tracking
+      - type: fields
+        subject: Passive DNS Monitoring
+        entries:
+          - label: Concept
+            value: Track historical DNS resolution data
+          - label: Tools
+            value: PassiveTotal, SecurityTrails, Farsight DNSDB
+          - label: Use cases
+            value:
+              - Discover additional adversary domains (same IP)
+              - Track infrastructure changes over time
+              - Identify domain generation algorithm patterns
+      - type: fields
+        subject: SSL Certificate Tracking
+        entries:
+          - label: Concept
+            value: Track SSL certificates for adversary infrastructure
+          - label: Tools
+            value: Certificate Transparency logs, Censys, crt.sh
+          - label: Use cases
+            value:
+              - Discover related domains (same certificate)
+              - Identify infrastructure patterns (certificate issuer, serial)
+              - Track adversary operational security practices
+  - heading: Strategic Intelligence Operations
+    id: strategic_intelligence_operations
+    blocks:
+      - type: fields
+        subject: Geopolitical Threat Analysis
+        entries:
+          - label: Concept
+            value: Map cyber threats to geopolitical context
+          - label: Sources
+            value:
+              - News media and geopolitical analysis
+              - Government threat assessments
+              - Think tank reports
+          - label: Analysis
+            value:
+              - Correlate nation-state cyber activity with political events
+              - Predict cyber escalation during conflicts
+              - Assess how geopolitical tensions affect organizational risk
+          - label: Deliverable
+            value: Strategic risk assessment for executives
+      - type: fields
+        subject: Industry Wide Threat Analysis
+        entries:
+          - label: Concept
+            value: Understand threats facing entire industry, not just organization
+          - label: Sources
+            value:
+              - ISAC intelligence
+              - Peer organization sharing
+              - Vendor industry reports
+              - Regulatory bulletins
+          - label: Analysis
+            value:
+              - Industry threat trends
+              - Comparative risk assessment (organization vs industry)
+              - Emerging threats on horizon
+          - label: Deliverable
+            value: Industry threat landscape report

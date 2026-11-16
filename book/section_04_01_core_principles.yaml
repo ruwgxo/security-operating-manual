@@ -1,0 +1,383 @@
+# section_04_01_core_principles.yaml
+
+---
+title: Core Principles
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 1
+  section_code: '0401'
+  source_chapter: '4.3'
+  source_key: incident_response.core_principles
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Preparation Prevents Panic
+    id: preparation_prevents_panic
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IR-P001
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Preparation and planning before incidents prevents chaotic response during incidents
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          During active incident, adrenaline flows, stakeholders panic, pressure mounts. Teams without
+          preparation make reactive decisions that worsen situation: destroying evidence, containing wrong
+          systems, communicating conflicting information. Preparation provides playbooks, decision frameworks,
+          communication templates, and practiced procedures that enable calm, effective response under
+          pressure.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Document incident response playbooks before incidents occur
+          - Maintain updated contact lists and escalation paths
+          - Pre-stage forensic tools and evidence collection procedures
+          - Establish legal and PR relationships before needing them
+          - Conduct tabletop exercises to practice decision-making
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'IR playbook coverage: Target >10 common scenarios'
+          - 'Contact list accuracy: Validated quarterly'
+          - 'Time to assemble IR team: Target <30 minutes'
+          - 'Tabletop exercise frequency: Minimum quarterly'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - First reading IR playbook during active incident
+          - Searching for legal counsel contact while ransomware spreading
+          - Debating evidence collection procedures during breach
+          - Learning forensic tools for first time during investigation
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Company suffered ransomware attack Friday evening. No IR plan documented. Spent 2 hours finding
+          on-call contacts. Another hour debating whether to pay ransom. Another hour arguing about whether
+          to notify customers. By Monday, ransomware encrypted 80% of systems. Post-incident: Documented
+          playbooks, conducted tabletop exercises. Next incident: Team assembled in 20 minutes, containment
+          in 2 hours, business impact minimized by 90%.
+  - heading: Speed over Perfection
+    id: speed_over_perfection
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IR-P002
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Fast containment with incomplete information beats slow containment with perfect
+              information
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Every minute attacker remains in environment, damage grows exponentially. Ransomware encrypts
+          more systems. Data exfiltration continues. Lateral movement spreads. Waiting for complete investigation
+          before containment allows attacker to achieve objectives. Effective IR prioritizes rapid containment
+          to stop bleeding, then thorough investigation to understand what happened.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Containment within 1 hour of detection (target)
+          - Isolate suspected compromised systems immediately
+          - Block confirmed malicious infrastructure
+          - Disable compromised accounts
+          - Deep forensics happens after containment
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Mean time to contain: Target <2 hours'
+          - 'Percentage of incidents contained within 4 hours: Target >80%'
+          - 'Business impact reduction through fast containment: Track'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Waiting for complete forensics before containment
+          - Analysis paralysis during active breach
+          - Debating containment approach while attacker operates
+          - Requiring executive approval for emergency containment
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Detection team identified potential credential compromise. Initial investigation incomplete
+          - unsure of scope. Traditional approach: Complete investigation (8 hours), then contain. New
+          approach: Immediate containment (disable account, revoke sessions) within 30 minutes, investigate
+          after containment. Result: Attacker locked out before lateral movement, zero business impact.
+          Investigation revealed would have accessed financial systems if delay occurred.
+  - heading: Evidence Preservation
+    id: evidence_preservation
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IR-P003
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Preserve evidence that enables prosecution, attribution, and learning
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Evidence determines whether organization can prosecute attackers, prove compliance with notification
+          requirements, learn from incident, and improve defenses. Poor evidence handling destroys forensic
+          artifacts, making investigation impossible. Evidence preservation must balance speed (containment)
+          with forensic soundness (investigation).
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Memory dumps before powering off systems
+          - Disk images before remediation
+          - Log preservation before rotation
+          - Chain of custody documentation
+          - Hash verification of evidence
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of incidents with complete evidence: Target >90%'
+          - 'Evidence collection time: Target <2 hours'
+          - 'Chain of custody documentation: 100%'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Powering off systems before memory capture
+          - Reimaging systems before forensic analysis
+          - Allowing evidence tampering through poor custody
+          - Collecting evidence without documentation
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Ransomware detected. IT immediately reimaged infected systems to restore business operations.
+          No forensic images collected. Investigation impossible: Cannot determine initial access vector,
+          cannot identify all compromised systems, cannot verify complete eradication. Post-incident:
+          Documented evidence collection procedures. Next incident: Forensic images collected before remediation.
+          Complete investigation identified APT, improved defenses, prevented reinfection.
+  - heading: Communication Clarity
+    id: communication_clarity
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IR-P004
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Clear, consistent communication prevents stakeholder panic and conflicting actions
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Incident response involves multiple stakeholders: security team, IT operations, executives,
+          legal, PR, customers, regulators. Without clear communication, stakeholders receive conflicting
+          information, make independent decisions, and create chaos. Single source of truth, defined communication
+          cadence, and role-specific messaging prevents confusion and enables coordinated response.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Single incident commander coordinates all communication
+          - Regular stakeholder updates (hourly during active incident)
+          - Separate internal and external communication tracks
+          - Pre-approved messaging templates for common scenarios
+          - War room (physical or virtual) for coordination
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Stakeholder satisfaction with communication: Survey post-incident'
+          - 'Communication frequency: Minimum hourly updates during active response'
+          - 'Conflicting information incidents: Target = 0'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Multiple people providing different incident updates
+          - Executives learning about incident from news media
+          - No communication for hours during active incident
+          - Technical jargon in external customer communication
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Data breach detected. Security team investigating, IT operations remediating, legal assessing
+          notification requirements, PR drafting customer communication. No coordination: Security said
+          breach contained, IT said ongoing, legal said notify immediately, PR said wait for facts. Customer
+          received 3 different emails with conflicting information. Post-incident: Established incident
+          commander role, single communication source, regular stakeholder syncs. Next incident: Coordinated
+          response, single consistent message, customer trust maintained.
+  - heading: Learn from Every Incident
+    id: learn_from_every_incident
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IR-P005
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Every incident reveals security gaps - systematic learning prevents recurrence
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Incidents are expensive security education. Organizations that don't learn from incidents repeat
+          same mistakes. Post-incident review identifies root causes, detection gaps, process failures,
+          and improvement opportunities. Systematic learning transforms incidents from failures into security
+          program strengthening opportunities.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Mandatory post-incident review within 1 week
+          - Blameless culture (focus on process, not people)
+          - Document findings and action items
+          - Track remediation completion
+          - Share lessons learned across organization
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Post-incident reviews completed: Target 100%'
+          - 'Action items from reviews completed: Target >90%'
+          - 'Incident recurrence rate: Track reduction'
+          - 'Time to implement improvements: Target <30 days'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Skipping post-incident review due to time pressure
+          - Blaming individuals instead of improving processes
+          - Identifying improvements but never implementing
+          - Not sharing lessons learned across teams
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Phishing incident led to credential compromise. Post-incident review identified: (1) Users not
+          trained on phishing, (2) No MFA on compromised system, (3) Lateral movement detection gap. Without
+          review, repeat incident likely. With review: Deployed MFA, improved phishing training, added
+          lateral movement detection. Similar attack 3 months later: Detected immediately, zero impact.
+          Learning prevented second successful compromise.
+  - heading: Practice Makes Perfect
+    id: practice_makes_perfect
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IR-P006
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Regular practice through exercises builds muscle memory and reveals gaps
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Incident response under pressure requires practiced procedures and clear decision-making. Teams
+          that only respond during real incidents lack muscle memory, miss steps, and make mistakes. Tabletop
+          exercises and simulations build team coordination, reveal playbook gaps, and develop decision-making
+          confidence without business impact of real incident.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Quarterly tabletop exercises for IR team
+          - Annual full-scale simulation exercises
+          - Rotate scenarios (ransomware, data breach, insider threat, supply chain)
+          - Include executives and stakeholders in exercises
+          - Update playbooks based on exercise findings
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Exercise frequency: Minimum quarterly'
+          - 'Participant coverage: 100% of IR team annually'
+          - 'Playbook gaps identified per exercise: Track and remediate'
+          - 'Decision-making speed improvement: Measure across exercises'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Never practicing incident response until real incident
+          - Same scenario every exercise (no variety)
+          - Excluding executives from exercises
+          - Not updating procedures based on exercise learnings
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          IR team documented playbooks but never practiced. Real ransomware incident: Confusion about
+          roles, missed containment steps, poor stakeholder communication. Post-incident: Implemented
+          quarterly tabletop exercises. Next incident: Team executed playbook smoothly, contained in 90
+          minutes, clear communication. Exercise muscle memory prevented chaos during real crisis.

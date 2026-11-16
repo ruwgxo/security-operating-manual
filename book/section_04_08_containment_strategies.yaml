@@ -1,0 +1,183 @@
+# section_04_08_containment_strategies.yaml
+
+---
+title: Containment Strategies
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 8
+  section_code: 0408
+  source_chapter: '4.3'
+  source_key: incident_response.containment_strategies
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 1+ organizations executing containment
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Containment limits damage and prevents attacker objective achievement. This section addresses
+          containment decision-making, techniques by threat type, and balancing containment speed with
+          business continuity.
+  - heading: Containment Decision Framework
+    id: containment_decision_framework
+    blocks:
+      - type: heading
+        level: 3
+        text: Factors to Consider
+      - type: heading
+        level: 4
+        text: Business Impact
+      - type: definition
+        items:
+          - term: Question
+            description: What is cost of containment action vs cost of continued compromise?
+      - type: fields
+        subject: Examples
+        entries:
+          - label: Low impact
+            value: Isolate single non-critical workstation → Minimal business impact
+          - label: High impact
+            value: Shut down production database → Significant business impact
+      - type: definition
+        items:
+          - term: Approach
+            description: Choose least disruptive containment that stops attack
+      - type: heading
+        level: 4
+        text: Evidence Preservation
+      - type: definition
+        items:
+          - term: Question
+            description: Does containment destroy forensic evidence?
+      - type: fields
+        subject: Examples
+        entries:
+          - label: Preserves
+            value: Network isolation maintains system state
+          - label: Destroys
+            value: Powering off loses memory contents
+      - type: definition
+        items:
+          - term: Approach
+            description: Collect evidence before destructive containment
+      - type: heading
+        level: 4
+        text: Adversary Awareness
+      - type: definition
+        items:
+          - term: Question
+            description: Will containment alert adversary to detection?
+      - type: fields
+        subject: Examples
+        entries:
+          - label: Overt
+            value: Disabling account alerts adversary immediately
+          - label: Covert
+            value: Passive monitoring doesn't alert adversary
+      - type: definition
+        items:
+          - term: Approach
+            description: For APT, consider monitoring before containment. For ransomware, contain immediately
+      - type: heading
+        level: 4
+        text: Reinfection Risk
+      - type: definition
+        items:
+          - term: Question
+            description: Will adversary regain access after containment?
+      - type: fields
+        subject: Examples
+        entries:
+          - label: High risk
+            value: Containing without removing persistence mechanisms
+          - label: Low risk
+            value: Simultaneous containment and eradication
+      - type: definition
+        items:
+          - term: Approach
+            description: Ensure thorough eradication before recovery
+  - heading: Containment Techniques by Threat
+    id: containment_techniques_by_threat
+    blocks:
+      - type: fields
+        subject: Malware Containment
+        entries:
+          - label: Network isolation
+            value:
+              - Disconnect from network (physical or VLAN isolation)
+              - Prevents C2 communication and lateral spread
+              - Maintains system state for forensics
+          - label: Process termination
+            value:
+              - Kill malicious process
+              - Rapid but doesn't prevent restart if persistence exists
+          - label: File quarantine
+            value:
+              - Move malicious files to quarantine location
+              - Prevents execution while preserving for analysis
+          - label: Endpoint isolation
+            value:
+              - EDR-based network isolation (remote command)
+              - Allows continued forensic collection while isolated
+      - type: fields
+        subject: Account Compromise Containment
+        entries:
+          - label: Immediate actions
+            value:
+              - Disable compromised account
+              - Revoke all active sessions and tokens
+              - Reset password
+          - label: Investigation actions
+            value:
+              - Review account activity during compromise period
+              - Identify data or systems accessed
+              - Check for persistence (API keys, SSH keys, backdoor accounts)
+          - label: Recovery
+            value:
+              - Force MFA re-enrollment
+              - Monitor account for 48 hours post-recovery
+      - type: fields
+        subject: Ransomware Containment
+        entries:
+          - label: Speed critical
+            value: Every minute allows more encryption
+          - label: Actions
+            value:
+              - Immediately isolate infected systems (do not wait for investigation)
+              - Disable compromised accounts used for lateral movement
+              - Shut down non-critical systems to prevent spread
+              - Block C2 domains and IPs if identified
+          - label: Considerations
+            value:
+              - Balance containment speed with evidence collection
+              - Prioritize stopping spread over forensics
+              - Accept some forensic data loss in service of speed
+      - type: fields
+        subject: Data Breach Containment
+        entries:
+          - label: Stop exfiltration
+            value:
+              - Block outbound connections to attacker infrastructure
+              - Rate-limit or block compromised account data access
+              - Disable bulk export capabilities if available
+          - label: Access revocation
+            value:
+              - Revoke attacker access to data repositories
+              - Change database credentials
+              - Disable vulnerable applications
+          - label: Monitoring
+            value:
+              - Enhanced logging and alerting on data access
+              - Monitor for re-compromise attempts

@@ -1,0 +1,198 @@
+# section_04_05_incident_classification.yaml
+
+---
+title: Incident Classification
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 5
+  section_code: '0405'
+  source_chapter: '4.3'
+  source_key: incident_response.incident_classification
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          All levels - consistent incident categorization
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Incident classification determines response urgency, escalation requirements, and resource allocation.
+          Consistent classification enables appropriate response and meaningful metrics. This section
+          addresses severity levels, impact assessment, and classification decision trees.
+  - heading: Severity Levels
+    id: severity_levels
+    blocks:
+      - type: fields
+        subject: P1 Critical
+        entries:
+          - label: Definition
+            value: Immediate threat to business operations or catastrophic data breach
+          - label: Examples
+            value:
+              - Active ransomware encrypting production systems
+              - Mass data exfiltration in progress
+              - Critical infrastructure compromise
+              - Public-facing breach (website defacement serving malware)
+          - label: Response SLA
+            value: Immediate response (<15 minutes)
+          - label: Escalation
+            value: Incident commander, CISO, executive team
+          - label: Communication
+            value: Hourly updates to executives
+          - label: Resources
+            value: All hands on deck, external IR if needed
+      - type: fields
+        subject: P2 High
+        entries:
+          - label: Definition
+            value: Significant security compromise requiring rapid response
+          - label: Examples
+            value:
+              - Confirmed malware on multiple systems
+              - Compromised privileged account
+              - Data breach affecting <10K records
+              - Successful phishing with credential theft
+          - label: Response SLA
+            value: Response within 1 hour
+          - label: Escalation
+            value: Incident commander, security management
+          - label: Communication
+            value: Twice-daily updates to management
+          - label: Resources
+            value: Core IR team, may engage external support
+      - type: fields
+        subject: P3 Medium
+        entries:
+          - label: Definition
+            value: Security incident requiring investigation but no immediate threat
+          - label: Examples
+            value:
+              - Single system malware infection
+              - Non-privileged account compromise
+              - Scanning or probing activity
+              - Policy violation with security implications
+          - label: Response SLA
+            value: Response within 4 hours
+          - label: Escalation
+            value: IR team lead
+          - label: Communication
+            value: Daily updates if incident extends beyond 24 hours
+          - label: Resources
+            value: On-call responder, escalate if needed
+      - type: fields
+        subject: P4 Low
+        entries:
+          - label: Definition
+            value: Security event requiring monitoring but minimal response
+          - label: Examples
+            value:
+              - False positive security alert requiring documentation
+              - Unsuccessful attack attempts
+              - Minor policy violations
+              - Security information requests
+          - label: Response SLA
+            value: Response within 24 hours
+          - label: Escalation
+            value: None required
+          - label: Communication
+            value: Documented in ticket, no active updates
+          - label: Resources
+            value: Handle during normal business hours
+  - heading: Impact Assessment Framework
+    id: impact_assessment_framework
+    blocks:
+      - type: heading
+        level: 3
+        text: Dimensions of Impact
+      - type: fields
+        subject: Confidentiality Impact
+        entries:
+          - label: None
+            value: No data accessed or exfiltrated
+          - label: Low
+            value: Non-sensitive data accessed
+          - label: Medium
+            value: Sensitive data accessed but not exfiltrated
+          - label: High
+            value: Sensitive data exfiltrated, <10K records
+          - label: Critical
+            value: Massive data exfiltration, >10K records or highly sensitive data
+      - type: fields
+        subject: Integrity Impact
+        entries:
+          - label: None
+            value: No data or systems modified
+          - label: Low
+            value: Non-critical systems or data modified
+          - label: Medium
+            value: Business-critical systems modified, integrity questionable
+          - label: High
+            value: Financial or operational data modified
+          - label: Critical
+            value: Widespread data corruption or destruction
+      - type: fields
+        subject: Availability Impact
+        entries:
+          - label: None
+            value: No service disruption
+          - label: Low
+            value: Non-critical service degradation
+          - label: Medium
+            value: Critical service degraded, business continues
+          - label: High
+            value: Critical service down, significant business impact
+          - label: Critical
+            value: Complete service outage, business halted
+      - type: fields
+        subject: Business Impact
+        entries:
+          - label: Financial
+            value: Revenue loss, recovery costs, fines
+          - label: Operational
+            value: Productivity loss, service disruption
+          - label: Reputational
+            value: Customer trust, brand damage, media coverage
+          - label: Regulatory
+            value: Notification requirements, fines, sanctions
+      - type: heading
+        level: 3
+        text: Classification Decision Tree
+      - type: fields
+        subject: Is business-critical service currently down?
+        entries:
+          - label: If yes
+            value: P1 Critical
+          - label: If no
+            value: Continue to question 2
+      - type: fields
+        subject: Is active data exfiltration or encryption occurring?
+        entries:
+          - label: If yes
+            value: P1 Critical
+          - label: If no
+            value: Continue to question 3
+      - type: fields
+        subject: Are multiple systems compromised or is privileged account compromised?
+        entries:
+          - label: If yes
+            value: P2 High
+          - label: If no
+            value: Continue to question 4
+      - type: fields
+        subject: Is single system compromised or data accessed without exfiltration?
+        entries:
+          - label: If yes
+            value: P3 Medium
+          - label: If no
+            value: P4 Low

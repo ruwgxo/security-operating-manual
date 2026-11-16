@@ -1,0 +1,1097 @@
+# section_04_03_building_from_zero.yaml
+
+---
+title: Building from Zero
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 3
+  section_code: '0403'
+  source_chapter: '4.3'
+  source_key: incident_response.building_from_zero
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Maturity Level 0-1 organizations building IR capability
+  - heading: Scenario
+    id: scenario
+    blocks:
+      - type: prose
+        text: >-
+          Starting IR program from scratch: no documented procedures, no designated team, incidents discovered
+          too late. This section provides 12-month roadmap from reactive chaos to practiced incident response
+          capability with documented playbooks and regular exercises.
+  - heading: Prerequisites
+    id: prerequisites
+    blocks:
+      - type: definition
+        items:
+          - term: Budget
+            description: Estimated $100K-$300K first year (tools, training, external IR retainer)
+          - term: Team
+            description: Minimum 2-3 people dedicated to IR (can be part-time initially)
+          - term: Executive support
+            description: CISO and CIO sponsorship for IR investment
+          - term: Legal relationship
+            description: Establish relationship with external legal counsel
+  - heading: 'Phase 1: Foundation'
+    id: phase_1_foundation
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 1-3
+          - term: Objective
+            description: Establish basic IR capability and documentation
+          - term: Maturity progression
+            description: Level 0 → Level 1
+      - type: heading
+        level: 3
+        text: 'Month 1: Team and Roles'
+      - type: definition
+        items:
+          - term: Goal
+            description: Designate IR team and define roles
+      - type: heading
+        level: 4
+        text: Core Roles
+      - type: fields
+        subject: Incident Commander
+        entries:
+          - label: Responsibilities
+            value:
+              - Overall incident coordination and decision-making
+              - Stakeholder communication and escalation
+              - Resource allocation and prioritization
+          - label: Skills required
+            value:
+              - Leadership and decision-making under pressure
+              - Broad technical understanding
+              - Strong communication skills
+          - label: Time commitment
+            value: On-call rotation, 100% during active incident
+      - type: fields
+        subject: Technical Lead
+        entries:
+          - label: Responsibilities
+            value:
+              - Technical investigation and forensics
+              - Containment strategy and execution
+              - Root cause analysis
+          - label: Skills required
+            value:
+              - Deep technical expertise (systems, networks, security)
+              - Forensics and investigation skills
+              - Scripting and automation
+          - label: Time commitment
+            value: On-call rotation, 100% during active incident
+      - type: fields
+        subject: Communications Lead
+        entries:
+          - label: Responsibilities
+            value:
+              - Internal and external communication
+              - Stakeholder updates and messaging
+              - Documentation and reporting
+          - label: Skills required
+            value:
+              - Excellent written and verbal communication
+              - Stakeholder management
+              - Crisis communication experience
+          - label: Time commitment
+            value: On-call rotation, activated during incidents
+      - type: fields
+        subject: Legal Liaison
+        entries:
+          - label: Responsibilities
+            value:
+              - Legal implications assessment
+              - Regulatory notification requirements
+              - Evidence preservation oversight
+          - label: Skills required
+            value:
+              - Legal or compliance background
+              - Understanding of breach notification laws
+          - label: Time commitment
+            value: Consulted as needed during incidents
+      - type: heading
+        level: 4
+        text: Team Size by Org
+      - type: fields
+        subject: Small 100 Employees
+        entries:
+          - label: Core team
+            value: 2-3 people (multi-role)
+          - label: Extended team
+            value: IT operations, external IR retainer
+      - type: fields
+        subject: Medium 1000 Employees
+        entries:
+          - label: Core team
+            value: 5-7 people (dedicated roles)
+          - label: Extended team
+            value: IT, legal, PR, external forensics
+      - type: fields
+        subject: Large 10000 Plus
+        entries:
+          - label: Core team
+            value: 10-15 people (multiple per role)
+          - label: Extended team
+            value: Full CSIRT with 24/7 coverage
+      - type: fields
+        subject: On Call Rotation
+        entries:
+          - label: Structure
+            value: Primary and backup responder for each role
+          - label: Schedule
+            value: Weekly rotation
+          - label: Escalation
+            value: Backup contacted if primary doesn't respond in 15 minutes
+          - label: Compensation
+            value: On-call pay or comp time
+      - type: heading
+        level: 3
+        text: 'Month 2: IR Plan Documentation'
+      - type: definition
+        items:
+          - term: Goal
+            description: Document comprehensive incident response plan
+      - type: fields
+        subject: IR Plan Structure
+        entries:
+          - label: Section 1 overview
+            value:
+              - Purpose and scope of IR plan
+              - Definitions (what constitutes an incident)
+              - IR objectives and success criteria
+          - label: Section 2 team and roles
+            value:
+              - IR team members and contact information
+              - Role descriptions and responsibilities
+              - Escalation paths and decision authority
+          - label: Section 3 incident classification
+            value:
+              - Severity levels (P1-P4) with definitions
+              - Response SLAs per severity
+              - Escalation requirements per severity
+          - label: Section 4 response phases
+            value:
+              - Detection and analysis
+              - Containment, eradication, recovery
+              - Post-incident activities
+          - label: Section 5 communication
+            value:
+              - Internal communication procedures
+              - External communication procedures (customers, media, regulators)
+              - Communication templates
+          - label: Section 6 tools and resources
+            value:
+              - Forensic tools and access
+              - External resources (legal, forensics, PR)
+              - Log sources and data retention
+          - label: Section 7 legal and regulatory
+            value:
+              - Breach notification requirements by jurisdiction
+              - Evidence preservation procedures
+              - Legal consultation triggers
+      - type: fields
+        subject: IR Plan Format
+        entries:
+          - label: Primary
+            value: Comprehensive document (20-40 pages)
+          - label: Quick reference
+            value: One-page incident response card
+          - label: Digital
+            value: Accessible wiki or portal
+          - label: Offline
+            value: Printed copies for scenarios where network compromised
+      - type: heading
+        level: 3
+        text: 'Month 3: Basic Playbooks'
+      - type: definition
+        items:
+          - term: Goal
+            description: Document first 5 incident response playbooks
+      - type: fields
+        subject: Playbook Template
+        entries:
+          - label: Sections
+            value:
+              - Incident type and indicators
+              - Immediate containment actions
+              - Investigation steps
+              - Eradication and recovery
+              - Communication requirements
+              - Evidence preservation
+              - Post-incident actions
+      - type: heading
+        level: 4
+        text: Priority Playbooks
+      - type: fields
+        subject: Playbook 1 Ransomware
+        entries:
+          - label: Trigger
+            value: Files encrypted, ransom note detected
+          - label: Immediate actions
+            value:
+              - Isolate infected systems from network
+              - Identify patient zero and infection vector
+              - Preserve forensic evidence
+              - Assess backup availability
+          - label: Investigation
+            value:
+              - Identify ransomware family
+              - Determine scope (how many systems)
+              - Check for data exfiltration
+              - Identify lateral movement paths
+          - label: Containment
+            value:
+              - Disable compromised accounts
+              - Block command and control
+              - Segment network to prevent spread
+          - label: Recovery
+            value:
+              - Restore from backups (if available)
+              - Rebuild compromised systems
+              - Verify eradication before reconnection
+      - type: fields
+        subject: Playbook 2 Data Breach
+        entries:
+          - label: Trigger
+            value: Unauthorized access to sensitive data detected
+          - label: Immediate actions
+            value:
+              - Identify data accessed
+              - Determine if exfiltration occurred
+              - Preserve access logs and evidence
+              - Assess legal notification requirements
+          - label: Investigation
+            value:
+              - Determine attack vector and timeline
+              - Identify affected individuals/records
+              - Assess attacker capabilities and motives
+          - label: Containment
+            value:
+              - Revoke attacker access
+              - Patch or mitigate vulnerability
+              - Monitor for persistence mechanisms
+          - label: Notification
+            value:
+              - Assess regulatory notification requirements
+              - Coordinate with legal on customer notification
+              - Prepare public statement if required
+      - type: fields
+        subject: Playbook 3 Malware Infection
+        entries:
+          - label: Trigger
+            value: Malware detected on endpoint or server
+          - label: Immediate actions
+            value:
+              - Isolate infected system
+              - Capture memory and disk forensics
+              - Extract IOCs (hashes, IPs, domains)
+              - Search for IOCs across environment
+          - label: Investigation
+            value:
+              - Determine malware family and capabilities
+              - Identify infection vector
+              - Assess if data was stolen
+              - Check for additional compromised systems
+          - label: Eradication
+            value:
+              - Remove malware from infected systems
+              - Block IOCs at network and endpoint
+              - Patch vulnerability if exploited
+      - type: fields
+        subject: Playbook 4 Compromised Credentials
+        entries:
+          - label: Trigger
+            value: Account credential compromise suspected or confirmed
+          - label: Immediate actions
+            value:
+              - Disable compromised account
+              - Revoke active sessions
+              - Force password reset
+              - Review recent account activity
+          - label: Investigation
+            value:
+              - Determine compromise method (phishing, brute force, etc)
+              - Identify data or systems accessed
+              - Check for lateral movement
+              - Assess if other accounts compromised
+          - label: Recovery
+            value:
+              - Re-enable account after security review
+              - Implement MFA if not already enabled
+              - Monitor account for 48 hours post-recovery
+      - type: fields
+        subject: Playbook 5 DDoS Attack
+        entries:
+          - label: Trigger
+            value: Service availability impacted by traffic flood
+          - label: Immediate actions
+            value:
+              - Activate DDoS mitigation (Cloudflare, AWS Shield)
+              - Contact ISP for upstream filtering
+              - Assess attack vector and volume
+          - label: Mitigation
+            value:
+              - Enable rate limiting
+              - Block attacking IPs/regions if feasible
+              - Scale infrastructure if needed
+          - label: Communication
+            value:
+              - Status page updates for customers
+              - Internal stakeholder updates
+  - heading: 'Phase 2: Capability Building'
+    id: phase_2_capability_building
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 4-6
+          - term: Objective
+            description: Build investigation capability and establish exercises
+          - term: Maturity progression
+            description: Level 1 optimization
+      - type: heading
+        level: 3
+        text: 'Month 4: Forensic Capability'
+      - type: definition
+        items:
+          - term: Goal
+            description: Establish digital forensics capability
+      - type: heading
+        level: 4
+        text: Forensic Tools
+      - type: fields
+        subject: Commercial Tools
+        entries:
+          - label: Encase
+            value: Enterprise forensic investigation platform
+          - label: FTK
+            value: Forensic Toolkit for disk analysis
+          - label: Axiom
+            value: Digital evidence management
+          - label: Cost
+            value: $10K-$50K per license
+      - type: fields
+        subject: Open Source Tools
+        entries:
+          - label: Autopsy
+            value: Disk image analysis
+          - label: Volatility
+            value: Memory forensics
+          - label: Wireshark
+            value: Network traffic analysis
+          - label: Sleuthkit
+            value: File system analysis
+          - label: Cost
+            value: Free, requires expertise
+      - type: fields
+        subject: Cloud Forensics
+        entries:
+          - label: AWS forensics
+            value: EC2 snapshot analysis, CloudTrail review
+          - label: Azure forensics
+            value: Disk snapshot, Activity Log analysis
+          - label: GCP forensics
+            value: Persistent disk snapshot, Cloud Logging
+      - type: heading
+        level: 4
+        text: Forensic Procedures
+      - type: fields
+        subject: Memory Capture
+        entries:
+          - label: When
+            value: Before powering off system
+          - label: Tools
+            value: Magnet RAM Capture, FTK Imager, WinPmem
+          - label: Why
+            value: Capture running processes, network connections, encryption keys
+      - type: fields
+        subject: Disk Imaging
+        entries:
+          - label: When
+            value: Before remediation or reimaging
+          - label: Tools
+            value: FTK Imager, dd, ewfcase
+          - label: Procedure
+            value:
+              - Write-protect source drive
+              - Create bit-by-bit copy
+              - Calculate and verify hashes
+              - Document chain of custody
+          - label: Storage
+            value: Retain images for 90 days minimum
+      - type: fields
+        subject: Log Collection
+        entries:
+          - label: Sources
+            value:
+              - System logs (Windows Event, syslog)
+              - Application logs
+              - Network logs (firewall, IDS, proxy)
+              - Authentication logs
+          - label: Preservation
+            value: Export before rotation period expires
+      - type: fields
+        subject: Forensic Workstation
+        entries:
+          - label: Hardware
+            value:
+              - High-performance workstation or server
+              - Large storage capacity (multiple TB)
+              - Write blockers for disk imaging
+          - label: Software
+            value:
+              - Forensic analysis tools
+              - Virtualization for malware analysis
+              - Network isolation for analyzing malicious artifacts
+          - label: Cost
+            value: $5K-$15K per workstation
+      - type: heading
+        level: 3
+        text: 'Month 5: External Relationships'
+      - type: definition
+        items:
+          - term: Goal
+            description: Establish relationships with external IR support
+      - type: fields
+        subject: External IR Retainer
+        entries:
+          - label: Purpose
+            value: Expert assistance for major incidents beyond internal capability
+          - label: Vendors
+            value: Mandiant, CrowdStrike Services, Dragos (ICS), Secureworks
+          - label: Retainer model
+            value:
+              - Annual fee for guaranteed availability
+              - Discounted hourly rates when engaged
+              - 'Typical retainer: $25K-$100K annually'
+          - label: Engagement triggers
+            value:
+              - Advanced persistent threat (APT) suspected
+              - Major ransomware affecting critical systems
+              - Nation-state adversary suspected
+              - Internal capability overwhelmed
+      - type: fields
+        subject: Legal Counsel
+        entries:
+          - label: Purpose
+            value: Navigate breach notification, regulatory compliance, litigation
+          - label: Relationship
+            value:
+              - Establish relationship before incident
+              - Understand firm's IR experience
+              - Confirm availability and response time
+          - label: Attorney client privilege
+            value:
+              - Legal counsel engagement preserves privilege
+              - Protects IR findings from discovery in litigation
+              - Critical for sensitive investigations
+      - type: fields
+        subject: Cyber Insurance
+        entries:
+          - label: Coverage
+            value:
+              - Incident response costs
+              - Forensics and legal fees
+              - Business interruption
+              - Ransom payment (if policy covers)
+              - Regulatory fines and penalties
+          - label: Activation
+            value:
+              - Notify insurer within required timeframe (typically 24-48 hours)
+              - Follow insurer's panel of approved vendors
+              - Document all costs for reimbursement
+          - label: Cost
+            value: $5K-$50K annually depending on coverage
+      - type: heading
+        level: 3
+        text: 'Month 6: First Tabletop Exercise'
+      - type: definition
+        items:
+          - term: Goal
+            description: Conduct first IR tabletop exercise
+      - type: heading
+        level: 4
+        text: Tabletop Exercise Planning
+      - type: heading
+        level: 5
+        text: Scenario Selection
+      - type: list
+        style: bullet
+        items:
+          - Choose realistic scenario relevant to organization
+          - Start with moderate complexity (not worst case)
+          - 'Example: Ransomware affecting subset of systems'
+      - type: fields
+        subject: Participant Selection
+        entries:
+          - label: Required
+            value:
+              - IR team (all roles)
+              - IT operations
+              - Management (at least director level)
+          - label: Optional
+            value:
+              - Legal
+              - PR/Communications
+              - Business unit representatives
+      - type: fields
+        subject: Facilitator
+        entries:
+          - label: Options
+            value:
+              - Internal security leader
+              - External consultant (recommended for first exercise)
+          - label: Responsibilities
+            value:
+              - Present scenario and injects
+              - Facilitate discussion
+              - Observe and document findings
+      - type: heading
+        level: 4
+        text: Exercise Execution
+      - type: fields
+        subject: Format
+        entries:
+          - label: Duration
+            value: 2-3 hours
+          - label: Location
+            value: Conference room or virtual meeting
+          - label: Structure
+            value: Scenario presentation → Team discussion → Injects → Debrief
+      - type: fields
+        subject: Scenario Progression
+        entries:
+          - label: Initial state
+            value: 'Friday 5 PM: Users report encrypted files, ransom note'
+          - label: Inject 1
+            value: Infection spreading to additional systems
+          - label: Inject 2
+            value: Backups also encrypted
+          - label: Inject 3
+            value: Attacker threatens to leak data publicly
+          - label: Inject 4
+            value: Media inquiries about breach
+      - type: heading
+        level: 5
+        text: Discussion Prompts
+      - type: list
+        style: bullet
+        items:
+          - Who needs to be notified immediately?
+          - What are the first containment actions?
+          - How do we determine scope of compromise?
+          - Do we engage external IR firm?
+          - Do we pay ransom? Who decides?
+          - What do we tell customers?
+      - type: heading
+        level: 4
+        text: Post-Exercise Activities
+      - type: fields
+        subject: Hot Debrief
+        entries:
+          - label: Timing
+            value: Immediately after exercise
+          - label: Discussion
+            value:
+              - What went well?
+              - What was confusing?
+              - What gaps did we identify?
+      - type: fields
+        subject: Formal Report
+        entries:
+          - label: Timing
+            value: Within 1 week
+          - label: Contents
+            value:
+              - Exercise scenario and participants
+              - Observed strengths
+              - Identified gaps and weaknesses
+              - Recommendations for improvement
+              - Action items with owners and due dates
+      - type: heading
+        level: 5
+        text: Remediation Tracking
+      - type: list
+        style: bullet
+        items:
+          - Assign gap remediation to owners
+          - Track progress monthly
+          - Verify completion before next exercise
+  - heading: 'Phase 3: Operational Maturity'
+    id: phase_3_operational_maturity
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 7-9
+          - term: Objective
+            description: Expand playbook coverage and improve response speed
+          - term: Maturity progression
+            description: Level 1 → Level 2
+      - type: heading
+        level: 3
+        text: 'Month 7: Expanded Playbooks'
+      - type: definition
+        items:
+          - term: Goal
+            description: Document 5 additional playbooks (total 10)
+      - type: heading
+        level: 4
+        text: Additional Playbooks
+      - type: fields
+        subject: Insider Threat
+        entries:
+          - label: Indicators
+            value:
+              - Unusual data access patterns
+              - Large data downloads or uploads
+              - After-hours access to sensitive systems
+              - Attempts to bypass security controls
+          - label: Investigation
+            value:
+              - Review user's access history
+              - Interview manager about recent behavior changes
+              - Analyze data accessed and exfiltrated
+              - Coordinate with HR and legal
+          - label: Containment
+            value:
+              - Disable user account
+              - Collect evidence while user unaware (if legal allows)
+              - Prepare for potential termination
+      - type: fields
+        subject: Supply Chain Compromise
+        entries:
+          - label: Indicators
+            value:
+              - Malicious update from trusted vendor
+              - Compromised third-party tool or library
+          - label: Investigation
+            value:
+              - Identify affected systems using compromised component
+              - Determine compromise timeline
+              - Contact vendor for details
+              - Search for IOCs across environment
+          - label: Containment
+            value:
+              - Isolate systems using compromised component
+              - Block malicious infrastructure
+              - Await vendor guidance on remediation
+      - type: fields
+        subject: Cloud Account Compromise
+        entries:
+          - label: Indicators
+            value:
+              - Unusual API calls or resource creation
+              - Access from unexpected locations
+              - Privilege escalation in cloud environment
+          - label: Investigation
+            value:
+              - Review CloudTrail/Activity Logs
+              - Identify compromised credentials
+              - Assess resources accessed or modified
+              - Check for persistence mechanisms (backdoor users, keys)
+          - label: Containment
+            value:
+              - Rotate compromised credentials
+              - Delete unauthorized resources
+              - Review and remove backdoor access
+      - type: fields
+        subject: Website Defacement
+        entries:
+          - label: Indicators
+            value:
+              - Unauthorized changes to website content
+              - Malicious code injected into web pages
+          - label: Investigation
+            value:
+              - Identify compromise method (SQL injection, vulnerable plugin, stolen credentials)
+              - Review web server and application logs
+              - Check for web shell or backdoor
+          - label: Containment
+            value:
+              - Take site offline if actively serving malware
+              - Restore from clean backup
+              - Patch vulnerability
+              - Reset all CMS and database credentials
+      - type: fields
+        subject: Business Email Compromise
+        entries:
+          - label: Indicators
+            value:
+              - Executive or finance email account compromised
+              - Fraudulent wire transfer requests
+              - Email forwarding rules created
+          - label: Investigation
+            value:
+              - Review account activity and login history
+              - Check for email forwarding or filters
+              - Identify any fraudulent emails sent
+              - Assess financial impact
+          - label: Containment
+            value:
+              - Disable compromised account
+              - Alert finance to halt any pending transfers
+              - Remove forwarding rules
+              - Notify contacts who received malicious emails
+      - type: heading
+        level: 3
+        text: 'Month 8: Detection Integration'
+      - type: definition
+        items:
+          - term: Goal
+            description: Integrate detection and response workflows
+      - type: fields
+        subject: SIEM to IR Workflow
+        entries:
+          - label: Automated alert enrichment
+            value:
+              - Extract indicators from SIEM alert
+              - Enrich with threat intelligence
+              - Add user and asset context
+              - Populate incident ticket automatically
+          - label: Analyst handoff
+            value:
+              - Enriched alert presented to analyst
+              - Analyst reviews and makes containment decision
+              - One-click containment actions from SIEM
+      - type: fields
+        subject: EDR to IR Workflow
+        entries:
+          - label: Automated containment
+            value:
+              - EDR detects malware
+              - EDR automatically isolates endpoint
+              - EDR alerts IR team
+              - IR team investigates and remediates
+          - label: Forensic collection
+            value:
+              - EDR captures forensic artifacts automatically
+              - Memory dump, disk image, process tree
+              - Artifacts available to IR team immediately
+      - type: definition
+        items:
+          - term: Cross-reference
+            description: See Chapter 2.4 Detection Engineering and 4.1 Automation for detailed integration
+              patterns
+      - type: heading
+        level: 3
+        text: 'Month 9: Metrics and Optimization'
+      - type: definition
+        items:
+          - term: Goal
+            description: Establish IR metrics and optimize based on data
+      - type: heading
+        level: 4
+        text: Key Metrics
+      - type: fields
+        subject: Mean Time to Detect
+        entries:
+          - label: Definition
+            value: Time from compromise to detection
+          - label: Calculation
+            value: Detection timestamp - Initial compromise timestamp
+          - label: Target
+            value: 'Level 1: <7 days, Level 2: <24 hours, Level 3: <4 hours'
+          - label: Improvement drivers
+            value:
+              - Better detection rules
+              - Threat intelligence integration
+              - Proactive threat hunting
+      - type: fields
+        subject: Mean Time to Respond
+        entries:
+          - label: Definition
+            value: Time from detection to response action started
+          - label: Calculation
+            value: First response action - Detection timestamp
+          - label: Target
+            value: 'Level 1: <24 hours, Level 2: <4 hours, Level 3: <1 hour'
+          - label: Improvement drivers
+            value:
+              - Clear playbooks
+              - Automated enrichment
+              - Practiced procedures
+      - type: fields
+        subject: Mean Time to Contain
+        entries:
+          - label: Definition
+            value: Time from detection to containment complete
+          - label: Calculation
+            value: Containment timestamp - Detection timestamp
+          - label: Target
+            value: 'Level 1: <1 week, Level 2: <24 hours, Level 3: <4 hours'
+          - label: Improvement drivers
+            value:
+              - Rapid decision-making
+              - Automated containment
+              - Clear authority to act
+      - type: fields
+        subject: Mean Time to Recover
+        entries:
+          - label: Definition
+            value: Time from detection to full recovery
+          - label: Calculation
+            value: Recovery timestamp - Detection timestamp
+          - label: Target
+            value: 'Level 1: <1 month, Level 2: <1 week, Level 3: <48 hours'
+          - label: Improvement drivers
+            value:
+              - Good backups
+              - Automated recovery procedures
+              - Thorough eradication
+  - heading: 'Phase 4: Continuous Improvement'
+    id: phase_4_continuous_improvement
+    blocks:
+      - type: definition
+        items:
+          - term: Timeline
+            description: Months 10-12
+          - term: Objective
+            description: Establish continuous improvement culture and advanced capabilities
+          - term: Maturity progression
+            description: Level 2 preparation
+      - type: heading
+        level: 3
+        text: 'Month 10: Threat Intelligence Integration'
+      - type: definition
+        items:
+          - term: Goal
+            description: Integrate threat intelligence into IR workflows
+      - type: heading
+        level: 4
+        text: Threat Intel Sources
+      - type: fields
+        subject: Strategic Intelligence
+        entries:
+          - label: Sources
+            value: Vendor reports, industry briefings, government bulletins
+          - label: Use in IR
+            value: Understand adversary tactics and campaigns targeting industry
+          - label: Application
+            value:
+              - Scenario planning for tabletop exercises
+              - Playbook development for emerging threats
+              - Executive briefings on threat landscape
+      - type: fields
+        subject: Tactical Intelligence
+        entries:
+          - label: Sources
+            value: TTPs, attack patterns, malware analysis reports
+          - label: Use in IR
+            value: Guide investigation and understand attacker behavior
+          - label: Application
+            value:
+              - 'During investigation: Match observed behavior to known adversaries'
+              - Predict next steps in attack progression
+              - Identify similar historical campaigns
+      - type: fields
+        subject: Operational Intelligence
+        entries:
+          - label: Sources
+            value: IOCs (IPs, domains, hashes), YARA rules
+          - label: Use in IR
+            value: Hunt for compromise indicators, block malicious infrastructure
+          - label: Application
+            value:
+              - Automated enrichment during investigation
+              - Proactive hunting with fresh IOCs
+              - Blocking at perimeter and endpoints
+      - type: fields
+        subject: Intel Platform Integration
+        entries:
+          - label: Threat intel platform
+            value: MISP, ThreatConnect, Anomali
+          - label: Integration points
+            value:
+              - SIEM receives IOC feeds for detection
+              - IR playbooks query TIP during investigation
+              - EDR receives IOC feeds for blocking
+              - Firewall receives IP/domain feeds
+          - label: Feedback loop
+            value:
+              - IR team contributes IOCs from investigations back to TIP
+              - Sharing with industry peers (anonymized)
+      - type: heading
+        level: 3
+        text: 'Month 11: Advanced Forensics'
+      - type: definition
+        items:
+          - term: Goal
+            description: Develop advanced forensic capabilities
+      - type: heading
+        level: 4
+        text: Malware Analysis
+      - type: fields
+        subject: Static Analysis
+        entries:
+          - label: Techniques
+            value:
+              - File hash and signature analysis
+              - Strings extraction
+              - PE header analysis
+              - Disassembly (IDA Pro, Ghidra)
+          - label: Capabilities
+            value:
+              - Identify malware family
+              - Extract IOCs
+              - Understand basic functionality
+      - type: fields
+        subject: Dynamic Analysis
+        entries:
+          - label: Environment
+            value: Isolated sandbox (Cuckoo, ANY.RUN, Joe Sandbox)
+          - label: Techniques
+            value:
+              - Execute malware in controlled environment
+              - Monitor process activity, registry, filesystem
+              - Capture network traffic
+              - Observe malware behavior
+          - label: Capabilities
+            value:
+              - Identify C2 infrastructure
+              - Understand persistence mechanisms
+              - Extract additional IOCs
+      - type: fields
+        subject: Reverse Engineering
+        entries:
+          - label: Tools
+            value: IDA Pro, Ghidra, x64dbg
+          - label: Techniques
+            value:
+              - Disassembly and decompilation
+              - Control flow analysis
+              - Algorithm identification
+          - label: Capabilities
+            value:
+              - Deep understanding of malware functionality
+              - Identify zero-day exploits
+              - Develop detection signatures
+          - label: Skill level
+            value: Advanced - requires specialized training
+      - type: heading
+        level: 4
+        text: Cloud Forensics
+      - type: fields
+        subject: AWS Forensics
+        entries:
+          - label: Evidence sources
+            value:
+              - CloudTrail logs (API activity)
+              - VPC Flow Logs (network traffic)
+              - EBS snapshots (disk images)
+              - Memory dumps from EC2
+          - label: Tools
+            value:
+              - 'AWS native: CloudTrail, Detective, GuardDuty'
+              - 'Third-party: Prowler, ScoutSuite'
+          - label: Procedures
+            value:
+              - Snapshot compromised instances
+              - Preserve logs before retention expires
+              - Analyze CloudTrail for unauthorized actions
+      - type: fields
+        subject: Azure Forensics
+        entries:
+          - label: Evidence sources
+            value:
+              - Activity Log (subscription-level events)
+              - NSG Flow Logs (network traffic)
+              - Disk snapshots
+              - Azure Monitor logs
+          - label: Procedures
+            value:
+              - Snapshot VM disks
+              - Export Activity Logs
+              - Analyze sign-in logs for compromise
+      - type: fields
+        subject: Container Forensics
+        entries:
+          - label: Challenges
+            value:
+              - Ephemeral nature (containers deleted)
+              - Limited logging by default
+              - Shared kernel (less isolation than VMs)
+          - label: Evidence sources
+            value:
+              - Container logs
+              - Kubernetes audit logs
+              - Image analysis (Docker layers)
+          - label: Procedures
+            value:
+              - Preserve container images before deletion
+              - Analyze image layers for malicious code
+              - Review orchestrator logs (Kubernetes, ECS)
+      - type: heading
+        level: 3
+        text: 'Month 12: Program Assessment'
+      - type: definition
+        items:
+          - term: Goal
+            description: Assess IR program maturity and plan next year
+      - type: heading
+        level: 4
+        text: Comprehensive Assessment
+      - type: fields
+        subject: Capability Review
+        entries:
+          - label: Questions
+            value:
+              - Can we detect common attack patterns?
+              - Can we respond within SLA targets?
+              - Do playbooks cover major scenarios?
+              - Is team trained and practiced?
+              - Are metrics showing improvement?
+      - type: heading
+        level: 5
+        text: Gap Analysis
+      - type: list
+        style: bullet
+        items:
+          - Scenarios without playbooks
+          - Detection blind spots
+          - Tool or skill deficiencies
+          - Process bottlenecks
+      - type: heading
+        level: 5
+        text: Stakeholder Feedback
+      - type: list
+        style: bullet
+        items:
+          - Survey IR team on program effectiveness
+          - Interview executives on confidence in IR
+          - Review incident participant feedback
+      - type: fields
+        subject: 'Year 2: Planning'
+        entries:
+          - label: Advanced capabilities
+            value:
+              - Automated response for common incidents
+              - Proactive threat hunting program
+              - Red team exercises
+              - Industry threat intelligence sharing
+          - label: Team development
+            value:
+              - Advanced forensics training
+              - Malware analysis certification
+              - Cloud security specialization
+              - Threat intelligence analysis
+          - label: Tool enhancements
+            value:
+              - SOAR platform for orchestration
+              - Advanced EDR capabilities
+              - Threat intelligence platform
+              - Cloud forensic tools

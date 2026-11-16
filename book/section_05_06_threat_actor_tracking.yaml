@@ -1,0 +1,360 @@
+# section_05_06_threat_actor_tracking.yaml
+
+---
+title: Threat Actor Tracking
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 5
+  section: 6
+  section_code: '0506'
+  source_chapter: '4.4'
+  source_key: threat_intelligence_operations.threat_actor_tracking
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Tracking specific adversaries enables understanding their evolution, predicting future campaigns,
+          and tailoring defenses. This section addresses adversary profiling, attribution, and maintaining
+          adversary knowledge base.
+  - heading: Adversary Profiling
+    id: adversary_profiling
+    blocks:
+      - type: heading
+        level: 3
+        text: Adversary Profile Template
+      - type: fields
+        subject: Identification
+        entries:
+          - label: Primary name
+            value: APT29 / Cozy Bear
+          - label: Aliases
+            value: The Dukes, YTTRIUM, Iron Hemlock
+          - label: Attribution
+            value: Russian Foreign Intelligence Service (SVR)
+          - label: Confidence
+            value: High confidence
+      - type: heading
+        level: 4
+        text: Objectives
+      - type: definition
+        items:
+          - term: Primary
+            description: Intelligence gathering, espionage
+      - type: fields
+        subject: Targets
+        entries:
+          - label: Industries
+            value: Government, defense, think tanks, NGOs
+          - label: Geographies
+            value: US, Europe, NATO countries
+      - type: heading
+        level: 4
+        text: Capabilities
+      - type: definition
+        items:
+          - term: Sophistication
+            description: Advanced - custom malware, zero-days, OPSEC
+          - term: Resources
+            description: Nation-state level - significant budget, skilled operators
+      - type: fields
+        subject: Tools
+        entries:
+          - label: Custom
+            value:
+              - WellMess backdoor
+              - WellMail backdoor
+              - SUNBURST (SolarWinds supply chain compromise)
+          - label: Publicly available
+            value:
+              - Cobalt Strike
+              - Mimikatz
+      - type: heading
+        level: 4
+        text: Tactics Techniques Procedures
+      - type: fields
+        subject: MITRE ATT&CK Mapping
+        entries:
+          - label: Initial access
+            value:
+              - 'T1566.001 - Phishing: Spearphishing Attachment'
+              - 'T1195.002 - Supply Chain Compromise: Software Supply Chain'
+          - label: Execution
+            value:
+              - T1059.001 - PowerShell
+              - T1059.003 - Windows Command Shell
+          - label: Persistence
+            value:
+              - T1547.001 - Registry Run Keys
+              - T1053.005 - Scheduled Task
+          - label: Privilege escalation
+            value:
+              - T1055 - Process Injection
+          - label: Defense evasion
+            value:
+              - T1027 - Obfuscated Files or Information
+              - T1070.004 - File Deletion
+          - label: Credential access
+            value:
+              - T1003.001 - LSASS Memory (Mimikatz)
+          - label: Lateral movement
+            value:
+              - T1021.001 - Remote Desktop Protocol
+          - label: Collection
+            value:
+              - T1560 - Archive Collected Data
+          - label: Exfiltration
+            value:
+              - T1041 - Exfiltration Over C2 Channel
+      - type: fields
+        subject: Infrastructure
+        entries:
+          - label: Hosting preferences
+            value:
+              - Compromised legitimate servers (not dedicated malicious infrastructure)
+              - Cloud providers (AWS, Azure) for C2
+          - label: Domains
+            value:
+              - Typosquatting legitimate domains
+              - Long-registered domains (not fresh registrations)
+          - label: C2 protocols
+            value:
+              - HTTPS (blends with legitimate traffic)
+              - DNS tunneling (covert channel)
+      - type: fields
+        subject: Operational Patterns
+        entries:
+          - label: Campaign duration
+            value: Long-term operations (months to years)
+          - label: Operational tempo
+            value: Patient, methodical - low and slow
+          - label: Targeting
+            value: Highly targeted, small number of high-value victims
+          - label: Innovation
+            value: Continuously evolves tools and techniques
+      - type: heading
+        level: 4
+        text: Historical Campaigns
+      - type: fields
+        subject: SolarWinds Supply Chain Compromise
+        entries:
+          - label: Timeframe
+            value: 2019-2020
+          - label: Impact
+            value: 18,000+ organizations compromised via trojanized SolarWinds update
+      - type: fields
+        subject: COVID-19 Vaccine Research Targeting
+        entries:
+          - label: Timeframe
+            value: '2020'
+          - label: Impact
+            value: Targeted pharmaceutical companies and research institutions
+      - type: fields
+        subject: Detection and Mitigation
+        entries:
+          - label: Detection rules
+            value:
+              - Monitor for WellMess/WellMail IOCs
+              - Detect anomalous SolarWinds Orion network traffic
+              - Alert on SUNBURST-style DGA domains
+          - label: Mitigations
+            value:
+              - Segment networks to limit lateral movement
+              - Deploy EDR on critical systems
+              - Enhanced logging and monitoring
+              - Regular compromise assessments
+      - type: heading
+        level: 4
+        text: Intelligence Sources
+      - type: list
+        style: bullet
+        items:
+          - Microsoft Threat Intelligence Center
+          - FireEye (Mandiant)
+          - CrowdStrike
+          - US Government advisories (CISA, NSA)
+      - type: definition
+        items:
+          - term: Last updated
+            description: '2024-11-15'
+      - type: heading
+        level: 3
+        text: Maintaining Adversary Profiles
+      - type: fields
+        subject: Profile Creation
+        entries:
+          - label: Trigger
+            value: New adversary identified in intelligence or incident
+          - label: Process
+            value:
+              - Create profile from template
+              - Populate with known information
+              - Tag confidence level for each data point
+              - Assign profile owner (analyst responsible for updates)
+      - type: fields
+        subject: Profile Updates
+        entries:
+          - label: Triggers
+            value:
+              - New campaign attributed to adversary
+              - New TTPs observed
+              - Infrastructure changes
+              - Tool evolution
+          - label: Process
+            value:
+              - Analyst reviews new intelligence
+              - Updates relevant profile sections
+              - Documents source and confidence
+              - Publishes update notification
+          - label: Frequency
+            value: Continuous (as new intelligence emerges)
+      - type: fields
+        subject: Profile Review
+        entries:
+          - label: Frequency
+            value: Quarterly comprehensive review
+          - label: Review checklist
+            value:
+              - Is attribution still valid?
+              - Have TTPs evolved?
+              - Are detection rules still effective?
+              - Has adversary gone dormant or increased activity?
+          - label: Output
+            value: Updated profile + recommendations for detection/hunting
+  - heading: Attribution Methodology
+    id: attribution_methodology
+    blocks:
+      - type: heading
+        level: 3
+        text: Attribution Pyramid
+      - type: fields
+        subject: 'Level 1: Infrastructure'
+        entries:
+          - label: Confidence
+            value: Low
+          - label: Indicators
+            value:
+              - Shared IP addresses or domains
+              - Similar SSL certificates
+              - Common hosting providers
+          - label: Limitation
+            value: Infrastructure can be shared, purchased, or spoofed
+      - type: fields
+        subject: 'Level 2: Tools and Malware'
+        entries:
+          - label: Confidence
+            value: Low-Medium
+          - label: Indicators
+            value:
+              - Same malware family
+              - Code reuse or similarities
+              - Common tooling (Mimikatz, Cobalt Strike)
+          - label: Limitation
+            value: Tools are shared/sold, malware can be copied
+      - type: fields
+        subject: 'Level 3: Tactics Techniques'
+        entries:
+          - label: Confidence
+            value: Medium
+          - label: Indicators
+            value:
+              - Unique TTPs or sequences
+              - Operational patterns
+              - Tradecraft similarities
+          - label: Limitation
+            value: Techniques can be learned/copied from other adversaries
+      - type: fields
+        subject: 'Level 4: Operational Patterns'
+        entries:
+          - label: Confidence
+            value: Medium-High
+          - label: Indicators
+            value:
+              - Targeting consistency
+              - Operational timing (business hours in adversary timezone)
+              - Language artifacts in malware/phishing
+              - Mistake patterns
+          - label: Limitation
+            value: Sophisticated actors can obfuscate patterns
+      - type: fields
+        subject: 'Level 5: Strategic Objectives'
+        entries:
+          - label: Confidence
+            value: High
+          - label: Indicators
+            value:
+              - Stolen data aligns with nation-state interests
+              - Targeting aligns with geopolitical objectives
+              - Campaign timing correlates with political events
+          - label: Limitation
+            value: Requires intelligence beyond technical analysis
+      - type: heading
+        level: 3
+        text: Attribution Challenges
+      - type: fields
+        subject: False Flags
+        entries:
+          - label: Definition
+            value: Adversary intentionally uses another group's tools/TTPs to mislead
+          - label: Examples
+            value:
+              - Russian adversary uses Chinese malware
+              - Criminal group mimics nation-state tactics
+          - label: Mitigation
+            value:
+              - Require multiple attribution indicators across pyramid levels
+              - Document confidence level clearly
+              - Update attribution as new evidence emerges
+      - type: fields
+        subject: Tool Sharing
+        entries:
+          - label: Definition
+            value: Multiple groups use same publicly available tools
+          - label: Examples
+            value:
+              - Cobalt Strike used by APTs and ransomware gangs
+              - Mimikatz universal credential theft tool
+          - label: Mitigation
+            value:
+              - Don't attribute based on tool alone
+              - Focus on TTPs and operational patterns
+      - type: fields
+        subject: Limited Visibility
+        entries:
+          - label: Definition
+            value: Incomplete evidence prevents high-confidence attribution
+          - label: Mitigation
+            value:
+              - Collaborate with peers and vendors for broader perspective
+              - Document what is unknown
+              - Avoid speculation beyond evidence
+      - type: fields
+        subject: Attribution Best Practices
+        entries:
+          - label: Document reasoning
+            value:
+              - Explain which indicators led to attribution
+              - Note which pyramid levels support attribution
+              - Document alternative hypotheses considered
+          - label: Express confidence
+            value:
+              - Use standard confidence language (high/medium/low)
+              - Update confidence as evidence changes
+              - Distinguish 'likely' from 'definitive'
+          - label: Avoid speculation
+            value:
+              - Stick to evidence-based assessment
+              - Acknowledge gaps in knowledge
+              - Don't overstate confidence
+          - label: Update as new evidence emerges
+            value:
+              - Attribution is hypothesis, not final conclusion
+              - Revise attribution when new evidence warrants
+              - Document attribution evolution

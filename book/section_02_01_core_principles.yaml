@@ -1,0 +1,372 @@
+# section_02_01_core_principles.yaml
+
+---
+title: Core Principles
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 1
+  section_code: '0201'
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.core_principles
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Identity Is Perimeter
+    id: identity_is_perimeter
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IAM-P001
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Identity is the new security perimeter, not network location
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Network perimeters are dead. Users work from home, coffee shops, airports. Applications run
+          in multiple clouds. Data exists everywhere. The only constant is identity. Security decisions
+          must be based on "who" and "what," not "where." Identity verification and authorization determine
+          access, regardless of network location.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Move from network-based trust to identity-based trust
+          - Require authentication for all access, internal or external
+          - Deploy SSO as single identity control point
+          - Eliminate VPN as primary access control (replace with zero trust network access)
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of applications integrated with SSO: Target >90%'
+          - 'Percentage of users using SSO vs local credentials: Target >95%'
+          - 'Legacy network-based access controls remaining: Target = 0'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Trusting users because they're on corporate network
+          - Allowing direct access to internal apps without authentication
+          - Using network location as sole authorization criterion
+          - VPN as catch-all solution for remote access
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Organization allowed internal network access to assume trust. Attacker compromised laptop on
+          corporate WiFi, gained access to financial systems without additional authentication. Moved
+          to identity-based access: all apps require SSO authentication regardless of network. Lateral
+          movement blocked even with compromised endpoint.
+  - heading: Least Privilege Default
+    id: least_privilege_default
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IAM-P002
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Grant minimum permissions required, deny by default
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Excessive permissions enable lateral movement, privilege escalation, and data exfiltration.
+          Users and services accumulate permissions over time but rarely have them revoked. Least privilege
+          limits blast radius when credentials are compromised. Start with no access, grant only what's
+          required, review and revoke continuously.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - 'Default deny: No access unless explicitly granted'
+          - 'Time-bound permissions: Access expires and requires renewal'
+          - 'Just-in-time access: Elevate privileges only when needed, automatically revoke'
+          - 'Regular access reviews: Quarterly review and revoke unused permissions'
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of users with administrative privileges: Target <5%'
+          - 'Average permission lifetime before review: Target <90 days'
+          - 'Percentage of access grants that are time-bound: Target >80%'
+          - 'Permissions revoked per access review cycle: Track trend'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Granting admin rights for convenience
+          - Never revoking permissions when role changes
+          - Broad permissions to avoid access requests
+          - Service accounts with owner/admin on everything
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Developer requested database access. Admin granted db_owner role for convenience. Developer
+          left company, account disabled but service account they created retained db_owner. Attacker
+          compromised service account, full database access. Lesson: Grant db_datareader only, time-bound
+          access, service account inventory and cleanup.
+  - heading: Zero Trust Always Verify
+    id: zero_trust_always_verify
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IAM-P003
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Never trust, always verify - continuous authentication and authorization
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Traditional security: Authenticate once at login, trust for session duration. Zero trust: Continuously
+          verify user, device, context before every access decision. User authenticated 8 hours ago from
+          trusted device might now be attacker with stolen session token. Re-verify identity, device posture,
+          risk signals before granting access.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - 'Continuous authentication: Re-verify identity throughout session'
+          - 'Device trust: Verify device health and compliance before access'
+          - 'Context-aware access: Consider location, time, risk signals'
+          - 'Micro-segmentation: Verify for each resource, not just initial entry'
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of applications with continuous authentication: Target >70%'
+          - 'Device compliance enforcement rate: Target 100%'
+          - 'Context-based access denials per month: Track anomalies'
+          - 'Average session re-verification frequency: Target <4 hours'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Trust after initial login for entire day
+          - Ignoring device posture in access decisions
+          - Same access policy for all contexts (office vs airport WiFi)
+          - No re-authentication for high-risk actions
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          User authenticated to SSO at 9 AM from managed device. At 2 PM, attacker stole session token,
+          attempted access from unmanaged device in different country. Continuous authentication detected
+          device change and geographic impossibility. Re-authentication required with MFA, access denied,
+          incident triggered. Session theft mitigated through continuous verification.
+  - heading: Automate Lifecycle
+    id: automate_lifecycle
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IAM-P004
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Automate identity lifecycle from onboarding to offboarding
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Manual identity management doesn't scale and creates security gaps. New employee waits days
+          for access (productivity loss). Terminated employee account stays active for weeks (security
+          risk). Automation ensures timely, consistent identity provisioning and deprovisioning. HR system
+          becomes source of truth, identity changes propagate automatically.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - 'Automate provisioning: HR hire event → accounts created, access granted'
+          - 'Automate deprovisioning: HR termination event → accounts disabled immediately'
+          - 'Automate role changes: Job change → permissions adjusted automatically'
+          - 'Automate access reviews: Quarterly attestation workflows'
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Time from hire to account provisioning: Target <4 hours'
+          - 'Time from termination to account disabling: Target <1 hour'
+          - 'Percentage of provisioning automated: Target >90%'
+          - 'Orphaned accounts (no HR record): Target = 0'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Manual account creation via IT tickets
+          - Termination communicated via email, manual cleanup
+          - Role changes require manual permission reviews
+          - Annual access reviews via spreadsheets
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Employee terminated Friday afternoon. Manual process meant accounts disabled Monday morning.
+          Attacker used 60-hour window to exfiltrate data. Implemented automated deprovisioning: HR termination
+          in system triggers immediate account disable across all platforms (AD, AWS, GCP, SaaS). Access
+          revoked within 15 minutes regardless of day or time.
+  - heading: Ephemeral over Persistent
+    id: ephemeral_over_persistent
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IAM-P005
+          - term: Maturity level
+            description: Level 3+
+          - term: Principle
+            description: Prefer short-lived credentials over long-lived secrets
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Long-lived credentials (passwords, API keys, service account keys) are theft targets and difficult
+          to rotate. Once stolen, attacker has unlimited time to use them. Short-lived credentials (OAuth
+          tokens, temporary keys, certificates) expire automatically, limiting attacker window. Credential
+          theft becomes less valuable when credentials expire in hours, not years.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - OAuth tokens with 1-hour expiration over API keys
+          - Temporary cloud credentials (STS AssumeRole) over access keys
+          - Short-lived certificates over long-lived passwords
+          - Session tokens over persistent authentication
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of service accounts using ephemeral credentials: Target >80%'
+          - 'Average credential lifetime: Target <24 hours for ephemeral'
+          - 'Long-lived credentials in use: Track and reduce monthly'
+          - 'Credential rotation frequency: Quarterly for any long-lived credentials'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Hardcoded API keys in source code
+          - Service account keys that never expire
+          - Passwords as primary authentication for services
+          - Shared credentials across multiple services
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Application used AWS access key hardcoded in environment variables. Key leaked via misconfigured
+          CI/CD logs. Attacker used key for 3 months before detection. Migrated to IAM roles with STS:
+          application assumes role, receives temporary credentials valid 1 hour. Credentials auto-rotate.
+          Key leak now provides 1-hour window instead of indefinite access.
+  - heading: Visibility Enables Security
+    id: visibility_enables_security
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: IAM-P006
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Comprehensive identity logging and monitoring enables security
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Cannot secure what you cannot see. Identity events (authentication, authorization, permission
+          changes) must be logged and monitored. Who accessed what, when, from where, using which privileges
+          - this visibility enables threat detection, incident response, compliance, and access reviews.
+          Without logging, identity compromise goes undetected.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Log all authentication events (success and failure)
+          - Log all authorization decisions (grant and deny)
+          - Log all permission changes (role assignments, policy updates)
+          - Centralize identity logs in SIEM for detection and alerting
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of identity systems logging to SIEM: Target 100%'
+          - 'Identity log retention period: Minimum 90 days hot, 1 year warm'
+          - 'Identity-based detections deployed: Target >20'
+          - 'Mean time to detect identity compromise: Target <4 hours'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Authentication logging disabled to reduce noise
+          - Authorization failures not logged
+          - Identity logs not centralized or monitored
+          - Logs deleted after 7 days to save cost
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Attacker compromised service account, lateral movement across cloud infrastructure. No identity
+          logging to SIEM. Compromise discovered 6 weeks later during unrelated audit. Implemented comprehensive
+          identity logging: all authentication, authorization, permission changes to SIEM. Detection rules
+          for anomalous identity behavior. Next credential compromise detected in 2 hours via impossible
+          travel detection.

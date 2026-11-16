@@ -1,0 +1,383 @@
+# section_02_02_maturity_model.yaml
+
+---
+title: Maturity Model
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 2
+  section_code: '0202'
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.maturity_model
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Purpose
+    id: purpose
+    blocks:
+      - type: prose
+        text: >-
+          IAM maturity determines organizational security posture and cloud readiness. This model enables
+          assessment of current identity capability, identification of gaps, and roadmap development.
+          Use self-assessment to determine which sections of this chapter apply to your organization.
+  - heading: Maturity Levels
+    id: maturity_levels
+    blocks:
+      - type: heading
+        level: 3
+        text: 'Level 0: No Centralized Identity'
+      - type: definition
+        items:
+          - term: Name
+            description: No Centralized Identity
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Authentication
+            value: Local accounts on each system
+          - label: Authorization
+            value: No consistent access control
+          - label: Provisioning
+            value: Manual account creation per system
+          - label: Deprovisioning
+            value: Manual, often incomplete
+          - label: Visibility
+            value: No centralized logging or monitoring
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Users have different passwords for every system
+          - No SSO or directory service
+          - IT creates accounts manually via tickets
+          - Terminated employee accounts remain active
+          - No visibility into who has access to what
+      - type: definition
+        items:
+          - term: Risk level
+            description: Critical - identity compromise undetectable, privilege creep inevitable
+          - term: Next steps
+            description: Deploy directory service (Active Directory or cloud identity), follow building_from_zero
+          - term: Estimated timeline
+            description: 6-12 months to reach Level 1
+      - type: heading
+        level: 3
+        text: 'Level 1: Basic Directory'
+      - type: definition
+        items:
+          - term: Name
+            description: Basic Directory Service
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Authentication
+            value: Centralized directory (Active Directory, Azure AD, Google Workspace)
+          - label: Authorization
+            value: Basic group-based permissions
+          - label: Provisioning
+            value: Manual but centralized
+          - label: Deprovisioning
+            value: Manual account disabling
+          - label: Visibility
+            value: Directory audit logs available but not monitored
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Single directory for user authentication
+          - Group-based access control
+          - Some applications integrated with directory
+          - Manual provisioning process via IT
+          - Terminations processed within 24 hours
+      - type: definition
+        items:
+          - term: Risk level
+            description: High - manual processes create gaps, limited visibility
+          - term: Next steps
+            description: Deploy SSO, implement automated provisioning, centralize logging
+          - term: Estimated timeline
+            description: 6-12 months to reach Level 2
+      - type: heading
+        level: 3
+        text: 'Level 2: SSO and Automation'
+      - type: definition
+        items:
+          - term: Name
+            description: SSO and Basic Automation
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Authentication
+            value: SSO deployed for major applications
+          - label: Authorization
+            value: RBAC with defined roles
+          - label: Provisioning
+            value: Automated for common scenarios
+          - label: Deprovisioning
+            value: Automated account disabling
+          - label: Visibility
+            value: Identity logs centralized in SIEM
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - SSO covers >70% of applications
+          - MFA deployed for remote access
+          - Automated provisioning from HR system
+          - Immediate account disabling on termination
+          - Basic identity threat detection rules
+      - type: definition
+        items:
+          - term: Risk level
+            description: Medium - foundational controls in place, gaps in advanced scenarios
+          - term: Next steps
+            description: Implement zero trust, privilege management, comprehensive automation
+          - term: Estimated timeline
+            description: 12-18 months to reach Level 3
+      - type: heading
+        level: 3
+        text: 'Level 3: Zero Trust Identity'
+      - type: definition
+        items:
+          - term: Name
+            description: Zero Trust Identity
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Authentication
+            value: Continuous authentication with risk-based MFA
+          - label: Authorization
+            value: Attribute-based or relationship-based access control
+          - label: Provisioning
+            value: Fully automated lifecycle management
+          - label: Deprovisioning
+            value: Immediate cross-platform revocation
+          - label: Visibility
+            value: Comprehensive identity analytics and threat detection
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - SSO covers >95% of applications
+          - Device trust enforcement
+          - Context-aware access policies
+          - Just-in-time privilege elevation
+          - Automated access reviews and attestation
+          - Identity-based threat hunting
+      - type: definition
+        items:
+          - term: Risk level
+            description: Low - mature controls, proactive threat detection
+          - term: Next steps
+            description: Advance to passwordless, workload identity, machine learning analytics
+          - term: Estimated timeline
+            description: 12-24 months to reach Level 4
+      - type: heading
+        level: 3
+        text: 'Level 4: Advanced Identity'
+      - type: definition
+        items:
+          - term: Name
+            description: Advanced Identity Security
+      - type: fields
+        subject: Characteristics
+        entries:
+          - label: Authentication
+            value: Passwordless with biometrics and FIDO2
+          - label: Authorization
+            value: Policy-based with real-time risk scoring
+          - label: Provisioning
+            value: Autonomous with ML-driven access recommendations
+          - label: Deprovisioning
+            value: Predictive deprovisioning based on activity patterns
+          - label: Visibility
+            value: ML-powered identity threat detection and response
+      - type: heading
+        level: 4
+        text: Indicators
+      - type: list
+        style: bullet
+        items:
+          - Passwordless authentication organization-wide
+          - Workload identity for all services (no service account keys)
+          - Ephemeral credentials standard practice
+          - ML-based anomaly detection for identity
+          - Automated response to identity threats
+          - Continuous least privilege enforcement
+      - type: definition
+        items:
+          - term: Risk level
+            description: Very Low - advanced security posture, continuous improvement
+          - term: Next steps
+            description: Innovation, research, industry leadership
+  - heading: Self-Assessment
+    id: self_assessment
+    blocks:
+      - type: heading
+        level: 3
+        text: Instructions
+      - type: prose
+        text: >-
+          Answer the following questions about your current IAM capability. Score: 1 point for each YES
+          answer. Total score determines maturity level.
+      - type: heading
+        level: 3
+        text: Questions
+      - type: fields
+        subject: Q1
+        entries:
+          - label: Question
+            value: Do you have centralized directory service (Active Directory, Azure AD, Google Workspace)?
+          - label: Level indicator
+            value: Level 0 → Level 1
+      - type: fields
+        subject: Q2
+        entries:
+          - label: Question
+            value: Do you have SSO deployed for majority of applications?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q3
+        entries:
+          - label: Question
+            value: Do you have MFA deployed for remote access?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q4
+        entries:
+          - label: Question
+            value: Do you have automated user provisioning from HR system?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q5
+        entries:
+          - label: Question
+            value: Do you have automated account disabling on termination?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q6
+        entries:
+          - label: Question
+            value: Do you have identity logs centralized in SIEM?
+          - label: Level indicator
+            value: Level 1 → Level 2
+      - type: fields
+        subject: Q7
+        entries:
+          - label: Question
+            value: Do you enforce device trust before granting access?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q8
+        entries:
+          - label: Question
+            value: Do you have just-in-time privilege elevation?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q9
+        entries:
+          - label: Question
+            value: Do you have context-aware access policies (location, device, risk)?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q10
+        entries:
+          - label: Question
+            value: Do you use continuous authentication and re-verification?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q11
+        entries:
+          - label: Question
+            value: Do you have automated access reviews and attestation?
+          - label: Level indicator
+            value: Level 2 → Level 3
+      - type: fields
+        subject: Q12
+        entries:
+          - label: Question
+            value: Do you use passwordless authentication?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: fields
+        subject: Q13
+        entries:
+          - label: Question
+            value: Do you use workload identity (no service account keys)?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: fields
+        subject: Q14
+        entries:
+          - label: Question
+            value: Do you have ML-based identity threat detection?
+          - label: Level indicator
+            value: Level 3 → Level 4
+      - type: heading
+        level: 3
+        text: Scoring
+      - type: fields
+        subject: Score 0 1
+        entries:
+          - label: Level
+            value: 'Level 0: No Centralized Identity'
+          - label: Next section
+            value: building_from_zero
+          - label: Priority
+            value: Deploy directory service and basic identity management
+      - type: fields
+        subject: Score 2 4
+        entries:
+          - label: Level
+            value: 'Level 1: Basic Directory'
+          - label: Next section
+            value: 'building_from_zero (Phase 2: SSO deployment)'
+          - label: Priority
+            value: Deploy SSO and automate provisioning
+      - type: fields
+        subject: Score 5 7
+        entries:
+          - label: Level
+            value: 'Level 2: SSO and Automation'
+          - label: Next section
+            value: iam_strategy, privilege_management
+          - label: Priority
+            value: Implement zero trust and advanced automation
+      - type: fields
+        subject: Score 8 11
+        entries:
+          - label: Level
+            value: 'Level 3: Zero Trust Identity'
+          - label: Next section
+            value: zero_trust_identity, advanced sections
+          - label: Priority
+            value: Passwordless, workload identity, ML analytics
+      - type: fields
+        subject: Score 12 14
+        entries:
+          - label: Level
+            value: 'Level 4: Advanced Identity'
+          - label: Next section
+            value: All sections for continuous optimization
+          - label: Priority
+            value: Innovation and industry leadership

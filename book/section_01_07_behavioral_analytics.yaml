@@ -1,0 +1,262 @@
+# section_01_07_behavioral_analytics.yaml
+
+---
+title: Behavioral Analytics
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 7
+  section_code: '0107'
+  source_chapter: '2.4'
+  source_key: detection_engineering.behavioral_analytics
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 3+ organizations with mature detection programs
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Behavioral analytics detect anomalous activity based on deviations from established baselines.
+          This section addresses user and entity behavior analytics (UEBA), statistical anomaly detection,
+          and machine learning applications in detection engineering.
+  - heading: UEBA Fundamentals
+    id: ueba_fundamentals
+    blocks:
+      - type: definition
+        items:
+          - term: Purpose
+            description: Detect threats that evade signature-based detection
+      - type: fields
+        subject: What UEBA Detects
+        entries:
+          - label: Insider threats
+            value: Legitimate user acting maliciously
+          - label: Compromised accounts
+            value: Valid credentials used by attacker
+          - label: Privilege abuse
+            value: Authorized user exceeding normal behavior
+          - label: Novel attacks
+            value: Zero-day exploits with no known signatures
+      - type: fields
+        subject: UEBA Data Sources
+        entries:
+          - label: Authentication
+            value: Login patterns, locations, times
+          - label: Data access
+            value: Files, databases, applications accessed
+          - label: Network activity
+            value: Internal and external connections
+          - label: Privileged actions
+            value: Administrative commands, configuration changes
+      - type: heading
+        level: 3
+        text: Baseline Establishment
+      - type: fields
+        subject: Baselining Period
+        entries:
+          - label: Duration
+            value: Minimum 30 days, ideally 90 days
+          - label: Considerations
+            value:
+              - Exclude holiday periods (atypical behavior)
+              - Exclude incident response periods
+              - Include seasonal variations if relevant
+      - type: fields
+        subject: Baseline Metrics
+        entries:
+          - label: Per user
+            value:
+              - Typical login times (business hours vs after-hours)
+              - Typical login locations (office vs home vs travel)
+              - Systems typically accessed
+              - Volume of data accessed
+              - Peers and groups user interacts with
+          - label: Per asset
+            value:
+              - Typical inbound/outbound connections
+              - Typical process executions
+              - Typical network traffic volume
+              - Typical administrative actions
+      - type: heading
+        level: 4
+        text: Baseline Storage
+      - type: list
+        style: bullet
+        items:
+          - Store statistical summary (mean, standard deviation, percentiles)
+          - Not raw events (storage cost prohibitive)
+          - Update baselines continuously (rolling window)
+      - type: heading
+        level: 3
+        text: Anomaly Detection Methods
+      - type: fields
+        subject: Statistical Thresholds
+        entries:
+          - label: Method
+            value: Flag activity exceeding normal distribution
+          - label: Formula
+            value: Anomaly if value > mean + (3 × standard deviation)
+          - label: Example
+            value: User normally accesses 10 files/day, today accessed 500 files
+          - label: Tuning
+            value: Adjust multiplier (2σ, 3σ, 4σ) based on acceptable false positive rate
+      - type: fields
+        subject: Peer Group Comparison
+        entries:
+          - label: Method
+            value: Compare user behavior to similar users
+          - label: Example
+            value: Sales representative accessing engineering systems (peers do not)
+          - label: Implementation
+            value:
+              - Group users by role, department, access patterns
+              - Flag behavior atypical for peer group even if within user's historical range
+      - type: fields
+        subject: Time Series Analysis
+        entries:
+          - label: Method
+            value: Detect changes in behavior over time
+          - label: Techniques
+            value:
+              - Sudden spikes in activity volume
+              - Gradual drift from baseline (slow insider threat)
+              - Change in access patterns (new systems accessed)
+      - type: fields
+        subject: Impossible Scenarios
+        entries:
+          - label: Method
+            value: Logic-based detection of physically impossible activity
+          - label: Examples
+            value:
+              - Login from two countries <4 hours apart (impossible travel)
+              - Account active while user on vacation
+              - Service account login from user workstation (incorrect usage)
+  - heading: Machine Learning in Detection
+    id: machine_learning_in_detection
+    blocks:
+      - type: fields
+        subject: When to Use ML
+        entries:
+          - label: Appropriate use cases
+            value:
+              - High-volume data requiring pattern analysis beyond human capability
+              - Behaviors too complex for rule-based detection
+              - Need to detect novel attacks with no prior examples
+          - label: Inappropriate use cases
+            value:
+              - Known attack patterns (use rules instead - simpler and more reliable)
+              - Low-volume data (insufficient training examples)
+              - Compliance requirements demanding explainability (ML is black box)
+      - type: heading
+        level: 3
+        text: ML Model Types
+      - type: fields
+        subject: Supervised Learning
+        entries:
+          - label: Definition
+            value: Train model on labeled examples (malicious vs benign)
+          - label: Use case
+            value: Classify known malware, phishing emails
+          - label: Requirements
+            value:
+              - Large labeled dataset (thousands of examples)
+              - Balance of positive and negative examples
+          - label: Algorithms
+            value: Random Forest, Gradient Boosting, Neural Networks
+          - label: Challenge
+            value: Labeling data is time-intensive
+      - type: heading
+        level: 4
+        text: Unsupervised Learning
+      - type: definition
+        items:
+          - term: Definition
+            description: Model identifies patterns without labeled examples
+          - term: Use case
+            description: Anomaly detection, clustering similar behaviors
+      - type: fields
+        subject: Algorithms
+        entries:
+          - label: Isolation forest
+            value: Identifies outliers in high-dimensional data
+          - label: K means clustering
+            value: Groups similar entities, flags outliers
+          - label: Autoencoders
+            value: Neural networks detecting reconstruction errors
+      - type: definition
+        items:
+          - term: Advantage
+            description: No labeling required
+          - term: Challenge
+            description: High false positive rate, requires tuning
+      - type: fields
+        subject: Semi-Supervised Learning
+        entries:
+          - label: Definition
+            value: Small labeled dataset + large unlabeled dataset
+          - label: Use case
+            value: Limited labeled examples available
+          - label: Advantage
+            value: Balance between supervised accuracy and unsupervised scalability
+      - type: heading
+        level: 3
+        text: ML Deployment Considerations
+      - type: heading
+        level: 4
+        text: Model Training Pipeline
+      - type: list
+        style: bullet
+        items:
+          - Feature engineering (transform raw logs to ML features)
+          - Training dataset preparation (labeled examples)
+          - Model training and hyperparameter tuning
+          - Validation on hold-out dataset
+          - A/B testing (compare to baseline detection)
+      - type: fields
+        subject: Model Drift
+        entries:
+          - label: Problem
+            value: Model accuracy degrades as environment changes
+          - label: Causes
+            value:
+              - New applications deployed (new normal behavior)
+              - Organizational changes (new business processes)
+              - Attacker adaptation (evasion techniques)
+          - label: Mitigation
+            value:
+              - Monitor model performance metrics over time
+              - Retrain periodically (quarterly recommended)
+              - Human review of model predictions for quality assurance
+      - type: heading
+        level: 4
+        text: Explainability
+      - type: definition
+        items:
+          - term: Challenge
+            description: ML models are black boxes - difficult to explain why alert fired
+          - term: Importance
+            description: Analysts need to understand alert to investigate effectively
+      - type: fields
+        subject: Techniques
+        entries:
+          - label: Shap values
+            value: Explain feature contribution to prediction
+          - label: Lime
+            value: Local interpretable model-agnostic explanations
+          - label: Decision trees
+            value: Inherently explainable (follow branches)
+      - type: definition
+        items:
+          - term: Recommendation
+            description: Prefer interpretable models over complex neural networks for security

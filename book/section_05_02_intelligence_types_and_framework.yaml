@@ -1,0 +1,450 @@
+# section_05_02_intelligence_types_and_framework.yaml
+
+---
+title: Intelligence Types and Framework
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 5
+  section: 2
+  section_code: '0502'
+  source_chapter: '4.4'
+  source_key: threat_intelligence_operations.intelligence_types_and_framework
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Threat intelligence operates at three levels, each serving different audiences and enabling
+          different decisions. Understanding intelligence types ensures right intelligence reaches right
+          audience at right time.
+  - heading: Strategic Intelligence
+    id: strategic_intelligence
+    blocks:
+      - type: definition
+        items:
+          - term: Definition
+            description: High-level intelligence about threat landscape, adversary motivations, and long-term
+              trends
+      - type: heading
+        level: 3
+        text: Audience
+      - type: list
+        style: bullet
+        items:
+          - C-suite executives (CISO, CIO, CEO)
+          - Board of Directors
+          - Business unit leaders
+          - Strategic planners
+      - type: definition
+        items:
+          - term: Time horizon
+            description: 6-12 months or longer
+      - type: heading
+        level: 3
+        text: Questions Answered
+      - type: list
+        style: bullet
+        items:
+          - What threat actors target our industry?
+          - What are adversary objectives and motivations?
+          - How is threat landscape evolving?
+          - Where should we invest security budget?
+          - What are our biggest risks?
+          - How do we compare to industry peers?
+      - type: heading
+        level: 3
+        text: Intelligence Products
+      - type: fields
+        subject: Threat Landscape Reports
+        entries:
+          - label: Frequency
+            value: Quarterly or annually
+          - label: Content
+            value:
+              - Industry threat trends
+              - Major adversary campaigns
+              - Emerging attack techniques
+              - Geopolitical factors affecting risk
+          - label: Format
+            value: Executive summary (1-2 pages), detailed report (10-20 pages)
+      - type: fields
+        subject: Risk Assessments
+        entries:
+          - label: Content
+            value:
+              - Threat actor capabilities and intentions
+              - Organizational exposure and vulnerabilities
+              - Likelihood and impact of scenarios
+              - Recommended risk treatments
+          - label: Format
+            value: Risk matrix, scenario analysis, recommendations
+      - type: fields
+        subject: Competitor Intelligence
+        entries:
+          - label: Content
+            value:
+              - Major breaches in industry
+              - Peer organization security incidents
+              - Industry security posture benchmarking
+          - label: Format
+            value: Anonymized peer analysis, lessons learned
+      - type: heading
+        level: 3
+        text: Example Strategic Intelligence
+      - type: definition
+        items:
+          - term: Scenario
+            description: Nation-state actors targeting financial services
+      - type: code
+        lang: text
+        caption: >-
+          Product
+        text: |
+          STRATEGIC THREAT ASSESSMENT: Nation-State Targeting of Financial Services
+
+          KEY FINDINGS:
+          • APT28 and APT29 (Russian state actors) increased targeting of US/EU financial
+            institutions by 300% in Q3 2024
+          • Primary objective: Economic intelligence gathering (M&A, trading strategies)
+          • Secondary objective: Sanctions evasion research
+          • Attack vectors: Spear phishing executives, supply chain compromise of
+            financial software vendors
+
+          BUSINESS IMPACT:
+          • High risk of proprietary trading strategy theft
+          • Moderate risk of M&A deal intelligence compromise
+          • Regulatory implications if customer data accessed
+
+          RECOMMENDATIONS:
+          • Increase security budget for executive protection (MFA, device management)
+          • Accelerate vendor security assessment program
+          • Consider cyber insurance policy review
+          • Board-level discussion of geopolitical risk exposure
+
+          INVESTMENT PRIORITY: Allocate $500K to executive security hardening
+  - heading: Operational Intelligence
+    id: operational_intelligence
+    blocks:
+      - type: definition
+        items:
+          - term: Definition
+            description: Intelligence about specific adversary campaigns, attack methods, and infrastructure
+      - type: heading
+        level: 3
+        text: Audience
+      - type: list
+        style: bullet
+        items:
+          - Security operations management
+          - Detection engineering teams
+          - Incident response teams
+          - Security architecture teams
+      - type: definition
+        items:
+          - term: Time horizon
+            description: Weeks to months
+      - type: heading
+        level: 3
+        text: Questions Answered
+      - type: list
+        style: bullet
+        items:
+          - What campaigns are targeting organizations like ours?
+          - What tactics and techniques are adversaries using?
+          - What infrastructure should we monitor?
+          - What detection gaps exist?
+          - How should we prioritize vulnerability patching?
+      - type: heading
+        level: 3
+        text: Intelligence Products
+      - type: fields
+        subject: Campaign Reports
+        entries:
+          - label: Frequency
+            value: As campaigns emerge (weekly to monthly)
+          - label: Content
+            value:
+              - Campaign overview and timeline
+              - Adversary attribution (when known)
+              - Target selection criteria
+              - Attack kill chain and TTPs
+              - Indicators of compromise
+              - Detection and mitigation recommendations
+          - label: Format
+            value: 5-10 page tactical brief with appendices
+      - type: fields
+        subject: Adversary Profiles
+        entries:
+          - label: Content
+            value:
+              - Adversary capabilities and tools
+              - Historical targeting patterns
+              - TTP evolution over time
+              - Infrastructure preferences
+              - Operational security practices
+          - label: Format
+            value: Living document updated as new intelligence emerges
+      - type: fields
+        subject: Attack Technique Analysis
+        entries:
+          - label: Content
+            value:
+              - Deep dive on specific technique (e.g., Kerberoasting)
+              - How technique works technically
+              - Detection approaches
+              - Mitigation strategies
+              - Prevalence in current threat landscape
+          - label: Format
+            value: Technical analysis with detection rules and hunting queries
+      - type: heading
+        level: 3
+        text: Example Operational Intelligence
+      - type: definition
+        items:
+          - term: Scenario
+            description: Emotet malware campaign targeting financial services
+      - type: code
+        lang: text
+        caption: >-
+          Product
+        text: |
+          OPERATIONAL INTELLIGENCE: Emotet Banking Trojan Campaign (Q4 2024)
+
+          CAMPAIGN OVERVIEW:
+          Emotet botnet resumed operations November 2024 after 6-month dormancy.
+          Currently targeting financial services in US, UK, Germany with malicious
+          email attachments.
+
+          ATTACK CHAIN:
+          1. Phishing email with macro-enabled Word document
+          2. Macro downloads Emotet DLL from compromised WordPress sites
+          3. Emotet establishes persistence via scheduled task
+          4. Lateral movement via SMB and PSExec
+          5. Payload delivery: Cobalt Strike, ransomware, or banking trojans
+
+          DETECTION OPPORTUNITIES:
+          • Macro execution from Office documents (Sysmon Event 1)
+          • PowerShell download cradles (Sysmon Event 3, process creation)
+          • Scheduled task creation (Event ID 4698)
+          • Lateral movement via SMB (Event ID 5140, 5145)
+
+          RECOMMENDED ACTIONS:
+          1. Deploy detection rules (see Appendix A - Sigma rules included)
+          2. Proactive threat hunt for IOCs (see Appendix B)
+          3. Block known C2 domains at firewall (see Appendix C)
+          4. Review email security: attachment filtering, macro blocking
+
+          PRIORITY: HIGH - Active targeting of financial sector
+  - heading: Tactical Intelligence
+    id: tactical_intelligence
+    blocks:
+      - type: definition
+        items:
+          - term: Definition
+            description: Specific, technical indicators of compromise (IOCs) and signatures
+      - type: heading
+        level: 3
+        text: Audience
+      - type: list
+        style: bullet
+        items:
+          - SOC analysts
+          - Threat hunters
+          - Security tools (SIEM, EDR, firewall)
+          - Incident responders
+      - type: definition
+        items:
+          - term: Time horizon
+            description: Days to weeks (IOCs have short lifespan)
+      - type: heading
+        level: 3
+        text: Questions Answered
+      - type: list
+        style: bullet
+        items:
+          - Is this IP/domain/hash malicious?
+          - Are we compromised by this specific threat?
+          - What should we block immediately?
+          - What should we hunt for in our environment?
+      - type: heading
+        level: 3
+        text: Intelligence Products
+      - type: fields
+        subject: IOC Feeds
+        entries:
+          - label: Content
+            value:
+              - IP addresses (C2 servers, malicious infrastructure)
+              - Domain names (phishing, malware distribution)
+              - File hashes (MD5, SHA1, SHA256)
+              - URLs (phishing, exploit kits)
+              - Email addresses (phishing senders)
+          - label: Format
+            value: Machine-readable (STIX, JSON, CSV) for automated ingestion
+          - label: Metadata required
+            value:
+              - Confidence level (high/medium/low)
+              - First seen / last seen timestamps
+              - Associated adversary or campaign
+              - Indicator type and category
+              - Recommended action (block, alert, monitor)
+      - type: fields
+        subject: YARA Rules
+        entries:
+          - label: Content
+            value: Pattern-matching rules for malware identification
+          - label: Use cases
+            value:
+              - File scanning on endpoints
+              - Memory scanning for in-memory threats
+              - Network traffic inspection
+          - label: Format
+            value: YARA rule syntax
+      - type: fields
+        subject: Snort Suricata Signatures
+        entries:
+          - label: Content
+            value: Network intrusion detection signatures
+          - label: Use cases
+            value:
+              - IDS/IPS alerting
+              - Network traffic hunting
+              - C2 communication detection
+          - label: Format
+            value: Snort/Suricata rule syntax
+      - type: heading
+        level: 3
+        text: Example Tactical Intelligence
+      - type: definition
+        items:
+          - term: Scenario
+            description: Cobalt Strike C2 infrastructure IOCs
+      - type: code
+        lang: text
+        caption: >-
+          Product
+        text: |
+          TACTICAL INTELLIGENCE: Cobalt Strike C2 Infrastructure (APT29)
+
+          CONFIDENCE: HIGH
+          SOURCE: Internal incident response + peer sharing
+          VALID THROUGH: 2024-12-31 (infrastructure likely rotated after)
+
+          IP ADDRESSES:
+          198.51.100.89 (C2 server, active)
+          203.0.113.42 (staging server, active)
+          192.0.2.67 (exfiltration server, potentially active)
+
+          DOMAINS:
+          update-ms-windows[.]com (C2 beacon)
+          secure-microsoft-login[.]net (phishing landing page)
+
+          FILE HASHES:
+          SHA256: a1b2c3d4... (Cobalt Strike beacon DLL)
+          SHA256: e5f6g7h8... (Loader executable)
+
+          RECOMMENDED ACTIONS:
+          1. BLOCK: Add IPs and domains to firewall/proxy blocklist immediately
+          2. HUNT: Search network logs for connections to these indicators
+          3. SCAN: Search endpoints for file hashes
+          4. ALERT: Configure SIEM alerts for future connections
+
+          DETECTION RULES: See attached Sigma rules for SIEM deployment
+  - heading: Intelligence Pyramid
+    id: intelligence_pyramid
+    blocks:
+      - type: definition
+        items:
+          - term: Concept
+            description: Intelligence types form pyramid - lots of tactical at base, little strategic
+              at top
+      - type: fields
+        subject: Volume by Type
+        entries:
+          - label: Tactical
+            value: High volume (thousands of IOCs daily)
+          - label: Operational
+            value: Medium volume (dozens of reports monthly)
+          - label: Strategic
+            value: Low volume (quarterly reports)
+      - type: fields
+        subject: Automation by Type
+        entries:
+          - label: Tactical
+            value: Highly automated (machine-readable, auto-ingestion)
+          - label: Operational
+            value: Semi-automated (human analysis required)
+          - label: Strategic
+            value: Manual (human analysis and synthesis)
+      - type: fields
+        subject: Shelf Life by Type
+        entries:
+          - label: Tactical
+            value: Short (days to weeks)
+          - label: Operational
+            value: Medium (weeks to months)
+          - label: Strategic
+            value: Long (months to years)
+      - type: code
+        lang: text
+        caption: >-
+          Visualization
+        text: |2
+              STRATEGIC
+             (Executives)
+            Threat landscape
+              Long-term
+                Rare
+
+             OPERATIONAL
+          (Security teams)
+           Campaigns, TTPs
+            Medium-term
+              Regular
+
+              TACTICAL
+           (SOC, hunters)
+             IOCs, rules
+              Short-term
+            High-volume
+      - type: heading
+        level: 3
+        text: Integration Example
+      - type: definition
+        items:
+          - term: Scenario
+            description: APT29 targeting financial services
+      - type: fields
+        subject: Strategic Layer
+        entries:
+          - label: Audience
+            value: CISO, Board
+          - label: Message
+            value: Nation-state actors targeting financial sector for economic intelligence
+          - label: Action
+            value: Approve $500K investment in executive security controls
+      - type: fields
+        subject: Operational Layer
+        entries:
+          - label: Audience
+            value: Security operations management
+          - label: Message
+            value: APT29 using spear phishing → Cobalt Strike → data exfiltration chain
+          - label: Action
+            value: Deploy detection rules for each kill chain stage, conduct threat hunt
+      - type: fields
+        subject: Tactical Layer
+        entries:
+          - label: Audience
+            value: SOC analysts, security tools
+          - label: Message
+            value: Block these 50 C2 IPs/domains, alert on these file hashes
+          - label: Action
+            value: Automated blocking, SIEM alerting, proactive scanning

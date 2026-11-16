@@ -1,0 +1,305 @@
+# section_01_01_core_principles.yaml
+
+---
+title: Core Principles
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 1
+  section_code: '0101'
+  source_chapter: '2.4'
+  source_key: detection_engineering.core_principles
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Signal over Noise
+    id: signal_over_noise
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: DE-P001
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Optimize for detection accuracy, not alert volume
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Alert fatigue destroys detection programs. A detection team drowning in 10,000 daily alerts
+          misses the 3 that matter. Precision beats recall when human analysts are the constraint.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Design detection logic with false positive rate as primary metric
+          - Implement alert suppression and deduplication before analyst queues
+          - Measure success by true positive rate, not total detections
+          - Kill low-fidelity detections ruthlessly
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'True positive rate: Target >60% for production detections'
+          - 'Mean time to triage: <15 minutes for high-severity alerts'
+          - 'Alert volume per analyst: <50 actionable alerts per day'
+          - 'Detection retirement rate: Remove 10-20% of low-value rules quarterly'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Creating detections for every threat intelligence indicator without context
+          - Keeping noisy detections active because they might catch something
+          - Measuring detection program success by total alert count
+          - Ignoring alert suppression until SOC team burns out
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Enterprise with 8,000 daily alerts reduced volume by 75% through systematic rule tuning and
+          suppression. Result: analysts identified 3 critical incidents previously buried in noise, including
+          privilege escalation that had been active for 6 weeks.
+  - heading: Assume Breach
+    id: assume_breach
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: DE-P002
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Design detection assuming perimeter is already compromised
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Prevention eventually fails. Detection engineering assumes attackers are already inside the
+          environment and focuses on identifying malicious behavior post-compromise.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Focus on behavioral analytics over signature-based detection
+          - Monitor east-west traffic, not just north-south
+          - Detect lateral movement, privilege escalation, data exfiltration
+          - Assume credentials are compromised, detect misuse patterns
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Internal threat detection coverage: >80% of MITRE ATT&CK techniques'
+          - 'Mean time to detect lateral movement: <4 hours'
+          - 'Percentage of detections focused on post-exploitation: >50%'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Focusing detection budget on perimeter defenses only
+          - Assuming internal network traffic is trusted
+          - Building detection strategy around preventing initial access
+          - Ignoring user and entity behavior analytics
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Detection system identified compromised service account performing unusual database queries
+          72 hours after initial access. Perimeter controls detected nothing. Behavioral analytics flagged
+          query patterns inconsistent with service function, preventing data exfiltration of 2.3M customer
+          records.
+  - heading: Coverage over Complexity
+    id: coverage_over_complexity
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: DE-P003
+          - term: Maturity level
+            description: All levels
+          - term: Principle
+            description: Broad detection coverage beats sophisticated single-purpose detections
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Detection programs fail when they build 100 complex detections for rare scenarios while missing
+          basic attacker techniques. Cover common attack patterns with simple, reliable detections before
+          building sophisticated edge-case rules. Attackers exploit gaps in coverage, not sophistication.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Map detection capability to MITRE ATT&CK framework
+          - Prioritize detections for techniques observed in recent incidents
+          - Build simple detections for 80% of attack surface before complex rules
+          - Measure coverage gaps quarterly, address top 10 missing techniques
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'MITRE ATT&CK technique coverage: >80% of tactics'
+          - 'Detection gap assessment frequency: Quarterly minimum'
+          - 'Percentage of detections addressing common vs rare techniques: 80/20 split'
+          - 'Time to deploy detection for new critical technique: <2 weeks'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Building complex ML models before covering basic attack techniques
+          - Focusing detection budget on advanced persistent threats while missing commodity malware
+          - Creating detections for theoretical attacks never observed in wild
+          - Measuring success by detection sophistication rather than coverage
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Organization invested 6 months building sophisticated behavioral model for insider threat detection.
+          Meanwhile, 40% of MITRE ATT&CK techniques had zero detection coverage. Attackers used basic
+          credential dumping undetected for 3 months. Lesson: cover the fundamentals first.
+  - heading: Detection as Code
+    id: detection_as_code
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: DE-P004
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: 'Treat detection rules as code: versioned, tested, reviewed'
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Detection rules are logic that determines security outcomes. They require the same engineering
+          discipline as production code: version control, peer review, testing, and controlled deployment.
+          Ad-hoc rule creation leads to brittle detection programs that break during system changes.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Store all detection rules in version control (Git)
+          - Require peer review for rule changes before production deployment
+          - Implement CI/CD pipeline for detection rule testing and deployment
+          - Document rule logic, data sources, and expected behavior
+          - Test rules against historical data before production deployment
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Percentage of detections in version control: 100%'
+          - 'Detection deployment frequency: Weekly or on-demand'
+          - 'Rule review completion time: <48 hours'
+          - 'Test coverage: All rules validated against known true/false positives'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Creating detection rules directly in SIEM without version control
+          - Deploying rules to production without testing against historical data
+          - Skipping peer review for urgent detection additions
+          - Losing institutional knowledge when detection engineer leaves
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Detection team moved from ad-hoc SIEM rule creation to Git-based workflow. Result: rule deployment
+          time reduced from 2 weeks to 2 days, false positive rate decreased 40% through automated testing,
+          zero detection rules lost during platform migration because all rules documented and versioned.
+  - heading: Context Drives Priority
+    id: context_drives_priority
+    blocks:
+      - type: definition
+        items:
+          - term: ID
+            description: DE-P005
+          - term: Maturity level
+            description: Level 2+
+          - term: Principle
+            description: Detection priority depends on asset criticality and threat context
+      - type: heading
+        level: 3
+        text: Rationale
+      - type: prose
+        text: >-
+          Not all alerts deserve equal attention. Failed login on developer laptop differs from failed
+          login on production database. Detection engineering must encode business context and threat
+          intelligence to enable intelligent prioritization. Flat alert queues waste analyst time on low-impact
+          events.
+      - type: heading
+        level: 3
+        text: Implementation
+      - type: list
+        style: bullet
+        items:
+          - Tag assets by criticality (production, development, test environments)
+          - Integrate threat intelligence feeds for known adversary campaigns
+          - Implement alert scoring based on asset value and threat severity
+          - Route high-priority alerts to senior analysts, low-priority to automation
+          - Correlate detections with vulnerability data for risk-based prioritization
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Alert prioritization accuracy: >90% of P1 alerts are true positives'
+          - 'Mean time to respond to critical asset alerts: <30 minutes'
+          - 'Percentage of alerts with automated severity scoring: >95%'
+          - 'Analyst satisfaction with alert quality: >80% report actionable alerts'
+      - type: heading
+        level: 3
+        text: Anti-Patterns
+      - type: list
+        style: bullet
+        items:
+          - Treating all alerts equally regardless of target system criticality
+          - Ignoring threat intelligence when prioritizing detection response
+          - Alert fatigue from undifferentiated high-severity alerts
+          - Manual alert triage without context or automation
+      - type: heading
+        level: 3
+        text: Example
+      - type: prose
+        text: >-
+          Failed authentication detection generated 500 daily alerts across all systems. Added context:
+          production database failed logins = P1, developer workstation = P3. Result: analysts focused
+          on 20 critical alerts daily instead of 500 undifferentiated alerts. Detected compromised production
+          service account within 2 hours that would have been buried in noise under previous approach.

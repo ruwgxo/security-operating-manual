@@ -1,0 +1,259 @@
+# section_04_11_tabletop_exercises.yaml
+
+---
+title: Tabletop Exercises
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 4
+  section: 11
+  section_code: '0411'
+  source_chapter: '4.3'
+  source_key: incident_response.tabletop_exercises
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 1+ organizations practicing incident response
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Tabletop exercises build IR muscle memory without business impact. This section addresses exercise
+          design, facilitation, scenario development, and measuring exercise effectiveness.
+  - heading: Exercise Types
+    id: exercise_types
+    blocks:
+      - type: fields
+        subject: Discussion Based
+        entries:
+          - label: Format
+            value: Talk through scenario, no hands-on activity
+          - label: Duration
+            value: 2-3 hours
+          - label: Participants
+            value: IR team, management, stakeholders
+          - label: Objectives
+            value:
+              - Familiarize team with playbooks
+              - Identify gaps in procedures
+              - Practice decision-making
+          - label: Cost
+            value: Low - internal facilitation
+      - type: fields
+        subject: Walkthrough
+        entries:
+          - label: Format
+            value: Step through playbook in detail
+          - label: Duration
+            value: 4-6 hours
+          - label: Participants
+            value: IR team, technical staff
+          - label: Objectives
+            value:
+              - Validate playbook accuracy
+              - Ensure technical steps are clear
+              - Identify missing tools or access
+          - label: Cost
+            value: Low - internal facilitation
+      - type: fields
+        subject: Simulation
+        entries:
+          - label: Format
+            value: Hands-on exercise in test environment
+          - label: Duration
+            value: 1-2 days
+          - label: Participants
+            value: IR team, IT operations
+          - label: Objectives
+            value:
+              - Practice forensic collection
+              - Test containment procedures
+              - Validate tool functionality
+          - label: Cost
+            value: Medium - requires test environment and time
+      - type: fields
+        subject: Red Team Exercise
+        entries:
+          - label: Format
+            value: Simulated attack by red team, blue team responds
+          - label: Duration
+            value: Weeks to months
+          - label: Participants
+            value: IR team, SOC, IT operations vs red team
+          - label: Objectives
+            value:
+              - Validate detection capability
+              - Test real-world response under pressure
+              - Identify blind spots
+          - label: Cost
+            value: High - external red team or significant internal resources
+  - heading: Exercise Design
+    id: exercise_design
+    blocks:
+      - type: fields
+        subject: Scenario Selection
+        entries:
+          - label: Criteria
+            value:
+              - Realistic for organization's threat profile
+              - Tests specific playbooks or capabilities
+              - Appropriate complexity for participants
+          - label: Variety
+            value:
+              - Rotate scenarios across exercises
+              - Cover major threat types annually
+          - label: Examples
+            value:
+              - Ransomware (most common)
+              - Data breach
+              - Insider threat
+              - Supply chain compromise
+              - Cloud account takeover
+      - type: heading
+        level: 3
+        text: Scenario Development
+      - type: heading
+        level: 4
+        text: Scenario Template
+      - type: definition
+        items:
+          - term: Title
+            description: Ransomware Incident - Manufacturing Company
+      - type: fields
+        subject: Initial Situation
+        entries:
+          - label: Time
+            value: Monday 8:00 AM
+          - label: Scenario
+            value: Help desk receiving calls from users unable to access files. Desktop support reports
+              ransom notes on several workstations.
+      - type: heading
+        level: 5
+        text: Injects
+      - type: fields
+        subject: Inject 1
+        entries:
+          - label: Time
+            value: 8:30 AM
+          - label: Scenario
+            value: SOC identifies 50+ systems with encryption activity. Ransomware spreading rapidly.
+      - type: fields
+        subject: Inject 2
+        entries:
+          - label: Time
+            value: 9:00 AM
+          - label: Scenario
+            value: Backup team reports backup servers also encrypted. Backups offline.
+      - type: fields
+        subject: Inject 3
+        entries:
+          - label: Time
+            value: 10:00 AM
+          - label: Scenario
+            value: 'Attackers left note: ''$5M Bitcoin, 48 hours, or data published on dark web.'''
+      - type: fields
+        subject: Inject 4
+        entries:
+          - label: Time
+            value: 11:00 AM
+          - label: Scenario
+            value: Local news station called asking about ransomware incident.
+      - type: heading
+        level: 5
+        text: Discussion Questions
+      - type: list
+        style: bullet
+        items:
+          - What are immediate containment actions?
+          - How do we determine scope of encryption?
+          - Who makes decision about ransom payment?
+          - What do we tell employees? Customers? Media?
+          - How do we recover without backups?
+      - type: heading
+        level: 3
+        text: Facilitation Techniques
+      - type: heading
+        level: 4
+        text: Facilitator Role
+      - type: list
+        style: bullet
+        items:
+          - Present scenario and injects
+          - Facilitate discussion, don't provide answers
+          - Probe decisions with follow-up questions
+          - Keep exercise moving, manage time
+          - Document decisions and discussions
+      - type: fields
+        subject: Managing Participants
+        entries:
+          - label: Overthinkers
+            value: Encourage decision-making with imperfect information
+          - label: Quiet participants
+            value: Directly ask for their input
+          - label: Dominant participants
+            value: Thank for input, invite others to contribute
+          - label: Sidetracked discussions
+            value: Table for later, refocus on scenario
+  - heading: Measuring Exercise Effectiveness
+    id: measuring_exercise_effectiveness
+    blocks:
+      - type: fields
+        subject: Exercise Metrics
+        entries:
+          - label: Participation metrics
+            value:
+              - Participant count and roles
+              - Attendance rate (target 90%+)
+              - Participant engagement (observer assessment)
+          - label: Decision quality
+            value:
+              - Correct decisions made
+              - Time to make key decisions
+              - Decisions aligned with playbooks
+          - label: Gap identification
+            value:
+              - Number of gaps identified
+              - Severity of gaps
+              - Action items generated
+      - type: heading
+        level: 3
+        text: Post-Exercise Assessment
+      - type: fields
+        subject: Participant Survey
+        entries:
+          - label: Questions
+            value:
+              - Exercise realism (1-5 scale)
+              - Clarity of scenario (1-5 scale)
+              - Confidence in IR capability after exercise (1-5 scale)
+              - Open feedback on strengths and improvements
+      - type: heading
+        level: 4
+        text: Improvement Tracking
+      - type: list
+        style: bullet
+        items:
+          - Action items from exercise documented
+          - Owners assigned with due dates
+          - Progress reviewed monthly
+          - Completion validated before next exercise
+      - type: fields
+        subject: Exercise Progression
+        entries:
+          - label: Year 1
+            value: Quarterly tabletop exercises, discussion-based
+          - label: Year 2
+            value: Quarterly exercises with increasing realism, add simulation
+          - label: Year 3
+            value: Mix of tabletops and simulations, annual red team
+          - label: Year 4
+            value: Mature program with continuous testing

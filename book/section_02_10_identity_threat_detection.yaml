@@ -1,0 +1,346 @@
+# section_02_10_identity_threat_detection.yaml
+
+---
+title: Identity Threat Detection
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 10
+  section_code: '0210'
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.identity_threat_detection
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          All levels - integrate with Chapter 2.4 Detection Engineering
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Identity threat detection identifies compromised credentials, privilege abuse, and anomalous
+          identity behavior. This section bridges IAM implementation with security monitoring, providing
+          identity-specific detection use cases that complement Chapter 2.4's detection engineering framework.
+  - heading: Identity Attack Patterns
+    id: identity_attack_patterns
+    blocks:
+      - type: heading
+        level: 3
+        text: Credential Compromise
+      - type: fields
+        subject: Password Spraying
+        entries:
+          - label: Technique
+            value: Attempt common passwords against many accounts
+          - label: Detection
+            value:
+              - Multiple failed authentications across many users from single source
+              - 'Pattern: Few attempts per user (avoid lockout), many users targeted'
+          - label: Logic
+            value: Source IP with >5 users AND >3 failures per user in 1 hour
+      - type: fields
+        subject: Credential Stuffing
+        entries:
+          - label: Technique
+            value: Use stolen credentials from breaches against your systems
+          - label: Detection
+            value:
+              - Successful authentications from known malicious IPs
+              - Multiple failed authentications followed by success
+              - Unusual authentication patterns (time, location)
+          - label: Logic
+            value: Authentication from IP in threat intel feeds OR successful auth after >5 failures
+      - type: fields
+        subject: Phishing Credential Theft
+        entries:
+          - label: Technique
+            value: User enters credentials on fake login page
+          - label: Detection
+            value:
+              - Impossible travel (login from two locations <4 hours)
+              - Authentication immediately after MFA push denial
+              - Login from unusual user agent or device
+          - label: Logic
+            value: Successful auth from new device AND new location within 1 hour of MFA denial
+      - type: heading
+        level: 3
+        text: Privilege Abuse
+      - type: fields
+        subject: Privilege Escalation
+        entries:
+          - label: Technique
+            value: User gains higher privileges than authorized
+          - label: Detection
+            value:
+              - User added to administrative groups
+              - Permission grants outside approval workflow
+              - Service account elevated to admin
+          - label: Logic
+            value: User role change to admin AND no approval workflow record
+      - type: fields
+        subject: Lateral Movement
+        entries:
+          - label: Technique
+            value: Attacker moves from compromised account to other systems
+          - label: Detection
+            value:
+              - Account accessing unusual systems
+              - Service account used interactively
+              - Account accessing systems outside department
+          - label: Logic
+            value: User authentication to system never accessed before AND system criticality = high
+      - type: fields
+        subject: Data Exfiltration
+        entries:
+          - label: Technique
+            value: Bulk data access and download
+          - label: Detection
+            value:
+              - Unusual volume of data access
+              - Bulk downloads or API calls
+              - Access to data outside normal scope
+          - label: Logic
+            value: User data access volume >3σ above baseline in 1 hour
+      - type: heading
+        level: 3
+        text: Insider Threats
+      - type: fields
+        subject: Malicious Insider
+        entries:
+          - label: Behaviors
+            value:
+              - After-hours access to sensitive data
+              - Attempts to bypass security controls
+              - Accessing data unrelated to job function
+              - Large downloads before resignation
+          - label: Detection
+            value:
+              - Behavioral analytics (deviation from normal)
+              - Access to unusual resources
+              - Combination of indicators (access + download + time)
+      - type: fields
+        subject: Negligent Insider
+        entries:
+          - label: Behaviors
+            value:
+              - Sharing credentials
+              - Clicking phishing links
+              - Misconfiguring security settings
+          - label: Detection
+            value:
+              - Multiple authentications from different locations simultaneously
+              - Authentication after reported phishing email
+              - Security policy changes by non-admin
+  - heading: Identity Detection Rules
+    id: identity_detection_rules
+    blocks:
+      - type: heading
+        level: 3
+        text: Authentication Anomalies
+      - type: fields
+        subject: Impossible Travel
+        entries:
+          - label: Logic
+            value: Successful authentication from Location A, followed by authentication from Location
+              B where distance/time > possible travel
+          - label: Data sources
+            value: Authentication logs, geolocation data
+          - label: False positives
+            value: VPN, cloud services with multiple endpoints
+          - label: Tuning
+            value: Whitelist known VPN endpoints, cloud service IPs
+      - type: fields
+        subject: New Device Authentication
+        entries:
+          - label: Logic
+            value: Successful authentication from device not seen in past 90 days
+          - label: Data sources
+            value: Authentication logs, device fingerprinting
+          - label: False positives
+            value: Legitimate new device
+          - label: Tuning
+            value: Require MFA for new devices (detection becomes verification)
+      - type: fields
+        subject: After Hours Privileged Access
+        entries:
+          - label: Logic
+            value: Administrative authentication outside business hours (defined per user)
+          - label: Data sources
+            value: Authentication logs, HR data (work hours)
+          - label: False positives
+            value: On-call rotations, legitimate maintenance
+          - label: Tuning
+            value: Whitelist approved maintenance windows, on-call staff
+      - type: heading
+        level: 3
+        text: Authorization Anomalies
+      - type: fields
+        subject: Access to Sensitive Data
+        entries:
+          - label: Logic
+            value: User accesses data classified as sensitive when user never accessed before
+          - label: Data sources
+            value: Authorization logs, data classification
+          - label: False positives
+            value: Legitimate job function change
+          - label: Tuning
+            value: Require approval for first-time sensitive data access
+      - type: fields
+        subject: Excessive Permissions Usage
+        entries:
+          - label: Logic
+            value: User exercises permissions far beyond normal usage
+          - label: Data sources
+            value: Authorization logs, user behavior baseline
+          - label: False positives
+            value: Quarterly reporting, audit activities
+          - label: Tuning
+            value: Whitelist known batch processes, reporting periods
+      - type: heading
+        level: 3
+        text: Identity Lifecycle Anomalies
+      - type: fields
+        subject: Dormant Account Reactivation
+        entries:
+          - label: Logic
+            value: Account inactive >90 days suddenly authenticates
+          - label: Data sources
+            value: Authentication logs, last activity timestamps
+          - label: False positives
+            value: Seasonal workers, contractors returning
+          - label: Tuning
+            value: Disable accounts after inactivity, require re-enablement process
+      - type: fields
+        subject: Rapid Permission Grants
+        entries:
+          - label: Logic
+            value: User granted >5 new permissions in <1 hour
+          - label: Data sources
+            value: Permission change logs
+          - label: False positives
+            value: Legitimate role change, new hire onboarding
+          - label: Tuning
+            value: Require approval workflow, whitelist automated provisioning
+      - type: fields
+        subject: Account Created and Used Rapidly
+        entries:
+          - label: Logic
+            value: New account created and authenticates within 1 hour
+          - label: Data sources
+            value: Account creation logs, authentication logs
+          - label: False positives
+            value: Automated provisioning for new hires
+          - label: Tuning
+            value: Whitelist HR-triggered provisioning, alert on manual account creation
+  - heading: Identity Threat Response
+    id: identity_threat_response
+    blocks:
+      - type: heading
+        level: 3
+        text: Automated Response Actions
+      - type: fields
+        subject: Low Confidence Detections
+        entries:
+          - label: Action
+            value: Alert SOC analyst for investigation
+          - label: Example
+            value: New device authentication from known location
+      - type: fields
+        subject: Medium Confidence Detections
+        entries:
+          - label: Action
+            value: Require MFA re-authentication
+          - label: Example
+            value: After-hours access to sensitive data
+      - type: fields
+        subject: High Confidence Detections
+        entries:
+          - label: Action
+            value: Revoke session, disable account, alert security
+          - label: Example
+            value: Impossible travel detected
+      - type: heading
+        level: 3
+        text: Investigation Playbooks
+      - type: heading
+        level: 4
+        text: Compromised Credential Investigation
+      - type: fields
+        subject: Steps
+        entries:
+          - label: Step 1
+            value: Identify all sessions for affected user
+          - label: Step 2
+            value: Review authentication logs for 24 hours prior
+          - label: Step 3
+            value: Check for unusual access or data downloads
+          - label: Step 4
+            value: Force password reset and MFA re-enrollment
+          - label: Step 5
+            value: Review account for unauthorized changes
+          - label: Step 6
+            value: Notify user and manager
+      - type: heading
+        level: 4
+        text: Privilege Escalation Investigation
+      - type: fields
+        subject: Steps
+        entries:
+          - label: Step 1
+            value: Identify who granted privileges (approval audit trail)
+          - label: Step 2
+            value: Review actions taken with elevated privileges
+          - label: Step 3
+            value: Assess impact (data accessed, changes made)
+          - label: Step 4
+            value: Revoke excessive privileges
+          - label: Step 5
+            value: Determine if privilege grant was authorized
+          - label: Step 6
+            value: Escalate to incident response if unauthorized
+  - heading: Integration with Detection Engineering
+    id: integration_with_detection_engineering
+    blocks:
+      - type: definition
+        items:
+          - term: Cross-reference
+            description: See Chapter 2.4 Detection Engineering for comprehensive detection framework
+      - type: heading
+        level: 3
+        text: Identity Detection in SIEM
+      - type: list
+        style: bullet
+        items:
+          - Forward all identity logs to SIEM (authentication, authorization, permission changes)
+          - Implement identity detection rules in SIEM
+          - Correlate identity events with endpoint and network detections
+          - Enrich alerts with user context (department, role, manager)
+      - type: heading
+        level: 3
+        text: Identity Threat Hunting
+      - type: list
+        style: bullet
+        items:
+          - Hunt for anomalous identity patterns not covered by rules
+          - Analyze privileged account usage
+          - Investigate outliers in access patterns
+          - Correlate with threat intelligence on identity-focused attacks
+      - type: heading
+        level: 3
+        text: Metrics
+      - type: list
+        style: bullet
+        items:
+          - 'Mean time to detect identity compromise: Target <4 hours'
+          - 'Identity-based detection rule coverage: >20 rules'
+          - 'False positive rate for identity detections: Target <20%'
+          - 'Percentage of compromised credentials detected before impact: Target >80%'

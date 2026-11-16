@@ -1,0 +1,347 @@
+# section_02_07_zero_trust_identity.yaml
+
+---
+title: Zero Trust Identity
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 7
+  section_code: '0207'
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.zero_trust_identity
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 3+ organizations implementing zero trust architecture
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Zero trust identity assumes breach and continuously verifies every access request. Traditional
+          security: authenticate once, trust for session. Zero trust: verify user, device, context for
+          every access decision. This section addresses continuous authentication, device trust, and context-aware
+          access.
+  - heading: Zero Trust Principles
+    id: zero_trust_principles
+    blocks:
+      - type: fields
+        subject: Never Trust Always Verify
+        entries:
+          - label: Traditional
+            value: Authenticate at login, trust for 8-hour session
+          - label: Zero trust
+            value: Verify identity, device, context for every resource access
+      - type: fields
+        subject: Assume Breach
+        entries:
+          - label: Traditional
+            value: Trust internal network, authenticated users
+          - label: Zero trust
+            value: Assume attacker inside, verify everything
+      - type: fields
+        subject: Least Privilege
+        entries:
+          - label: Traditional
+            value: Grant broad permissions, revoke when user leaves
+          - label: Zero trust
+            value: Grant minimum required, time-bound, continuously validate
+  - heading: Continuous Authentication
+    id: continuous_authentication
+    blocks:
+      - type: heading
+        level: 3
+        text: Session Verification
+      - type: fields
+        subject: Traditional Approach
+        entries:
+          - label: Steps
+            value:
+              - User logs in with password + MFA at 8 AM
+              - Receives session token valid until logout or timeout (8 hours)
+              - Token grants access to all authorized resources
+          - label: Problem
+            value: Attacker steals token, full access until expiration
+      - type: fields
+        subject: Continuous Approach
+        entries:
+          - label: Steps
+            value:
+              - User authenticates initially
+              - Session validity re-verified periodically (every 15-60 minutes)
+              - 'Re-verification checks: device still compliant, location unchanged, behavior normal'
+              - High-risk actions trigger additional authentication
+          - label: Result
+            value: Stolen session token has limited validity, high-risk actions blocked
+      - type: heading
+        level: 3
+        text: Risk Based Step Up
+      - type: definition
+        items:
+          - term: Concept
+            description: Require additional authentication when risk increases
+      - type: fields
+        subject: Risk Signals
+        entries:
+          - label: Low risk
+            value:
+              - Known device, known location, business hours
+              - 'Action: Read access to normal resources'
+          - label: Medium risk
+            value:
+              - Unknown location, after hours, unmanaged device
+              - 'Action: Require MFA re-authentication'
+          - label: High risk
+            value:
+              - Impossible travel, high-value resource, privileged action
+              - 'Action: Require MFA + manager approval, or block'
+      - type: heading
+        level: 4
+        text: Step Up Examples
+      - type: list
+        style: bullet
+        items:
+          - User accessing financial data from coffee shop → require MFA
+          - Admin attempting privilege escalation at 2 AM → require MFA + approval
+          - Bulk data download from new device → block, require re-authentication and justification
+  - heading: Device Trust
+    id: device_trust
+    blocks:
+      - type: heading
+        level: 3
+        text: Managed vs Unmanaged
+      - type: fields
+        subject: Managed Devices
+        entries:
+          - label: Definition
+            value: Devices owned and managed by organization
+          - label: Characteristics
+            value:
+              - MDM/UEM agent installed (Jamf, Intune, Workspace ONE)
+              - Security policies enforced (encryption, patching, EDR)
+              - Compliance validated continuously
+          - label: Trust level
+            value: Higher - known security posture
+      - type: fields
+        subject: Unmanaged Devices
+        entries:
+          - label: Definition
+            value: BYOD or personal devices
+          - label: Characteristics
+            value:
+              - No MDM enrollment
+              - Unknown security posture
+              - Potentially compromised
+          - label: Trust level
+            value: Lower - assume insecure
+      - type: heading
+        level: 3
+        text: Device Compliance Checks
+      - type: fields
+        subject: Encryption
+        entries:
+          - label: Requirement
+            value: Full disk encryption enabled
+          - label: Validation
+            value: MDM reports encryption status
+          - label: Enforcement
+            value: Block access if encryption disabled
+      - type: fields
+        subject: OS Version
+        entries:
+          - label: Requirement
+            value: Operating system up to date
+          - label: Validation
+            value: Device reports OS version to MDM
+          - label: Enforcement
+            value: Block if OS version unsupported or critically outdated
+      - type: fields
+        subject: EDR Agent
+        entries:
+          - label: Requirement
+            value: Endpoint detection agent installed and running
+          - label: Validation
+            value: EDR platform reports agent health
+          - label: Enforcement
+            value: Block if agent disabled or unhealthy
+      - type: fields
+        subject: Jailbreak Rooted
+        entries:
+          - label: Requirement
+            value: Device not jailbroken or rooted
+          - label: Validation
+            value: MDM detects jailbreak/root status
+          - label: Enforcement
+            value: Block access from compromised devices
+      - type: fields
+        subject: Device Based Access Policies
+        entries:
+          - label: Managed device full access
+            value:
+              - Compliant managed device → full access to resources
+              - User can access internal applications, sensitive data
+          - label: Unmanaged device limited access
+            value:
+              - Unmanaged device → limited access only
+              - Web-based access only (no client apps)
+              - Cannot download or sync data
+              - Session isolation (no local caching)
+          - label: Non-compliant device blocked
+            value:
+              - Managed device out of compliance → access blocked
+              - User must remediate (enable encryption, update OS) before access restored
+  - heading: Context Aware Access
+    id: context_aware_access
+    blocks:
+      - type: heading
+        level: 3
+        text: Contextual Signals
+      - type: fields
+        subject: Location
+        entries:
+          - label: Items
+            value:
+              - Geographic location (country, city, IP address)
+              - Network context (corporate, VPN, public WiFi, home)
+          - label: Trusted locations
+            value: Office, VPN, known home networks
+          - label: Untrusted locations
+            value: Public WiFi, foreign countries, Tor exit nodes
+      - type: fields
+        subject: Time
+        entries:
+          - label: Items
+            value:
+              - Time of day, day of week
+              - Expected work hours based on user profile
+          - label: Anomaly
+            value: Access at 3 AM when user normally works 9-5
+      - type: fields
+        subject: Behavioral
+        entries:
+          - label: Items
+            value:
+              - Access patterns, resource usage, typical workflows
+              - Deviation from baseline behavior
+          - label: Anomaly
+            value: Developer suddenly accessing HR systems
+      - type: fields
+        subject: Threat Intelligence
+        entries:
+          - label: Items
+            value:
+              - IP reputation, known malicious infrastructure
+              - Geolocation associated with threat actors
+          - label: Action
+            value: Block access from known-bad IPs
+      - type: heading
+        level: 3
+        text: Policy Examples
+      - type: fields
+        subject: Sensitive Data Access
+        entries:
+          - label: Policy
+            value:
+              - 'Allow if: managed device AND trusted location AND business hours'
+              - 'Require MFA if: managed device AND untrusted location'
+              - 'Block if: unmanaged device OR high-risk location'
+      - type: fields
+        subject: Administrative Actions
+        entries:
+          - label: Policy
+            value:
+              - 'Allow if: privileged user AND managed device AND trusted location'
+              - 'Require approval if: after hours OR untrusted location'
+              - 'Block if: impossible travel OR unmanaged device'
+      - type: fields
+        subject: External Collaboration
+        entries:
+          - label: Policy
+            value:
+              - Allow read-only access for partners
+              - Require MFA for any access
+              - Block download and sync
+              - Session expires after 2 hours
+  - heading: Zero Trust Network Access
+    id: zero_trust_network_access
+    blocks:
+      - type: definition
+        items:
+          - term: Concept
+            description: Replace VPN with identity-based micro-tunnels
+      - type: heading
+        level: 3
+        text: Traditional VPN Problems
+      - type: list
+        style: bullet
+        items:
+          - Binary access (on VPN = trusted, off VPN = untrusted)
+          - Full network access once connected (lateral movement easy)
+          - No per-application access control
+          - Performance bottleneck (all traffic through VPN)
+      - type: heading
+        level: 3
+        text: ZTNA Approach
+      - type: list
+        style: bullet
+        items:
+          - Identity-based access per application
+          - No network-level access (cannot ping or scan)
+          - Least privilege (access only to authorized apps)
+          - Per-request verification (continuous authentication)
+      - type: heading
+        level: 3
+        text: ZTNA Architecture
+      - type: fields
+        subject: Components
+        entries:
+          - label: Connector
+            value: Lightweight agent on user device
+          - label: Gateway
+            value: Cloud service authenticating and authorizing requests
+          - label: Application connector
+            value: Proxy in front of application, validates gateway token
+      - type: fields
+        subject: Flow
+        entries:
+          - label: Step 1
+            value: User's connector authenticates to gateway (identity, device, context)
+          - label: Step 2
+            value: User requests access to application
+          - label: Step 3
+            value: Gateway evaluates policy, grants time-limited token
+          - label: Step 4
+            value: Connector establishes encrypted tunnel to application connector
+          - label: Step 5
+            value: Application connector validates token, proxies connection
+          - label: Step 6
+            value: User accesses application, no network-level access
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Per-application access control
+          - No lateral movement (cannot reach other apps)
+          - Scales better (no centralized VPN concentrator)
+          - Better user experience (no connect/disconnect)
+      - type: heading
+        level: 3
+        text: ZTNA Vendors
+      - type: list
+        style: bullet
+        items:
+          - Zscaler Private Access
+          - Cloudflare Access
+          - Palo Alto Prisma Access
+          - Cisco Secure Access (formerly Duo Network Gateway)

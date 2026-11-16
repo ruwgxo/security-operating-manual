@@ -1,0 +1,550 @@
+# section_02_04_iam_strategy.yaml
+
+---
+title: IAM Strategy
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 2
+  section: 4
+  section_code: '0204'
+  source_chapter: '3.1'
+  source_key: identity_and_access_management.iam_strategy
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations with foundational IAM
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          IAM strategy determines how identity and access decisions are made at scale. This section addresses
+          authentication architecture, authorization models, and strategic decisions for enterprise identity
+          management. Organizations with basic directory and SSO use this section to mature toward zero
+          trust and advanced access control.
+  - heading: Authentication Architecture
+    id: authentication_architecture
+    blocks:
+      - type: heading
+        level: 3
+        text: Authentication vs Authorization
+      - type: fields
+        subject: Authentication
+        entries:
+          - label: Definition
+            value: Proving who you are (identity verification)
+          - label: Methods
+            value:
+              - Something you know (password, PIN)
+              - Something you have (phone, hardware token)
+              - Something you are (biometric)
+          - label: Outcome
+            value: Authenticated identity (user ID, email)
+      - type: fields
+        subject: Authorization
+        entries:
+          - label: Definition
+            value: Determining what you can access (permission evaluation)
+          - label: Inputs
+            value:
+              - Authenticated identity
+              - Requested resource
+              - Context (time, location, device)
+          - label: Outcome
+            value: Access granted or denied
+      - type: fields
+        subject: Separation of Concerns
+        entries:
+          - label: Principle
+            value: Authentication and authorization are distinct responsibilities
+          - label: Rationale
+            value: User authenticates once (SSO), authorization evaluated per resource
+      - type: heading
+        level: 3
+        text: Authentication Factors
+      - type: fields
+        subject: Single Factor
+        entries:
+          - label: Definition
+            value: One authentication method (typically password)
+          - label: Risk
+            value: Compromise of single factor grants full access
+          - label: Use case
+            value: Low-risk applications only (not recommended)
+      - type: heading
+        level: 4
+        text: Multi-Factor
+      - type: definition
+        items:
+          - term: Definition
+            description: Two or more authentication methods
+      - type: fields
+        subject: Combinations
+        entries:
+          - label: Strong
+            value: Password + hardware token
+          - label: Moderate
+            value: Password + push notification
+          - label: Weak
+            value: Password + SMS (vulnerable to SIM swap)
+      - type: definition
+        items:
+          - term: Recommendation
+            description: Require MFA for all external access, privileged access
+      - type: heading
+        level: 4
+        text: Risk Based Authentication
+      - type: definition
+        items:
+          - term: Definition
+            description: Authentication requirements vary based on risk signals
+      - type: heading
+        level: 5
+        text: Risk Signals
+      - type: list
+        style: bullet
+        items:
+          - Login location (known vs unknown)
+          - Device posture (managed vs unmanaged)
+          - Time of day (business hours vs 3 AM)
+          - Resource sensitivity (public app vs financial system)
+      - type: fields
+        subject: Behavior
+        entries:
+          - label: Low risk
+            value: Authenticate with password only
+          - label: Medium risk
+            value: Require MFA
+          - label: High risk
+            value: Block access or require additional verification
+      - type: definition
+        items:
+          - term: Implementation
+            description: Conditional access policies in SSO platform
+      - type: heading
+        level: 3
+        text: Authentication Protocols
+      - type: fields
+        subject: SAML
+        entries:
+          - label: Name
+            value: Security Assertion Markup Language
+          - label: Use case
+            value: Enterprise SSO, web applications
+          - label: Flow
+            value:
+              - User accesses application (Service Provider)
+              - Application redirects to SSO (Identity Provider)
+              - User authenticates at SSO
+              - SSO returns SAML assertion to application
+              - Application validates assertion and grants access
+          - label: Pros
+            value:
+              - Mature, widely adopted
+              - Strong security features
+              - Extensive enterprise support
+          - label: Cons
+            value:
+              - XML-based (verbose, complex)
+              - Certificate management required
+              - Primarily web-based
+      - type: fields
+        subject: OIDC
+        entries:
+          - label: Name
+            value: OpenID Connect
+          - label: Use case
+            value: Modern applications, APIs, mobile apps
+          - label: Flow
+            value:
+              - User accesses application (Relying Party)
+              - Application redirects to SSO (OpenID Provider)
+              - User authenticates at SSO
+              - SSO returns ID token (JWT) to application
+              - Application validates token and grants access
+          - label: Pros
+            value:
+              - Modern, JSON-based
+              - Better for mobile and API authentication
+              - Built on OAuth 2.0
+          - label: Cons
+            value:
+              - Newer (less enterprise adoption than SAML)
+              - Requires understanding of OAuth flows
+      - type: fields
+        subject: OAuth
+        entries:
+          - label: Name
+            value: OAuth 2.0
+          - label: Use case
+            value: Delegated authorization, API access
+          - label: Flow
+            value:
+              - Application requests access to resource on behalf of user
+              - User authorizes application at authorization server
+              - Application receives access token
+              - Application uses access token to access resource API
+          - label: Important
+            value: OAuth is authorization, not authentication (use with OIDC for authentication)
+      - type: fields
+        subject: Kerberos
+        entries:
+          - label: Name
+            value: Kerberos
+          - label: Use case
+            value: Windows environments, internal networks
+          - label: Flow
+            value:
+              - User authenticates to Key Distribution Center (KDC)
+              - KDC issues Ticket Granting Ticket (TGT)
+              - User requests service ticket for specific resource
+              - User presents service ticket to access resource
+          - label: Pros
+            value:
+              - Single sign-on within domain
+              - Strong cryptographic security
+              - Efficient (no password transmission)
+          - label: Cons
+            value:
+              - Complex configuration
+              - Time synchronization required
+              - Limited to network environments
+      - type: heading
+        level: 3
+        text: Passwordless Authentication
+      - type: definition
+        items:
+          - term: Rationale
+            description: Passwords are weakest link - phishable, reused, forgotten
+      - type: fields
+        subject: FIDO2 Webauthn
+        entries:
+          - label: Method
+            value: Hardware security keys with cryptographic challenge-response
+          - label: User experience
+            value:
+              - User inserts security key or uses biometric
+              - No password typing required
+              - Phishing-resistant (domain-bound)
+          - label: Implementation
+            value:
+              - Deploy FIDO2-compatible security keys (YubiKey, Titan)
+              - Configure SSO platform for WebAuthn
+              - Enroll users with security keys
+              - Backup method required (second key or recovery codes)
+          - label: Pros
+            value:
+              - Strongest authentication method
+              - Phishing-resistant
+              - Fast user experience
+          - label: Cons
+            value:
+              - Hardware cost
+              - User must carry physical key
+              - Key loss requires recovery process
+      - type: fields
+        subject: Biometric Authentication
+        entries:
+          - label: Methods
+            value:
+              - Fingerprint (Touch ID, Windows Hello)
+              - Facial recognition (Face ID)
+              - Iris scanning
+          - label: Implementation
+            value:
+              - Requires biometric-capable devices
+              - Biometric data stored locally on device (not centralized)
+              - Used with platform authenticators (Apple, Microsoft, Google)
+          - label: Pros
+            value:
+              - Convenient (no password or hardware key)
+              - Difficult to steal or replicate
+          - label: Cons
+            value:
+              - Privacy concerns (biometric data)
+              - Not all devices support
+              - Accessibility considerations
+      - type: fields
+        subject: Magic Links
+        entries:
+          - label: Method
+            value: Email or SMS link for authentication
+          - label: Flow
+            value:
+              - User enters email address
+              - System sends time-limited authentication link
+              - User clicks link to authenticate
+          - label: Pros
+            value:
+              - No password to remember
+              - Simple user experience
+          - label: Cons
+            value:
+              - Email compromise = account compromise
+              - Requires email access
+              - Not suitable for high-security scenarios
+          - label: Use case
+            value: Consumer apps, low-security scenarios
+  - heading: Authorization Patterns
+    id: authorization_patterns
+    blocks:
+      - type: heading
+        level: 3
+        text: Overview
+      - type: prose
+        text: >-
+          Authorization determines what authenticated users can access. The choice of authorization model
+          affects scalability, security, and operational complexity. This section compares major authorization
+          models and provides guidance on selection and implementation.
+      - type: heading
+        level: 3
+        text: RBAC
+      - type: definition
+        items:
+          - term: Name
+            description: Role-Based Access Control
+          - term: Concept
+            description: Users assigned to roles, roles have permissions
+      - type: fields
+        subject: Structure
+        entries:
+          - label: Users
+            value: Individual people
+          - label: Roles
+            value: Job functions (developer, manager, analyst)
+          - label: Permissions
+            value: Actions on resources (read, write, delete)
+          - label: Assignment
+            value: User → Role → Permission
+      - type: fields
+        subject: Example
+        entries:
+          - label: Role
+            value: Database Developer
+          - label: Permissions
+            value:
+              - Read dev database
+              - Write dev database
+              - Read test database
+          - label: Users
+            value: All developers in engineering department
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Simple to understand and implement
+          - Aligns with organizational structure
+          - Widely supported by applications
+          - Easier to audit (what can this role do?)
+      - type: heading
+        level: 4
+        text: Disadvantages
+      - type: list
+        style: bullet
+        items:
+          - Role explosion (hundreds of roles as org grows)
+          - Static (cannot adapt to dynamic context)
+          - Coarse-grained (difficulty with fine-grained permissions)
+          - Role assignment becomes complex at scale
+      - type: definition
+        items:
+          - term: Best for
+            description: Traditional enterprises, stable organizational structure
+      - type: heading
+        level: 3
+        text: ABAC
+      - type: definition
+        items:
+          - term: Name
+            description: Attribute-Based Access Control
+          - term: Concept
+            description: Access decisions based on attributes of user, resource, environment
+      - type: fields
+        subject: Attributes
+        entries:
+          - label: User attributes
+            value:
+              - Department, job title, clearance level
+              - Location, employment type
+          - label: Resource attributes
+            value:
+              - Classification (public, internal, confidential)
+              - Owner, creation date
+          - label: Environment attributes
+            value:
+              - Time of day, day of week
+              - Network location, device type
+      - type: fields
+        subject: Policy Example
+        entries:
+          - label: Rule
+            value: 'Grant access if:'
+          - label: Conditions
+            value:
+              - User.department == Resource.department
+              - User.clearance_level >= Resource.classification
+              - Environment.time between 08:00 and 18:00
+              - Device.managed == true
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Fine-grained access control
+          - Dynamic (adapts to context)
+          - Scales better than RBAC (fewer policies than roles)
+          - Supports complex business logic
+      - type: heading
+        level: 4
+        text: Disadvantages
+      - type: list
+        style: bullet
+        items:
+          - Complex to design and implement
+          - Difficult to audit and troubleshoot
+          - Performance overhead (policy evaluation)
+          - Requires attribute management infrastructure
+      - type: definition
+        items:
+          - term: Best for
+            description: Complex security requirements, dynamic environments, cloud-native
+      - type: heading
+        level: 3
+        text: ReBAC
+      - type: definition
+        items:
+          - term: Name
+            description: Relationship-Based Access Control
+          - term: Concept
+            description: Access based on relationships between entities
+      - type: fields
+        subject: Graph Structure
+        entries:
+          - label: Entities
+            value: Users, groups, resources, organizations
+          - label: Relationships
+            value: Member of, owner of, manager of, parent of
+      - type: fields
+        subject: Example
+        entries:
+          - label: Relationship
+            value: Alice manages Bob
+          - label: Rule
+            value: Managers can view direct reports' files
+          - label: Result
+            value: Alice can access Bob's files
+      - type: fields
+        subject: Use Cases
+        entries:
+          - label: Hierarchical organizations
+            value:
+              - Managers access direct reports' resources
+              - Department heads access all department resources
+          - label: Multi-tenant systems
+            value:
+              - Organization members access organization resources
+              - No cross-organization access
+          - label: Social platforms
+            value:
+              - Friends can view profiles
+              - Groups can share documents
+      - type: heading
+        level: 4
+        text: Advantages
+      - type: list
+        style: bullet
+        items:
+          - Natural for hierarchical access
+          - Handles multi-tenancy elegantly
+          - Relationships already exist in organization
+      - type: heading
+        level: 4
+        text: Disadvantages
+      - type: list
+        style: bullet
+        items:
+          - Requires graph database or complex queries
+          - Can be difficult to reason about at scale
+          - Performance considerations for deep hierarchies
+      - type: definition
+        items:
+          - term: Best for
+            description: Multi-tenant SaaS, hierarchical organizations, social platforms
+      - type: heading
+        level: 3
+        text: Authorization Architecture Patterns
+      - type: fields
+        subject: Embedded Authorization
+        entries:
+          - label: Description
+            value: Authorization logic in application code
+          - label: Example
+            value: if (user.role == 'admin') { allow(); }
+          - label: Pros
+            value:
+              - Simple for small applications
+              - Low latency (no external calls)
+          - label: Cons
+            value:
+              - Policy changes require code deployment
+              - Difficult to audit across applications
+              - Inconsistent enforcement
+          - label: Use case
+            value: Single application, simple permissions
+      - type: fields
+        subject: Centralized Authorization Service
+        entries:
+          - label: Description
+            value: Dedicated service evaluates authorization policies
+          - label: Architecture
+            value:
+              - 'Application asks authorization service: Can User X do Action Y on Resource Z?'
+              - Authorization service evaluates policies and returns decision
+          - label: Pros
+            value:
+              - Centralized policy management
+              - Consistent enforcement across applications
+              - Policy changes without code deployment
+              - Easier auditing and compliance
+          - label: Cons
+            value:
+              - Network latency for every authorization check
+              - Single point of failure (requires HA)
+              - Performance bottleneck at scale
+          - label: Use case
+            value: Multiple applications, complex policies
+      - type: fields
+        subject: Policy Engine
+        entries:
+          - label: Description
+            value: Distribute policy engine with applications, centrally manage policies
+          - label: Examples
+            value: Open Policy Agent (OPA), Casbin
+          - label: Architecture
+            value:
+              - Each application embeds policy engine
+              - Policies distributed from central management
+              - Engine evaluates policies locally
+          - label: Pros
+            value:
+              - Low latency (local evaluation)
+              - Scalable (no central bottleneck)
+              - Centralized policy management
+          - label: Cons
+            value:
+              - Policy distribution complexity
+              - Version skew between applications
+          - label: Use case
+            value: Microservices, cloud-native, high-scale

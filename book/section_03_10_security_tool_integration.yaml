@@ -1,0 +1,157 @@
+# section_03_10_security_tool_integration.yaml
+
+---
+title: Security Tool Integration
+updated: '2026-06-12'
+version: 1.0.0
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 3
+  section: 10
+  section_code: '0310'
+  source_chapter: '4.1'
+  source_key: security_automation.security_tool_integration
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations integrating security tools with automation
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Security tool integration enables orchestration across security stack. This section addresses
+          integration patterns, API best practices, and common integration challenges.
+  - heading: Integration Approaches
+    id: integration_approaches
+    blocks:
+      - type: fields
+        subject: API Integration
+        entries:
+          - label: Method
+            value: Direct API calls from automation platform
+          - label: Advantages
+            value:
+              - Real-time interaction
+              - Rich functionality
+              - Bidirectional communication
+          - label: Challenges
+            value:
+              - API authentication and credential management
+              - Rate limiting
+              - API version changes
+          - label: Best practices
+            value:
+              - Use API keys or OAuth tokens
+              - Implement exponential backoff for rate limits
+              - Version API calls, test before upgrading
+      - type: fields
+        subject: Webhook Integration
+        entries:
+          - label: Method
+            value: Tool sends webhook to automation platform on events
+          - label: Advantages
+            value:
+              - Real-time event notification
+              - No polling required
+              - Efficient
+          - label: Challenges
+            value:
+              - Webhook authentication
+              - Reliability (what if webhook fails?)
+              - Event deduplication
+          - label: Best practices
+            value:
+              - Validate webhook signature
+              - Implement idempotent webhook handlers
+              - Log all webhooks for replay if needed
+      - type: fields
+        subject: Syslog Integration
+        entries:
+          - label: Method
+            value: Tool sends logs via syslog, automation parses
+          - label: Advantages
+            value:
+              - Universal protocol
+              - Works with legacy tools
+          - label: Challenges
+            value:
+              - Unstructured log parsing
+              - Limited interaction (one-way)
+          - label: Best practices
+            value:
+              - Normalize syslog to structured format
+              - Use syslog for alerting, API for actions
+  - heading: Common Tool Integrations
+    id: common_tool_integrations
+    blocks:
+      - type: heading
+        level: 3
+        text: SIEM
+      - type: fields
+        subject: APIs
+        entries:
+          - label: Splunk
+            value: REST API, Python SDK
+          - label: Elastic
+            value: REST API, Python Elasticsearch client
+          - label: Sentinel
+            value: Azure Monitor API, Logic Apps
+      - type: fields
+        subject: Operations
+        entries:
+          - label: Query
+            value: Search logs for IOCs, investigate alerts
+          - label: Alert creation
+            value: Create custom alerts programmatically
+          - label: Data ingestion
+            value: Send custom data to SIEM
+      - type: heading
+        level: 3
+        text: EDR
+      - type: fields
+        subject: APIs
+        entries:
+          - label: Crowdstrike
+            value: Falcon API
+          - label: Microsoft defender
+            value: Microsoft Graph API
+          - label: Sentinelone
+            value: Management API
+      - type: fields
+        subject: Operations
+        entries:
+          - label: Query
+            value: Search endpoints for IOCs, processes, files
+          - label: Containment
+            value: Isolate endpoints, kill processes
+          - label: Response
+            value: Delete files, remediate threats
+      - type: heading
+        level: 3
+        text: Cloud Platforms
+      - type: fields
+        subject: APIs
+        entries:
+          - label: AWS
+            value: boto3 (Python SDK)
+          - label: Azure
+            value: Azure SDK, Azure CLI
+          - label: GCP
+            value: Google Cloud Client Libraries
+      - type: fields
+        subject: Operations
+        entries:
+          - label: Inventory
+            value: List resources, security groups, IAM policies
+          - label: Configuration
+            value: Modify security settings
+          - label: Incident response
+            value: Snapshot volumes, isolate instances

@@ -1,0 +1,172 @@
+# section_01_10_threat_intelligence_integration.yaml
+
+---
+title: Threat Intelligence Integration
+updated: '2026-06-12'
+version: '1.0'
+authors:
+  - Raghav Dinesh
+inline_markup: none
+section_info:
+  chapter: 1
+  section: 10
+  section_code: '0110'
+  source_chapter: '2.4'
+  source_key: detection_engineering.threat_intelligence_integration
+  license: MIT
+  repository: https://github.com/ruwgxo/security-operating-manual
+prose_content:
+  - heading: Audience
+    id: audience
+    blocks:
+      - type: prose
+        text: >-
+          Level 2+ organizations enhancing detection with external intelligence
+  - heading: Overview
+    id: overview
+    blocks:
+      - type: prose
+        text: >-
+          Threat intelligence enhances detection by providing context on adversary behavior, tactics,
+          and indicators. This section addresses intelligence source selection, integration methods, and
+          operationalization for detection engineering.
+  - heading: Intelligence Source Types
+    id: intelligence_source_types
+    blocks:
+      - type: fields
+        subject: Strategic Intelligence
+        entries:
+          - label: Definition
+            value: High-level trends, adversary group profiles, campaign analysis
+          - label: Use case
+            value: Informs detection strategy and priority setting
+          - label: Sources
+            value:
+              - Vendor threat reports (Mandiant, CrowdStrike, Recorded Future)
+              - Government bulletins (CISA, FBI, NSA)
+              - ISAC sharing (industry-specific)
+          - label: Update frequency
+            value: Monthly to quarterly
+      - type: fields
+        subject: Tactical Intelligence
+        entries:
+          - label: Definition
+            value: TTPs, attack techniques, detection guidance
+          - label: Use case
+            value: Informs detection rule development
+          - label: Sources
+            value:
+              - MITRE ATT&CK adversary profiles
+              - Vendor TTP reports
+              - Community research and blogs
+          - label: Update frequency
+            value: Weekly to monthly
+      - type: fields
+        subject: Operational Intelligence
+        entries:
+          - label: Definition
+            value: Indicators of compromise (IPs, domains, file hashes)
+          - label: Use case
+            value: Direct integration into detection rules
+          - label: Sources
+            value:
+              - Commercial feeds (AlienVault, ThreatConnect)
+              - Open source feeds (abuse.ch, Emerging Threats)
+              - Industry sharing (ISAC, Information Sharing and Analysis Organizations)
+          - label: Update frequency
+            value: Real-time to daily
+  - heading: Intelligence Integration Architecture
+    id: intelligence_integration_architecture
+    blocks:
+      - type: fields
+        subject: Threat Intelligence Platform
+        entries:
+          - label: Purpose
+            value: Aggregate, normalize, and distribute intelligence feeds
+          - label: Capabilities
+            value:
+              - Ingest multiple feed formats
+              - Deduplicate and score indicators
+              - Enrich with context (geolocation, reputation)
+              - Distribute to SIEM, firewall, proxy, EDR
+          - label: Platforms
+            value: MISP, ThreatConnect, Anomali, ThreatQuotient
+      - type: heading
+        level: 3
+        text: SIEM Integration
+      - type: fields
+        subject: Methods
+        entries:
+          - label: Lookup enrichment
+            value: Enrich alerts with threat intel at detection time
+          - label: Watchlist matching
+            value: Alert when activity matches known-bad indicator
+          - label: Risk scoring
+            value: Increase alert severity for activity involving threat intel hits
+      - type: fields
+        subject: Automated Blocking
+        entries:
+          - label: Use case
+            value: High-confidence indicators (known C2 infrastructure)
+          - label: Integration points
+            value:
+              - Firewall block rules
+              - DNS sinkhole
+              - Proxy blacklist
+              - EDR containment
+          - label: Caution
+            value: False positive in threat feed can cause outage - vet feeds carefully
+  - heading: Intelligence Operationalization
+    id: intelligence_operationalization
+    blocks:
+      - type: fields
+        subject: Indicator Lifecycle
+        entries:
+          - label: Ingestion
+            value:
+              - Receive indicator from feed
+              - Validate format and required fields
+              - Assign confidence score based on source
+          - label: Enrichment
+            value:
+              - Add geolocation data
+              - Check against historical logs (has this been seen before?)
+              - Correlate with other indicators
+          - label: Activation
+            value:
+              - 'High confidence: Automated blocking'
+              - 'Medium confidence: Alert on match'
+              - 'Low confidence: Log match for analysis'
+          - label: Aging
+            value:
+              - 'Indicators expire based on type (IP: 30 days, domain: 90 days, file hash: 1 year)'
+              - Remove expired indicators to maintain performance
+          - label: Feedback loop
+            value:
+              - Analysts mark indicators as true positive or false positive
+              - Adjust confidence scoring based on feedback
+              - Share false positives back to feed provider
+      - type: heading
+        level: 3
+        text: Feed Quality Management
+      - type: fields
+        subject: Evaluation Criteria
+        entries:
+          - label: Relevance
+            value: Feed covers threats relevant to organization
+          - label: Accuracy
+            value: Low false positive rate in production
+          - label: Timeliness
+            value: Indicators published quickly after threat discovery
+          - label: Volume
+            value: Manageable indicator volume for systems
+      - type: heading
+        level: 4
+        text: Continuous Assessment
+      - type: list
+        style: bullet
+        items:
+          - Track false positive rate per feed
+          - Measure detection success attributed to feed
+          - Review feed value quarterly
+          - Discontinue low-value feeds
