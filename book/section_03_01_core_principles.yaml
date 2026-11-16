@@ -306,7 +306,6 @@ prose_content:
             = 117 hours saved/day'
           - 'Automated response: 50 incidents/week auto-resolved, MTTR 5 minutes vs 2 hours manual = 97.5
             hours saved/week'
-          - 'Cost savings: 200 hours/week saved × $100/hour = $1M annually'
       - type: heading
         level: 3
         text: Anti-Patterns
@@ -317,17 +316,6 @@ prose_content:
           - Measuring only execution count, not business value
           - No alerting on automation failures
           - Assuming automation works without validation
-      - type: heading
-        level: 3
-        text: Example
-      - type: prose
-        text: >-
-          Organization built 20 automation playbooks but couldn't quantify value. Leadership questioned
-          investment. Implemented comprehensive metrics: execution count, time saved, success rate, business
-          impact. Discovered 5 playbooks provided 80% of value. Retired 10 low-value playbooks. Focused
-          investment on high-impact automation. Result: Demonstrated $2M annual cost savings, secured
-          additional automation budget.
-  - heading: Security as Code
     id: security_as_code
     blocks:
       - type: definition

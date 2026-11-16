@@ -116,9 +116,6 @@ references:
     - 'FIDO2/WebAuthn: Passwordless authentication'
 cross_references:
   manual_chapters:
-    - chapter: '2.1'
-      title: Zero Trust Architecture
-      relevance: Zero trust network architecture complements zero trust identity
     - chapter: '2.4'
       title: Detection Engineering
       relevance: Identity threat detection integrates with detection program
@@ -128,10 +125,3 @@ cross_references:
     - chapter: '4.3'
       title: Incident Response
       relevance: Responding to identity compromise incidents
-  vault_repositories:
-    - repo: vault-identity-access
-      description: IAM policies, configurations, and automation scripts
-      relevance: Implementation examples for this chapter
-    - repo: vault-detection-response
-      description: Identity threat detection rules
-      relevance: SIEM rules for identity monitoring

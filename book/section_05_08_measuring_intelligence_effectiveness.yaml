@@ -202,7 +202,7 @@ prose_content:
         subject: Detection Rule Effectiveness
         entries:
           - label: Metric
-            value: True positive rate of intelligence-driven detection rules
+            value: Precision of intelligence-driven detection rules
           - label: Target
             value: '>80% precision (TP / (TP + FP))'
           - label: Tracking
@@ -305,12 +305,6 @@ prose_content:
       - type: heading
         level: 6
         text: Example
-      - type: list
-        style: bullet
-        items:
-          - Automated enrichment saves 10 hours/day × $100/hour = $250K/year
-          - Prevented 2 breaches × $4M average cost × 30% probability = $2.4M value
-          - 'Total value: $2.65M'
       - type: definition
         items:
           - term: ROI
@@ -379,19 +373,6 @@ prose_content:
             value:
               - Analyst certifications (GIAC, vendor training)
               - Conference attendance
-      - type: fields
-        subject: Example Annual Costs
-        entries:
-          - label: Personnel
-            value: $300K (2 analysts × $150K)
-          - label: Technology
-            value: $150K (TIP $50K, feeds $75K, ISAC $10K, tools $15K)
-          - label: Infrastructure
-            value: $20K
-          - label: Training
-            value: $30K
-          - label: Total
-            value: $500K annually
       - type: heading
         level: 3
         text: Value Side
@@ -402,24 +383,15 @@ prose_content:
         level: 5
         text: Time Savings
       - type: fields
-        subject: Automated Enrichment
-        entries:
-          - label: Calculation
-            value: 10 hours/day saved × 250 workdays × $100/hour = $250K
-      - type: fields
         subject: Faster Incident Response
         entries:
           - label: Calculation
             value: Intelligence enables 50% faster MTTR on 100 incidents/year
-          - label: Value
-            value: 50 hours saved × $100/hour = $5K per incident × 100 = $500K
       - type: fields
         subject: Prevented Breaches
         entries:
           - label: Scenario
             value: Proactive threat hunting prevented 1 APT before data exfiltration
-          - label: Calculation
-            value: Average data breach cost $4.5M (IBM report) × 50% probability = $2.25M
           - label: Note
             value: Conservative estimate - actual prevented breach value could be higher
       - type: fields
@@ -427,12 +399,6 @@ prose_content:
         entries:
           - label: Scenario
             value: Intelligence context reduces SOC alert volume 30%
-          - label: Calculation
-            value: 30% × 500 alerts/day × 15 min/alert × 250 days × $100/hour = $937K
-      - type: definition
-        items:
-          - term: Total quantifiable value
-            description: $3.937M annually
       - type: heading
         level: 4
         text: Unquantifiable Value
@@ -452,17 +418,11 @@ prose_content:
         entries:
           - label: Formula
             value: (Value - Cost) / Cost × 100%
-          - label: Calculation
-            value: ($3.937M - $500K) / $500K = 687% ROI
       - type: fields
         subject: Conservative ROI
         entries:
           - label: Approach
             value: Only count most defensible values
-          - label: Value
-            value: $1.25M (time savings + FP reduction only, exclude prevented breach)
-          - label: Calculation
-            value: ($1.25M - $500K) / $500K = 150% ROI
       - type: fields
         subject: Presentation to Leadership
         entries:

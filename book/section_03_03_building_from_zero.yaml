@@ -35,8 +35,6 @@ prose_content:
     blocks:
       - type: definition
         items:
-          - term: Budget
-            description: Estimated $50K-$200K first year (SOAR platform, integrations, training)
           - term: Team
             description: Minimum 1 security engineer with scripting skills (Python, PowerShell)
           - term: Executive support
@@ -306,8 +304,6 @@ prose_content:
             value:
               - Expensive
               - Complex for beginners
-          - label: Cost
-            value: $50K-$150K annually
           - label: Best for
             value: Splunk shops, large enterprises
       - type: fields
@@ -322,8 +318,6 @@ prose_content:
             value:
               - Steep learning curve
               - Less intuitive UI
-          - label: Cost
-            value: $75K-$200K annually
           - label: Best for
             value: Complex automation requirements
       - type: fields
@@ -338,8 +332,6 @@ prose_content:
             value:
               - Smaller integration library
               - Newer platform
-          - label: Cost
-            value: $40K-$100K annually
           - label: Best for
             value: Mid-size orgs, ease of use priority
       - type: fields
@@ -354,8 +346,6 @@ prose_content:
             value:
               - Smaller market presence
               - Limited pre-built content
-          - label: Cost
-            value: $30K-$80K annually
           - label: Best for
             value: Cloud-native, automation-forward teams
       - type: fields

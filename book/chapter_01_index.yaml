@@ -16,7 +16,6 @@ section_info:
   legacy:
     subtitle: Alert Management & SIEM Strategies at Scale
     github: github.com/ruwgxo
-    last_updated: '2024-11-29'
     license: MIT
     classification: Security Operating Manual
 chapter_overview:
@@ -34,19 +33,6 @@ chapter_overview:
     step_2: Complete maturity self-assessment
     step_3: Jump to section matching your maturity level
     step_4: Return to advanced sections as program matures
-  sections_in_this_document:
-    - overview
-    - core_principles
-    - maturity_model
-    - building_from_zero
-    - detection_strategy
-    - siem_architecture_patterns
-    - log_collection_normalization
-    - rule_development_methodology
-    - behavioral_analytics
-    - false_positive_reduction
-    - coverage_assessment
-    - threat_intelligence_integration
   core_principles_covered:
     - id: DE-P001
       name: Signal over noise
@@ -100,19 +86,6 @@ references:
   elastic_detection_rules: https://github.com/elastic/detection-rules
   splunk_security_content: https://github.com/splunk/security_content
 cross_references:
-  vault_repositories:
-    - repo: vault-detection-response
-      description: Actual detection rules and SIEM queries
-      relevance: Implementation examples for this chapter
-    - repo: vault-security-analytics
-      description: Security analytics and threat intelligence
-      relevance: Advanced analytics techniques
-    - repo: vault-incident-response
-      description: Incident response playbooks
-      relevance: What happens after detection fires
-    - repo: vault-automation-scripts
-      description: Security automation and orchestration
-      relevance: Automated response to detections
   manual_chapters:
     - chapter: '3.1'
       title: IAM at Scale

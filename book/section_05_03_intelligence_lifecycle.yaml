@@ -168,7 +168,6 @@ prose_content:
               - Timely tactical intelligence
           - label: Challenges
             value:
-              - Expensive ($50K-$500K+ annually)
               - Overlap between vendors
               - May include generic threats not relevant to you
           - label: Selection criteria
@@ -381,7 +380,7 @@ prose_content:
           - label: Confidence
             value: High, medium, low
           - label: TLP
-            value: Traffic Light Protocol (TLP:WHITE, GREEN, AMBER, RED)
+            value: Traffic Light Protocol (TLP 2.0 labels CLEAR, GREEN, AMBER, AMBER+STRICT and RED)
       - type: heading
         level: 5
         text: Benefits

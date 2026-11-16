@@ -207,7 +207,7 @@ prose_content:
       - type: list
         style: bullet
         items:
-          - True positive rate <10% after multiple tuning attempts
+          - Precision <10% after multiple tuning attempts
           - No true positives in 90 consecutive days
           - Technique no longer relevant to threat model
           - Replaced by higher-fidelity detection

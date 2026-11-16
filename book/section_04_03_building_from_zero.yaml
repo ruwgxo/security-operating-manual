@@ -35,8 +35,6 @@ prose_content:
     blocks:
       - type: definition
         items:
-          - term: Budget
-            description: Estimated $100K-$300K first year (tools, training, external IR retainer)
           - term: Team
             description: Minimum 2-3 people dedicated to IR (can be part-time initially)
           - term: Executive support
@@ -382,8 +380,6 @@ prose_content:
             value: Forensic Toolkit for disk analysis
           - label: Axiom
             value: Digital evidence management
-          - label: Cost
-            value: $10K-$50K per license
       - type: fields
         subject: Open Source Tools
         entries:
@@ -457,8 +453,6 @@ prose_content:
               - Forensic analysis tools
               - Virtualization for malware analysis
               - Network isolation for analyzing malicious artifacts
-          - label: Cost
-            value: $5K-$15K per workstation
       - type: heading
         level: 3
         text: 'Month 5: External Relationships'
@@ -477,7 +471,6 @@ prose_content:
             value:
               - Annual fee for guaranteed availability
               - Discounted hourly rates when engaged
-              - 'Typical retainer: $25K-$100K annually'
           - label: Engagement triggers
             value:
               - Advanced persistent threat (APT) suspected
@@ -514,8 +507,6 @@ prose_content:
               - Notify insurer within required timeframe (typically 24-48 hours)
               - Follow insurer's panel of approved vendors
               - Document all costs for reimbursement
-          - label: Cost
-            value: $5K-$50K annually depending on coverage
       - type: heading
         level: 3
         text: 'Month 6: First Tabletop Exercise'

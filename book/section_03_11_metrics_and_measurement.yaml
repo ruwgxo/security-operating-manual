@@ -73,8 +73,6 @@ prose_content:
         entries:
           - label: Calculation
             value: Time saved × Analyst hourly rate
-          - label: Example
-            value: 24 hours × $100/hour = $2,400 saved daily = $600K annually
       - type: fields
         subject: Analyst Capacity Freed
         entries:

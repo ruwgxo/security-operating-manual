@@ -36,8 +36,6 @@ prose_content:
     blocks:
       - type: definition
         items:
-          - term: Budget
-            description: Estimated $50K-$300K first year (identity platform, integrations, staff)
           - term: Team
             description: Minimum 1 identity engineer or systems administrator
           - term: Executive support
@@ -156,8 +154,6 @@ prose_content:
               - On-premise infrastructure required
               - Limited cloud application support
               - Complex for non-Windows environments
-          - label: Cost
-            value: $50K-$150K implementation, $20K-$50K annual
           - label: Best for
             value: Windows-centric, on-premise applications
       - type: fields
@@ -173,8 +169,6 @@ prose_content:
             value:
               - Less mature than on-premise AD
               - Limited on-premise application support without hybrid
-          - label: Cost
-            value: $6-$60 per user/month depending on tier
           - label: Best for
             value: Microsoft-centric, cloud-first organizations
       - type: fields
@@ -190,8 +184,6 @@ prose_content:
             value:
               - No directory service included (needs backend directory)
               - Premium pricing
-          - label: Cost
-            value: $3-$15 per user/month
           - label: Best for
             value: Multi-cloud, SaaS-heavy environments
       - type: fields
@@ -206,8 +198,6 @@ prose_content:
             value:
               - Limited enterprise features
               - Smaller SSO integration library
-          - label: Cost
-            value: $6-$18 per user/month
           - label: Best for
             value: Startups, Google-centric organizations
       - type: heading
@@ -485,7 +475,6 @@ prose_content:
               - No batteries, long-lived
           - label: Cons
             value:
-              - Cost ($20-50 per key)
               - Users must carry physical token
           - label: Use case
             value: High-privilege users (admins, executives)

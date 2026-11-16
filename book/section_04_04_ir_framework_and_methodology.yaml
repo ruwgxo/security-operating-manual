@@ -35,7 +35,7 @@ prose_content:
       - type: definition
         items:
           - term: Overview
-            description: 'NIST SP 800-61: Computer Security Incident Handling Guide'
+            description: 'NIST SP 800-61 Rev. 3: Incident Response Recommendations and Considerations for Cybersecurity Risk Management'
       - type: fields
         subject: 'Phase 1: Preparation'
         entries:
