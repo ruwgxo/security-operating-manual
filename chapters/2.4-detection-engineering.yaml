@@ -1,53 +1,53 @@
 detection_engineering:
   
-    metadata:
-      chapter: "2.4"
-      title: "Detection Engineering"
-      subtitle: "Alert Management & SIEM Strategies at Scale"
-      author: "Raghav Dinesh"
-      github: "github.com/ruwgxo"
-      version: "1.0"
-      last_updated: "2024-11-29"
-      license: "MIT"
-      classification: "Security Operating Manual"
-    
-    sections_in_this_document:
-      - overview
-      - core_principles
-      - maturity_model
-      - building_from_zero
-      - detection_strategy
-      - siem_architecture_patterns
-      - log_collection_normalization
-      - rule_development_methodology
-      - behavioral_analytics
-      - false_positive_reduction
-      - coverage_assessment
-      - threat_intelligence_integration
-    
-    core_principles_covered:
-      - id: "DE-P001"
-        name: "Signal over noise"
-        applies_to: "All maturity levels"
-      - id: "DE-P002"
-        name: "Assume breach"
-        applies_to: "All maturity levels"
-      - id: "DE-P003"
-        name: "Coverage over complexity"
-        applies_to: "All maturity levels"
-      - id: "DE-P004"
-        name: "Detection as code"
-        applies_to: "Maturity Level 2+"
-      - id: "DE-P005"
-        name: "Context drives priority"
-        applies_to: "Maturity Level 2+"
-    
-    how_to_use_this_chapter:
-      step_1: "Read overview and core principles"
-      step_2: "Complete maturity self-assessment"
-      step_3: "Jump to section matching your maturity level"
-      step_4: "Return to advanced sections as program matures"
+  metadata:
+    chapter: "2.4"
+    title: "Detection Engineering"
+    subtitle: "Alert Management & SIEM Strategies at Scale"
+    author: "Raghav Dinesh"
+    github: "github.com/ruwgxo"
+    version: "1.0"
+    last_updated: "2024-11-29"
+    license: "MIT"
+    classification: "Security Operating Manual"
   
+  sections_in_this_document:
+    - overview
+    - core_principles
+    - maturity_model
+    - building_from_zero
+    - detection_strategy
+    - siem_architecture_patterns
+    - log_collection_normalization
+    - rule_development_methodology
+    - behavioral_analytics
+    - false_positive_reduction
+    - coverage_assessment
+    - threat_intelligence_integration
+  
+  core_principles_covered:
+    - id: "DE-P001"
+      name: "Signal over noise"
+      applies_to: "All maturity levels"
+    - id: "DE-P002"
+      name: "Assume breach"
+      applies_to: "All maturity levels"
+    - id: "DE-P003"
+      name: "Coverage over complexity"
+      applies_to: "All maturity levels"
+    - id: "DE-P004"
+      name: "Detection as code"
+      applies_to: "Maturity Level 2+"
+    - id: "DE-P005"
+      name: "Context drives priority"
+      applies_to: "Maturity Level 2+"
+  
+  how_to_use_this_chapter:
+    step_1: "Read overview and core principles"
+    step_2: "Complete maturity self-assessment"
+    step_3: "Jump to section matching your maturity level"
+    step_4: "Return to advanced sections as program matures"
+
   overview: |
     Detection engineering is the systematic practice of designing, developing, 
     and operating security detection capabilities at scale. This framework 
@@ -844,7 +844,7 @@ detection_engineering:
           perfect rule logic. Deploy functional capability quickly, iterate based on 
           operational experience.
 
-siem_architecture_patterns:
+  siem_architecture_patterns:
     
     audience: "Level 1-4 organizations deploying or optimizing SIEM"
     
@@ -969,7 +969,7 @@ siem_architecture_patterns:
           large_scale: ">500 GB/day: Splunk, Elastic, or Chronicle"
           massive_scale: ">5 TB/day: Chronicle or heavily optimized Elastic cluster"
 
-deployment_architecture:
+    deployment_architecture:
       
       single_instance_deployment:
         use_case: "Small organizations (<50 GB/day)"

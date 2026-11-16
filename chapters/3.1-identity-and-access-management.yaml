@@ -1769,16 +1769,18 @@ identity_and_access_management:
       session_verification:
         
         traditional_approach:
-          - "User logs in with password + MFA at 8 AM"
-          - "Receives session token valid until logout or timeout (8 hours)"
-          - "Token grants access to all authorized resources"
+          steps:
+            - "User logs in with password + MFA at 8 AM"
+            - "Receives session token valid until logout or timeout (8 hours)"
+            - "Token grants access to all authorized resources"
           problem: "Attacker steals token, full access until expiration"
           
         continuous_approach:
-          - "User authenticates initially"
-          - "Session validity re-verified periodically (every 15-60 minutes)"
-          - "Re-verification checks: device still compliant, location unchanged, behavior normal"
-          - "High-risk actions trigger additional authentication"
+          steps:
+            - "User authenticates initially"
+            - "Session validity re-verified periodically (every 15-60 minutes)"
+            - "Re-verification checks: device still compliant, location unchanged, behavior normal"
+            - "High-risk actions trigger additional authentication"
           result: "Stolen session token has limited validity, high-risk actions blocked"
           
       risk_based_step_up:
@@ -1864,24 +1866,28 @@ identity_and_access_management:
       contextual_signals:
         
         location:
-          - "Geographic location (country, city, IP address)"
-          - "Network context (corporate, VPN, public WiFi, home)"
+          items:
+            - "Geographic location (country, city, IP address)"
+            - "Network context (corporate, VPN, public WiFi, home)"
           trusted_locations: "Office, VPN, known home networks"
           untrusted_locations: "Public WiFi, foreign countries, Tor exit nodes"
           
         time:
-          - "Time of day, day of week"
-          - "Expected work hours based on user profile"
+          items:
+            - "Time of day, day of week"
+            - "Expected work hours based on user profile"
           anomaly: "Access at 3 AM when user normally works 9-5"
           
         behavioral:
-          - "Access patterns, resource usage, typical workflows"
-          - "Deviation from baseline behavior"
+          items:
+            - "Access patterns, resource usage, typical workflows"
+            - "Deviation from baseline behavior"
           anomaly: "Developer suddenly accessing HR systems"
           
         threat_intelligence:
-          - "IP reputation, known malicious infrastructure"
-          - "Geolocation associated with threat actors"
+          items:
+            - "IP reputation, known malicious infrastructure"
+            - "Geolocation associated with threat actors"
           action: "Block access from known-bad IPs"
           
       policy_examples:

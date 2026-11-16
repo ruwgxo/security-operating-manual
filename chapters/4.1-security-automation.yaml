@@ -795,7 +795,7 @@ security_automation:
 
 
 
-phase_3_advanced_playbooks:
+    phase_3_advanced_playbooks:
       
       timeline: "Months 7-9"
       objective: "Build comprehensive playbook library covering major use cases"
@@ -982,14 +982,6 @@ phase_3_advanced_playbooks:
           integration_point: "CI/CD pipeline before deployment"
           scan_targets:
             - "Terraform templates"
-            - "CloudFormation templates
-
-
-
-
-
-scan_targets:
-            - "Terraform templates"
             - "CloudFormation templates"
             - "Kubernetes manifests"
             - "Ansible playbooks"
@@ -1081,8 +1073,8 @@ scan_targets:
         
         detection_rules_as_code:
           format: "Sigma rules (vendor-agnostic YAML)"
-          repository_structure:
-```
+          repository_structure: |
+            ```
             detection-rules/
               rules/
                 authentication/
@@ -1100,7 +1092,7 @@ scan_targets:
               .github/
                 workflows/
                   test_and_deploy.yml
-```
+            ```
             
         ci_cd_pipeline:
           
@@ -1137,8 +1129,8 @@ scan_targets:
             - "Every detection rule has test cases"
             - "Tests run on every commit"
             - "Tests verify detection logic and thresholds"
-          example_test:
-```python
+          example_test: |
+            ```python
             def test_brute_force_detection():
                 # Known bad: 10 failed logins in 5 minutes
                 events = generate_failed_logins(count=10, timespan=300)
@@ -1149,7 +1141,7 @@ scan_targets:
                 events = generate_failed_logins(count=3, timespan=300)
                 result = run_detection(brute_force_rule, events)
                 assert result.alert_triggered == False
-```
+            ```
             
         version_control_benefits:
           - "Track all changes to detection rules"
@@ -1564,12 +1556,15 @@ scan_targets:
             - "Count recipients"
             - "Identify if VIPs received email"
           step_4_decision:
-            condition_malicious: "Threat intel confirms malicious"
-            action: "Proceed to remediation"
-            condition_suspicious: "No definitive intel but suspicious"
-            action: "Request human review"
-            condition_benign: "Confirmed legitimate"
-            action: "Close incident, notify user"
+            malicious:
+              condition: "Threat intel confirms malicious"
+              action: "Proceed to remediation"
+            suspicious:
+              condition: "No definitive intel but suspicious"
+              action: "Request human review"
+            benign:
+              condition: "Confirmed legitimate"
+              action: "Close incident, notify user"
           step_5_remediation:
             - "Delete email from all mailboxes"
             - "Block sender domain"
@@ -1621,8 +1616,8 @@ scan_targets:
       
     detection_code_repository_structure:
       
-      directory_layout:
-```
+      directory_layout: |
+        ```
         detection-rules/
           rules/
             authentication/
@@ -1654,7 +1649,7 @@ scan_targets:
           scripts/
             sigma_to_splunk.py
             sigma_to_elastic.py
-```
+        ```
         
       rule_metadata_requirements:
         required_fields:
@@ -1694,8 +1689,8 @@ scan_targets:
             - "Review test coverage"
             - "Review documentation"
             
-        automated_testing_example:
-```python
+        automated_testing_example: |
+          ```python
           import pytest
           from sigma_converter import convert_to_splunk
           from siem_emulator import run_query
@@ -1719,7 +1714,7 @@ scan_targets:
               # Test true negative
               results = run_query(spl_query, benign_events)
               assert results.alert_triggered == False
-```
+          ```
           
       continuous_deployment:
         
@@ -1824,8 +1819,8 @@ scan_targets:
           - "Kubernetes admission control"
           - "Terraform plan validation"
           - "Service mesh authorization"
-        example_policy:
-```rego
+        example_policy: |
+          ```rego
           package terraform.policies.s3_encryption
           
           deny[msg] {
@@ -1834,7 +1829,7 @@ scan_targets:
               not resource.change.after.server_side_encryption_configuration
               msg := sprintf("S3 bucket '%s' must have encryption enabled", [resource.address])
           }
-```
+          ```
           
       aws_config_rules:
         concept: "AWS-native compliance checks"
@@ -1858,8 +1853,8 @@ scan_targets:
     secure_iac_patterns:
       
       encryption_by_default:
-        terraform_example:
-```hcl
+        terraform_example: |
+          ```hcl
           resource "aws_s3_bucket" "secure_bucket" {
             bucket = "my-secure-bucket"
             
@@ -1887,12 +1882,12 @@ scan_targets:
               restrict_public_buckets = true
             }
           }
-```
+          ```
           
       least_privilege_iam:
         principle: "Grant minimum permissions required"
-        terraform_example:
-```hcl
+        terraform_example: |
+          ```hcl
           resource "aws_iam_role_policy" "app_policy" {
             name = "app-policy"
             role = aws_iam_role.app_role.id
@@ -1916,7 +1911,7 @@ scan_targets:
               ]
             })
           }
-```
+          ```
           
       network_security:
         vpc_design:

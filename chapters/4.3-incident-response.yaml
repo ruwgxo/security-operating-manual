@@ -1037,7 +1037,7 @@ incident_response:
 
 
 
-phase_4_continuous_improvement:
+    phase_4_continuous_improvement:
       
       timeline: "Months 10-12"
       objective: "Establish continuous improvement culture and advanced capabilities"
@@ -1497,21 +1497,18 @@ phase_4_continuous_improvement:
           regulatory: "Notification requirements, fines, sanctions"
           
       classification_decision_tree:
-        question_1: "Is business-critical service currently down?"
-        if_yes: "P1 Critical"
-        if_no: "Continue to question 2"
-        
-        question_2: "Is active data exfiltration or encryption occurring?"
-        if_yes: "P1 Critical"
-        if_no: "Continue to question 3"
-        
-        question_3: "Are multiple systems compromised or is privileged account compromised?"
-        if_yes: "P2 High"
-        if_no: "Continue to question 4"
-        
-        question_4: "Is single system compromised or data accessed without exfiltration?"
-        if_yes: "P3 Medium"
-        if_no: "P4 Low"
+        - question: "Is business-critical service currently down?"
+          if_yes: "P1 Critical"
+          if_no: "Continue to question 2"
+        - question: "Is active data exfiltration or encryption occurring?"
+          if_yes: "P1 Critical"
+          if_no: "Continue to question 3"
+        - question: "Are multiple systems compromised or is privileged account compromised?"
+          if_yes: "P2 High"
+          if_no: "Continue to question 4"
+        - question: "Is single system compromised or data accessed without exfiltration?"
+          if_yes: "P3 Medium"
+          if_no: "P4 Low"
         
   playbook_development:
     
@@ -1540,17 +1537,19 @@ phase_4_continuous_improvement:
           
         response_approach:
           intelligence_gathering:
-            - "Do NOT immediately contain (alerts adversary)"
-            - "Monitor and document adversary activity"
-            - "Identify adversary objectives and TTPs"
-            - "Map compromised systems and accounts"
+            items:
+              - "Do NOT immediately contain (alerts adversary)"
+              - "Monitor and document adversary activity"
+              - "Identify adversary objectives and TTPs"
+              - "Map compromised systems and accounts"
             duration: "1-7 days of observation"
             
           coordinated_remediation:
-            - "Plan coordinated remediation across all compromised systems"
-            - "Execute remediation simultaneously (prevent adversary pivot)"
-            - "Rotate all credentials"
-            - "Deploy enhanced monitoring"
+            items:
+              - "Plan coordinated remediation across all compromised systems"
+              - "Execute remediation simultaneously (prevent adversary pivot)"
+              - "Rotate all credentials"
+              - "Deploy enhanced monitoring"
             timing: "Execute during planned window"
             
           post_remediation:
