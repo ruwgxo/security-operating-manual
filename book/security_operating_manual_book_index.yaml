@@ -26,25 +26,25 @@ book_structure:
     - number: 1
       title: Detection Engineering
       source_chapter: '2.4'
-      index: chapter_01_index.yaml
+      index: section_01_00_index.yaml
       sections: 10
     - number: 2
       title: Identity and Access Management at Scale
       source_chapter: '3.1'
-      index: chapter_02_index.yaml
+      index: section_02_00_index.yaml
       sections: 10
     - number: 3
       title: Security Automation and Orchestration
       source_chapter: '4.1'
-      index: chapter_03_index.yaml
+      index: section_03_00_index.yaml
       sections: 11
     - number: 4
       title: Incident Response at Scale
       source_chapter: '4.3'
-      index: chapter_04_index.yaml
+      index: section_04_00_index.yaml
       sections: 12
     - number: 5
       title: Threat Intelligence
       source_chapter: '4.4'
-      index: chapter_05_index.yaml
+      index: section_05_00_index.yaml
       sections: 10
