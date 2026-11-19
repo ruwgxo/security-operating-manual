@@ -158,8 +158,6 @@ prose_content:
         entries:
           - label: Time
             value: 10:00 AM
-          - label: Scenario
-            value: 'Attackers left note: ''$5M Bitcoin, 48 hours, or data published on dark web.'''
       - type: fields
         subject: Inject 4
         entries:

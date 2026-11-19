@@ -164,7 +164,7 @@ prose_content:
             value:
               - Run rule against 30-90 days historical data
               - Review all alerts generated
-              - Calculate true positive rate
+              - Calculate precision
               - Tune rule if FP rate >30%
           - label: Dataset size
             value: Minimum 10,000 events to get meaningful FP estimate

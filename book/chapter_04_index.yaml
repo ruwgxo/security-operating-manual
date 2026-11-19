@@ -106,7 +106,7 @@ sections:
     filename: section_04_12_ir_metrics_and_kpis.yaml
 references:
   ir_frameworks:
-    - 'NIST SP 800-61: Computer Security Incident Handling Guide'
+    - 'NIST SP 800-61 Rev. 3: Incident Response Recommendations and Considerations for Cybersecurity Risk Management'
     - SANS Incident Response Process
     - 'ISO/IEC 27035: Information Security Incident Management'
     - 'NIST Cybersecurity Framework: Respond function'
@@ -142,13 +142,3 @@ cross_references:
     - chapter: '4.1'
       title: Security Automation
       relevance: Automated response, playbook execution, SOAR integration
-  vault_repositories:
-    - repo: vault-incident-response
-      description: IR playbooks, templates, and runbooks
-      relevance: Implementation examples for this chapter
-    - repo: vault-detection-response
-      description: Detection rules triggering IR workflows
-      relevance: Detection-to-response integration
-    - repo: vault-automation-scripts
-      description: Automated response scripts and playbooks
-      relevance: Response automation

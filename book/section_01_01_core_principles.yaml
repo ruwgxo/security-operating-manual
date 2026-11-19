@@ -42,7 +42,7 @@ prose_content:
         items:
           - Design detection logic with false positive rate as primary metric
           - Implement alert suppression and deduplication before analyst queues
-          - Measure success by true positive rate, not total detections
+          - Measure success by precision, not total detections
           - Kill low-fidelity detections ruthlessly
       - type: heading
         level: 3
@@ -50,7 +50,7 @@ prose_content:
       - type: list
         style: bullet
         items:
-          - 'True positive rate: Target >60% for production detections'
+          - 'Precision (share of alerts that are true positives): Target >60% for production detections'
           - 'Mean time to triage: <15 minutes for high-severity alerts'
           - 'Alert volume per analyst: <50 actionable alerts per day'
           - 'Detection retirement rate: Remove 10-20% of low-value rules quarterly'

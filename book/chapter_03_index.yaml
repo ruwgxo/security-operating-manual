@@ -131,13 +131,3 @@ cross_references:
     - chapter: '4.3'
       title: Incident Response
       relevance: Automated response playbooks execute IR procedures
-  vault_repositories:
-    - repo: vault-automation-scripts
-      description: Security automation scripts and playbooks
-      relevance: Implementation examples for this chapter
-    - repo: vault-detection-response
-      description: Detection rules as code
-      relevance: Detection-as-code implementation
-    - repo: vault-infrastructure
-      description: Infrastructure-as-code with security
-      relevance: Secure IaC patterns

@@ -35,8 +35,6 @@ prose_content:
     blocks:
       - type: definition
         items:
-          - term: Budget
-            description: Estimated $100K-$500K first year (SIEM, tools, staff)
           - term: Team
             description: Minimum 1 detection engineer or security analyst with scripting skills
           - term: Executive support
@@ -119,19 +117,6 @@ prose_content:
         items:
           - term: Task
             description: Calculate detection program costs
-      - type: fields
-        subject: Components
-        entries:
-          - label: SIEM platform
-            value: $50K-$300K annually (depending on scale)
-          - label: Endpoint agents
-            value: $20-$50 per endpoint annually
-          - label: Network monitoring
-            value: $25K-$100K annually
-          - label: Threat intelligence
-            value: $10K-$50K annually
-          - label: Staff
-            value: $100K-$150K per detection engineer
       - type: definition
         items:
           - term: Output
@@ -156,8 +141,6 @@ prose_content:
               - Alert on after-hours administrative access
           - label: Estimated effort
             value: 2-3 weeks
-          - label: Estimated cost
-            value: $5K-$10K (log aggregation tool if needed)
           - label: Expected detections
             value: Brute force attacks, credential stuffing, compromised accounts
       - type: fields
@@ -190,8 +173,6 @@ prose_content:
               - Alert on file hashes matching known malware
           - label: Estimated effort
             value: 1 week
-          - label: Estimated cost
-            value: $0-$10K (free feeds available, paid feeds optional)
           - label: Expected detections
             value: Command and control, malware beaconing
       - type: heading
@@ -234,8 +215,6 @@ prose_content:
         items:
           - term: Estimated effort
             description: 3-4 weeks
-          - term: Estimated cost
-            description: $20-$50 per endpoint annually
           - term: Expected detections
             description: Malware execution, suspicious processes, persistence
       - type: heading
@@ -272,8 +251,6 @@ prose_content:
         items:
           - term: Estimated effort
             description: 2-3 weeks
-          - term: Estimated cost
-            description: $25K-$75K annually (depending on traffic volume)
           - term: Expected detections
             description: Network scanning, data exfiltration, lateral movement
   - heading: 'Phase 2: SIEM Deployment'
@@ -320,8 +297,6 @@ prose_content:
             value: Market leader, extensive integrations, powerful search
           - label: Cons
             value: Expensive at scale, complex licensing
-          - label: Cost
-            value: $150-$300 per GB ingested daily
           - label: Best for
             value: Large enterprises with budget, complex use cases
       - type: fields
@@ -331,8 +306,6 @@ prose_content:
             value: Good value, scalable, open source core
           - label: Cons
             value: Requires more configuration than Splunk
-          - label: Cost
-            value: $50-$100 per GB ingested daily
           - label: Best for
             value: Mid-size organizations, cost-conscious deployments
       - type: fields
@@ -342,8 +315,6 @@ prose_content:
             value: Cloud-native, Azure integration, pay-per-use
           - label: Cons
             value: Limited on-premise support, newer platform
-          - label: Cost
-            value: $2-$3 per GB ingested
           - label: Best for
             value: Microsoft-centric environments, cloud-first
       - type: fields
@@ -367,8 +338,6 @@ prose_content:
             value: Free core, highly customizable, large community
           - label: Cons
             value: Requires expertise to deploy and maintain
-          - label: Cost
-            value: Infrastructure only (~$20K-$50K annually)
           - label: Best for
             value: Strong technical team, budget constraints
       - type: fields
@@ -509,7 +478,7 @@ prose_content:
       - type: list
         style: bullet
         items:
-          - High true positive rate (>70%)
+          - High precision (>70%)
           - Addresses common attack techniques
           - Aligns with MITRE ATT&CK framework
           - Actionable by SOC analysts
@@ -573,7 +542,7 @@ prose_content:
       - type: list
         style: bullet
         items:
-          - Track true positive rate per detection rule
+          - Track precision per detection rule
           - Identify highest-noise rules (>50 alerts/day, <10% true positive)
           - Measure analyst time spent on false positives
       - type: fields
@@ -599,7 +568,7 @@ prose_content:
         entries:
           - label: Criteria for removal
             value:
-              - True positive rate <10% after tuning attempts
+              - Precision <10% after tuning attempts
               - No true positives in 90 days
               - Duplicate coverage with better-performing rule
           - label: Process
@@ -661,7 +630,7 @@ prose_content:
             value:
               - MITRE ATT&CK coverage percentage
               - Mean time to detect (MTTD) by severity
-              - True positive rate per detection rule
+              - Precision per detection rule
               - Alert volume per analyst
               - Detection rule count (with trend)
           - label: Executive reporting
@@ -698,7 +667,7 @@ prose_content:
             value:
               - 20-30 production detection rules deployed
               - MITRE ATT&CK coverage >40%
-              - True positive rate >50%
+              - Precision >50%
           - label: Operational metrics
             value:
               - Mean time to detect <24 hours for critical incidents

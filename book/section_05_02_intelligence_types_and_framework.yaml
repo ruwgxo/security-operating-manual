@@ -428,8 +428,6 @@ prose_content:
             value: CISO, Board
           - label: Message
             value: Nation-state actors targeting financial sector for economic intelligence
-          - label: Action
-            value: Approve $500K investment in executive security controls
       - type: fields
         subject: Operational Layer
         entries:

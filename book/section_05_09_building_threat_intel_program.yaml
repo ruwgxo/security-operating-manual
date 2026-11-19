@@ -39,21 +39,6 @@ prose_content:
       - type: heading
         level: 3
         text: Budget
-      - type: definition
-        items:
-          - term: Year 1
-            description: $200K-$500K (depends on organization size)
-      - type: fields
-        subject: Breakdown
-        entries:
-          - label: Personnel
-            value: $100K-$300K (1-2 analysts or contractors)
-          - label: Technology
-            value: $50K-$150K (TIP, feeds, tools)
-          - label: Training
-            value: $25K-$50K
-          - label: Contingency
-            value: $25K
       - type: fields
         subject: Stakeholder Alignment
         entries:
@@ -132,8 +117,6 @@ prose_content:
         entries:
           - label: Option 1 MISP
             value: Free, self-hosted, requires technical setup
-          - label: Option 2 commercial TIP
-            value: Anomali, ThreatConnect ($50K+)
           - label: Option 3 start simple
             value: Spreadsheet + manual process (temporarily)
       - type: definition
@@ -281,8 +264,6 @@ prose_content:
               - Integration capabilities
           - label: Recommendation
             value: Select 1-2 commercial feeds aligned with PIRs
-          - label: Budget
-            value: $50K-$100K annually
       - type: fields
         subject: ISAC Engagement
         entries:
@@ -313,8 +294,6 @@ prose_content:
             value:
               - SANS Threat Hunting Summit
               - Industry conferences (FS-ISAC, etc)
-          - label: Budget
-            value: $5K-$10K
       - type: fields
         subject: Advanced Analysis Techniques
         entries:

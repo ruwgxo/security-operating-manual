@@ -16,7 +16,6 @@ section_info:
   legacy:
     subtitle: Intelligence Programs, Enrichment & Operationalization at Scale
     github: github.com/ruwgxo
-    last_updated: '2024-11-30'
     license: MIT
     classification: Security Operating Manual
 chapter_overview:
@@ -47,20 +46,6 @@ chapter_overview:
     step_3: Learn intelligence lifecycle (collection → analysis → dissemination)
     step_4: Jump to section matching your program maturity
     step_5: Cross-reference with Chapter 2.4 (Detection) and 4.3 (Incident Response)
-  sections_in_this_document:
-    - overview
-    - core_principles
-    - intelligence_types_and_framework
-    - intelligence_lifecycle
-    - collection_sources_and_methods
-    - analysis_and_enrichment
-    - intelligence_platform_architecture
-    - intelligence_driven_detection
-    - threat_actor_tracking
-    - intelligence_sharing
-    - measuring_intelligence_effectiveness
-    - building_threat_intel_program
-    - advanced_techniques
   core_principles_covered:
     - id: TI-P001
       name: Intelligence is not data - it's analyzed information that enables decisions

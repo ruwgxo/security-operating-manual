@@ -116,8 +116,6 @@ prose_content:
               - Expensive at scale (licensing per GB ingested)
               - Complex pricing models
               - Performance can degrade with poor query practices
-          - label: Cost model
-            value: $150-$300 per GB ingested daily (list price, discounts available)
           - label: Best for
             value: Large enterprises with budget, complex use cases, mature programs
       - type: fields
@@ -134,8 +132,6 @@ prose_content:
               - Requires more hands-on configuration than Splunk
               - Less mature detection content than Splunk
               - Smaller partner ecosystem
-          - label: Cost model
-            value: $50-$100 per GB ingested daily
           - label: Best for
             value: Mid-size to large orgs, cost-conscious, strong technical team
       - type: fields
@@ -152,8 +148,6 @@ prose_content:
               - Limited on-premise log collection
               - Newer platform with evolving features
               - Performance variability in cloud
-          - label: Cost model
-            value: $2-$3 per GB ingested
           - label: Best for
             value: Microsoft-centric environments, cloud-first strategy
       - type: fields
@@ -253,10 +247,6 @@ prose_content:
           - Single point of failure
           - Limited scalability
           - Performance bottleneck at higher volumes
-      - type: definition
-        items:
-          - term: Cost
-            description: $10K-$50K annually (hardware + licensing)
       - type: heading
         level: 3
         text: Distributed Deployment
@@ -300,10 +290,6 @@ prose_content:
           - More complex to deploy and manage
           - Requires load balancing and clustering
           - Higher infrastructure cost
-      - type: definition
-        items:
-          - term: Cost
-            description: $100K-$500K annually
       - type: heading
         level: 3
         text: Cloud Native Deployment
@@ -342,10 +328,6 @@ prose_content:
           - Data sovereignty concerns for regulated industries
           - Vendor lock-in risk
           - Variable monthly costs based on usage
-      - type: definition
-        items:
-          - term: Cost
-            description: 'Variable: $50K-$1M+ annually depending on volume'
       - type: heading
         level: 3
         text: Hybrid Deployment
@@ -389,10 +371,6 @@ prose_content:
           - Most complex architecture
           - Highest operational burden
           - Network connectivity critical for federated search
-      - type: definition
-        items:
-          - term: Cost
-            description: $500K-$5M+ annually (enterprise scale)
   - heading: Scaling Strategies
     id: scaling_strategies
     blocks:
